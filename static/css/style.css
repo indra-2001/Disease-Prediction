@@ -1,0 +1,65 @@
+.features-section {
+  padding: 100px 20px;
+  background-color: #ffffff; /* White */
+  text-align: center;
+}
+
+.features-section h2 {
+  margin-bottom: 50px;
+  font-size: 42px;
+  color: #222; /* Darker black */
+}
+
+.features-section h2::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 4px;
+  background: #303132; /* Accent color line */
+  margin: 10px auto 0;
+  border-radius: 2px;
+}
+
+.features-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 50px;
+}
+
+.feature-box {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 20px;
+  width: 400px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s, box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.feature-box img {
+  width: 100%; /* Ensure images fit within the feature-box */
+  height: 200px; /* Fixed height for consistent size */
+  object-fit: cover; /* Maintain aspect ratio and cover the area */
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.feature-box:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+.feature-box h3 {
+  margin-bottom: 15px;
+  color: #222; /* Darker black */
+}
+
+.feature-box p {
+  color: #555; /* Medium dark gray */
+  text-align: center;
+  line-height: 1.6; /* Improve text readability */
+}

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Disease Prediction</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 900px;
+            background: white;
+            padding: 30px;
+            margin-top: 50px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .table-container {
+            margin-top: 30px;
+            display: none;
+        }
+        .back-btn {
+            display: block;
+            margin: 20px auto;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Heart Disease Prediction</h2>
+
+    <!-- Back Button -->
+    <a href="/dashboard" class="btn btn-secondary back-btn">← Back to Dashboard</a>
+
+    <form id="heartForm" method="POST">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="age" class="form-label">Age</label>
+                <input type="number" class="form-control" id="age" name="age" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="sex" class="form-label">Sex (1=Male, 0=Female)</label>
+                <input type="number" class="form-control" id="sex" name="sex" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="cp" class="form-label">Chest Pain Type (0-3)</label>
+                <input type="number" class="form-control" id="cp" name="cp" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="trestbps" class="form-label">Resting Blood Pressure</label>
+                <input type="number" class="form-control" id="trestbps" name="trestbps" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="chol" class="form-label">Cholesterol</label>
+                <input type="number" class="form-control" id="chol" name="chol" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="fbs" class="form-label">Fasting Blood Sugar > 120 mg/dl (1=True, 0=False)</label>
+                <input type="number" class="form-control" id="fbs" name="fbs" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="restecg" class="form-label">Resting ECG (0-2)</label>
+                <input type="number" class="form-control" id="restecg" name="restecg" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="thalach" class="form-label">Max Heart Rate</label>
+                <input type="number" class="form-control" id="thalach" name="thalach" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="exang" class="form-label">Exercise Induced Angina (1=Yes, 0=No)</label>
+                <input type="number" class="form-control" id="exang" name="exang" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="oldpeak" class="form-label">ST Depression</label>
+                <input type="number" step="0.1" class="form-control" id="oldpeak" name="oldpeak" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="slope" class="form-label">Slope of Peak Exercise (0-2)</label>
+                <input type="number" class="form-control" id="slope" name="slope" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="ca" class="form-label">Number of Major Vessels (0-4)</label>
+                <input type="number" class="form-control" id="ca" name="ca" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="thal" class="form-label">Thalassemia (1-3)</label>
+                <input type="number" class="form-control" id="thal" name="thal" required>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Predict</button>
+    </form>
+
+    <!-- Prediction Result -->
+    <div class="table-container" id="resultTable">
+        <h3 class="text-center mt-4">Prediction Result</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Age</th>
+                    <th>Sex</th>
+                    <th>CP</th>
+                    <th>BP</th>
+                    <th>Chol</th>
+                    <th>FBS</th>
+                    <th>ECG</th>
+                    <th>HR</th>
+                    <th>ExAng</th>
+                    <th>ST</th>
+                    <th>Slope</th>
+                    <th>CA</th>
+                    <th>Thal</th>
+                    <th>Prediction</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="resultRow"></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    document.getElementById("heartForm").onsubmit = async function(event) {
+        event.preventDefault();
+
+        let formData = new FormData(event.target);
+        let response = await fetch("/heart_prediction", {
+            method: "POST",
+            body: formData
+        });
+        let result = await response.json();
+
+        let resultRow = document.getElementById("resultRow");
+        resultRow.innerHTML = "";
+        for (let [key, value] of formData.entries()) {
+            let cell = document.createElement("td");
+            cell.textContent = value;
+            resultRow.appendChild(cell);
+        }
+        let predictionCell = document.createElement("td");
+        predictionCell.textContent = result.prediction;
+        resultRow.appendChild(predictionCell);
+
+        document.getElementById("resultTable").style.display = "block";
+    };
+</script>
+
+</body>
+</html>
