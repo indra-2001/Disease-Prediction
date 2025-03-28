@@ -1,10 +1,14 @@
 from flask import Flask, render_template, request, redirect, flash,session,url_for,jsonify
 from flask_mysqldb import MySQL
 import re
+import os
+from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
 import pickle
 import numpy as np
+import warnings
+warnings.filterwarnings('ignore')
 
 app = Flask(__name__)
 app.secret_key = "group10"
@@ -17,17 +21,17 @@ app.config['MYSQL_DB'] = 'healthcheck'
 
 mysql = MySQL(app)
 
+# File Upload Configuration
+UPLOAD_FOLDER = "static/profile_pics"
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg"}
 
+def allowed_file(filename):
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # Load the trained model
-model_path = 'heart.pkl'
-with open(model_path, 'rb') as file:
-    model = pickle.load(file)
-
-# Load the trained model
-model_path2 = 'diabetes.pkl'
-with open(model_path2, 'rb') as file:
-    model2 = pickle.load(file)
+heart_model = pickle.load(open('heart_disease_model.sav', 'rb'))
+diabetes_model = pickle.load(open('diabetes_model.sav', 'rb')) 
 
 # Email & Password Validation
 def validate_email(email):
@@ -45,6 +49,7 @@ def home():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
+        username = request.form["username"]
         email = request.form['email']
         phone = request.form['phone']
         gender = request.form['gender']
@@ -60,10 +65,18 @@ def signup():
 
         hashed_password = generate_password_hash(password)
 
+         # Handle Profile Picture Upload
+        file = request.files["profile_pic"]
+        filename = "default.png"
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+            file.save(filepath)
+
         cur = mysql.connection.cursor()
         try:
-            cur.execute("INSERT INTO users (email, phone, gender, password) VALUES (%s, %s, %s, %s)", 
-                        (email, phone, gender, hashed_password))
+            cur.execute("INSERT INTO users (username,email, phone, gender, password,profile_pic) VALUES (%s, %s, %s, %s,%s,%s)", 
+                        (username,email, phone, gender, hashed_password,filename))
             mysql.connection.commit()
             flash("Signup successful! Please login.", "success")
             return redirect('/login')
@@ -88,9 +101,15 @@ def login():
         user = cur.fetchone()
         cur.close()
 
-        if user and check_password_hash(user[4], password):  # user[4] is the password column
+        if user and check_password_hash(user[5], password):  # user[5] is the password column
             session['logged_in'] = True
-            session['email'] = user[1]
+            #session['email'] = user[2]
+            session['id'] = user[0]
+            session['username']=user[1]
+            session['email'] = user[2]
+            session['profile_pic'] = user[6]
+            session['phone'] = user[3]
+            session['gender'] = user[4]
 
             flash("Login successful!", "success")
             return render_template('dashboard.html')
@@ -110,89 +129,73 @@ def logout():
 # Dashboard (Protected Route)
 @app.route('/dashboard')
 def dashboard():
-    if 'logged_in' not in session:
+    if 'email' not in session:
         flash("Please log in first.", "warning")
         return redirect('/login')
         
     return render_template('dashboard.html')
 
-# @app.route('/profile')
-# def profile():
-#     if 'email' in session:
-#         return f"User Profile: {session['email']}"
-#     return redirect(url_for('login'))
-
-@app.route('/predict', methods=['POST'])
-def predict():
-    # Extract data from form
-    int_features = [float(x) for x in request.form.values()]
-    final_features = [np.array(int_features)]
-    
-    # Make prediction
-    prediction = model.predict(final_features)
-    output = 'Heart Disease' if prediction[0] == 1 else 'Healthy Heart'
-
-    return render_template('index.html', prediction_text='Prediction: {}'.format(output))
-
-@app.route('/heart_disease')
-def heart_disease():
-    if 'email' in session:
-        return render_template('index.html')
-    return redirect(url_for('login'))
-
-# @app.route('/diabetes')
-# def diabetes():
-#     if 'email' in session:
-#         return render_template('diabetes.html')
-#     return redirect(url_for('login'))
-
-# @app.route('/diabetes', methods=['GET', 'POST'])
-# def diabetes():
-#     if request.method == 'POST':
-#         # Fetch form data
-#         data = {
-#             "pregnancies": request.form['pregnancies'],
-#             "glucose": request.form['glucose'],
-#             "bloodPressure": request.form['bloodPressure'],
-#             "skinThickness": request.form['skinThickness'],
-#             "insulin": request.form['insulin'],
-#             "bmi": request.form['bmi'],
-#             "diabetesPedigree": request.form['diabetesPedigree'],
-#             "age": request.form['age']
-#         }
-        
-#         # Simulated prediction logic (Replace with ML model)
-#         prediction = "Diabetic" if int(data["glucose"]) > 140 else "Not Diabetic"
-
-#         return jsonify({"prediction": prediction})
-
-#     return render_template("diabetes.html") 
 
 @app.route('/heart_prediction', methods=['GET', 'POST'])
 def heart_prediction():
     if request.method == 'POST':
-        # Fetch form data
-        data = {key: request.form[key] for key in request.form}
+        try:
+            # Extract input values safely using request.form.get()
+            input_data = [
+                float(request.form.get('age', 0)),
+                float(request.form.get('sex', 0)),
+                float(request.form.get('cp', 0)),
+                float(request.form.get('trestbps', 0)),
+                float(request.form.get('chol', 0)),
+                float(request.form.get('fbs', 0)),
+                float(request.form.get('restecg', 0)),
+                float(request.form.get('thalach', 0)),
+                float(request.form.get('exang', 0)),
+                float(request.form.get('oldpeak', 0)),
+                float(request.form.get('slope', 0)),
+                float(request.form.get('ca', 0)),
+                float(request.form.get('thal', 0))
+            ]
 
-        # Simulated heart disease prediction logic
-        prediction = "Heart Disease Detected" if int(data["chol"]) > 200 else "No Heart Disease"
+            # Convert into numpy array for model prediction
+            input_array = np.array(input_data).reshape(1, -1)
 
-        return jsonify({"prediction": prediction})
+            # Predict using the model
+            prediction = heart_model.predict(input_array)[0]
 
-    return render_template("heart_prediction.html")
+            # Result message
+            result_text = "Heart Disease Detected (Positive)" if prediction == 1 else "No Heart Disease (Negative)"
+
+            return jsonify({"success": True, "prediction": result_text})
+
+        except Exception as e:
+            return jsonify({"success": False, "error": str(e)})
+
+    return render_template('heart_prediction.html')
 
 @app.route('/diabetes', methods=['GET', 'POST'])
 def diabetes():
     if request.method == 'POST':
-        # Fetch form data
-        data = {key: request.form[key] for key in request.form}
+        try:
+            # Extract form values and convert them into float
+            input_data = [float(request.form[key]) for key in ['pregnancies', 'glucose', 'bloodPressure', 
+                                                               'skinThickness', 'insulin', 'bmi', 
+                                                               'diabetesPedigree', 'age']]
+            # Convert into numpy array for model prediction
+            input_array = np.array(input_data).reshape(1, -1)
 
-        # Simulated diabetes prediction logic (Modify this based on real logic)
-        prediction = "Diabetes Detected" if int(data["Glucose"]) > 120 else "No Diabetes"
+            # Predict using model
+            prediction = diabetes_model.predict(input_array)[0]
 
-        return jsonify({"prediction": prediction})
+            # Determine result
+            result_text = "Diabetes Detected (Positive)" if prediction == 1 else "No Diabetes (Negative)"
 
-    return render_template("diabetes.html")
+            return jsonify({"success": True, "prediction": result_text})
+
+        except Exception as e:
+            return jsonify({"success": False, "error": str(e)})
+
+    return render_template('diabetes.html')
 
 @app.route('/profile')
 def profile():
@@ -200,24 +203,75 @@ def profile():
         return redirect('/login')
     return render_template('profile.html')
 
+
 @app.route('/profile-data')
 def profile_data():
     if 'email' not in session:
         return jsonify({"error": "Unauthorized"}), 401
-    
+
     cur = mysql.connection.cursor()
-    #cur.execute("SELECT name, email, phone, gender FROM users WHERE id = %s", (session['user_id'],))
-    cur.execute("SELECT email, phone, gender FROM users WHERE email = %s", (session['email'],))
+    cur.execute("SELECT username,email, phone, gender, profile_pic FROM users WHERE email = %s", (session['email'],))
     user = cur.fetchone()
     cur.close()
 
+
     if user:
-       # return jsonify({"name": user[0], "email": user[1], "phone": user[2], "gender": user[3]})
-        return jsonify({"email": user[0], "phone": user[1], "gender": user[2]})
+        return jsonify({
+            "username": user[0],
+            "email": user[1],
+            "phone": user[2],
+            "gender": user[3],
+            "profile_pic": user[4] if user[4] else "/static/profile_pics/default.png"  # Handle missing images
+        })
     else:
         return jsonify({"error": "User not found"}), 404
+
+
+    
+
+@app.route('/edit-profile')
+def edit_profile():
+    if 'email' not in session:
+        return redirect('/login')
+    return render_template('edit.html')
+
+@app.route('/update-profile', methods=['POST'])
+def update_profile():
+    if 'email' not in session:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    username = request.form['username']
+    #email = request.form['email']
+    phone = request.form['phone']
+    gender = request.form['gender']
+
+    profile_pic = None
+    if 'profile_pic' in request.files:
+        file = request.files['profile_pic']
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(filepath)
+            profile_pic = f"/static/profile_pics/{filename}"
+
+    cur = mysql.connection.cursor()
+
+    if profile_pic:
+        cur.execute("UPDATE users SET username=%s,phone=%s, gender=%s, profile_pic=%s WHERE email=%s",
+                    (username, phone, gender, profile_pic, session['email']))
+    else:
+        cur.execute("UPDATE users SET username=%s, phone=%s, gender=%s WHERE email=%s",
+                    (username, phone, gender, session['email']))
+
+    mysql.connection.commit()
+    cur.close()
+
+    return jsonify({"success": True, "message": "Profile updated successfully!"})
+
 
 
 if __name__ == '__main__':
     app.secret_key = "group10"
     app.run(debug=True)
+
+

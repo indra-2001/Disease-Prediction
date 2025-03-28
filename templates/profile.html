@@ -22,7 +22,21 @@
             width: 120px;
             height: 120px;
             border-radius: 50%;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
+            object-fit: cover;
+            border: 3px solid #007bff;
+        }
+        .username {
+            font-size: 22px;
+            font-weight: bold;
+            color: #333;
+        }
+        .table th {
+            text-align: right;
+            width: 40%;
+        }
+        .table td {
+            text-align: left;
         }
         .btn-custom {
             width: 100%;
@@ -33,13 +47,15 @@
 
 <div class="container">
     <h2 class="text-center">User Profile</h2>
-    <img src="https://via.placeholder.com/120" alt="Profile Picture" class="profile-img">
     
+    <!-- Dynamic Profile Picture -->
+    <img id="profile-pic" src="" alt="Profile Picture" class="profile-img">
+
+    
+    <!-- Username Display -->
+    <p class="username" id="username"></p>
+
     <table class="table table-borderless">
-        <!-- <tr>
-            <th>Name:</th>
-            <td id="name"></td>
-        </tr> -->
         <tr>
             <th>Email:</th>
             <td id="email"></td>
@@ -63,7 +79,8 @@
         fetch("/profile-data")
         .then(response => response.json())
         .then(data => {
-            // document.getElementById("name").textContent = data.name;
+            document.getElementById("profile-pic").src = "/static/profile_pics/" + data.profile_pic;
+            document.getElementById("username").textContent = data.username; // Display Username
             document.getElementById("email").textContent = data.email;
             document.getElementById("phone").textContent = data.phone;
             document.getElementById("gender").textContent = data.gender;
