@@ -126,6 +126,11 @@ def logout():
     flash("You have been logged out.", "info")
     return redirect('/')
 
+# About Route
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
 # Dashboard (Protected Route)
 @app.route('/dashboard')
 def dashboard():
