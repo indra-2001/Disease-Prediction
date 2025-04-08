@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Liver Disease Prediction</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <style> 
+    body {
+      background: linear-gradient(135deg, #d0e6f7, #f5f7fa);
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .container {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      padding: 40px 30px;
+      max-width: 1000px;
+      margin-top: 50px;
+    }
+
+    h2 {
+      font-weight: bold;
+      color: #146C94;
+      margin-bottom: 30px;
+    }
+
+    .form-label {
+      font-weight: 500;
+      color: #333;
+    }
+
+    .form-control, .form-select {
+      border-radius: 8px;
+    }
+
+    .btn-custom {
+      width: 100%;
+      padding: 12px;
+      font-size: 18px;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: #125e84;
+    }
+
+    .btn-secondary:hover {
+      background-color: #6c757d;
+    }
+
+    .result-table {
+      margin-top: 30px;
+      display: none;
+    }
+
+    .table th {
+      background-color: #146C94;
+      color: white;
+    }
+
+    .form-icon {
+      margin-right: 8px;
+      color: #146C94;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2 class="text-center"><i class="fas fa-heartbeat me-2"></i>Liver Disease Prediction</h2>
+    <form id="#">
+      <div class="row">
+        <!-- Left Column -->
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label class="form-label">Age</label>
+            <input type="number" class="form-control" name="Age" required/>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Gender</label>
+            <select name="Gender" class="form-select">
+              <option value="">Select</option>
+              <option value="1">Female</option>
+              <option value="0">Male</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Total_Bilirubin</label>
+            <input type="number" step="0.1" class="form-control" name="Total_Bilirubin" required/>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Direct_Bilirubin</label>
+            <input type="number" step="0.1" class="form-control" name="Direct_Bilirubin" required/>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Alkaline_Phosphotase</label>
+            <input type="number" class="form-control" name="Alkaline_Phosphotase" required/>
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label class="form-label">Alamine_Aminotransferase</label>
+            <input type="number" class="form-control" name="Alamine_Aminotransferase" required/>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Aspartate_Aminotransferase</label>
+            <input type="number" class="form-control" name="Aspartate_Aminotransferase" required/>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Total_Protiens</label>
+            <input type="number" step="0.1" class="form-control" name="Total_Protiens" required/>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Albumin</label>
+            <input type="number" step="0.1" class="form-control" name="Albumin" required/>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Albumin_and_Globulin_Ratio</label>
+            <input type="number" step="0.01" class="form-control" name="Albumin_and_Globulin_Ratio" required/>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-custom"><i class="fas fa-microscope me-2"></i>Predict</button>
+      <a href="/dashboard" class="btn btn-secondary btn-custom mt-3"><i class="fas fa-arrow-left me-2"></i>Back</a>
+    </form>
+
+    <div class="result-table">
+      <h4 class="text-center mt-4">Prediction Result</h4>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Parameter</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody id="resultBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("kidneyForm").addEventListener("submit", function (event) {
+      event.preventDefault();
+      const formData = new FormData(this);
+      fetch("/kidney", {
+        method: "POST",
+        body: new URLSearchParams(formData)
+      })
+      .then(response => response.json())
+      .then(data => {
+        const resultTable = document.querySelector(".result-table");
+        const resultBody = document.getElementById("resultBody");
+        resultBody.innerHTML = "";
+        for (let [key, value] of formData.entries()) {
+          resultBody.innerHTML += `<tr><td>${key}</td><td>${value}</td></tr>`;
+        }
+        resultBody.innerHTML += `<tr><td><strong>Prediction</strong></td><td><strong>${data.prediction}</strong></td></tr>`;
+        resultTable.style.display = "block";
+      });
+    });
+  </script>
+</body>
+</html>

@@ -33,6 +33,7 @@ def allowed_file(filename):
 heart_model = pickle.load(open('heart_disease_model.sav', 'rb'))
 diabetes_model = pickle.load(open('diabetes_model.sav', 'rb'))
 kidney_model =  pickle.load(open('kidney_disease.sav', 'rb'))
+Breast_Cancer_model = pickle.load(open('Breast_Cancer.sav', 'rb'))
 
 # Email & Password Validation
 def validate_email(email):
@@ -202,6 +203,37 @@ def diabetes():
             return jsonify({"success": False, "error": str(e)})
 
     return render_template('diabetes.html')
+
+
+
+@app.route('/Breast_cancer', methods=['GET', 'POST'])
+def Breast_cancer():
+    if request.method == 'POST':
+        try:
+            # Extract form values and convert them into float
+            input_data = [float(request.form[key]) for key in [
+                                                            'radius_mean', 'texture_mean', 'perimeter_mean', 'area_mean', 'smoothness_mean',
+                                                            'compactness_mean', 'concavity_mean', 'concave points_mean', 'symmetry_mean', 'fractal_dimension_mean',
+                                                            'radius_se ', 'texture_se', 'perimeter_se', 'area_se', 'smoothness_se',
+                                                            'compactness_se', 'concavity_se', 'concave points_se', 'symmetry_se', 'fractal_dimension_se',
+                                                            'radius_worst', 'texture_worst', 'perimeter_worst', 'area_worst', 'smoothness_worst',
+                                                            'compactness_worst', 'concavity_worst', 'concave points_worst', 'symmetry_worst', 'fractal_dimension_worst'
+                                                            ]]
+            # Convert into numpy array for model prediction
+            input_array = np.array(input_data).reshape(1, -1)
+
+            # Predict using model
+            prediction = Breast_Cancer_model.predict(input_array)[0]
+
+            # Determine result
+            result_text = "The Breast Cancer is Benign" if prediction == 1 else "The Breast cancer is Malignant"
+
+            return jsonify({"success": True, "prediction": result_text})
+
+        except Exception as e:
+            return jsonify({"success": False, "error": str(e)})
+
+    return render_template('Breast_cancer.html')
 
 
 
