@@ -33,6 +33,8 @@ def allowed_file(filename):
 heart_model = pickle.load(open('heart_disease_model.sav', 'rb'))
 diabetes_model = pickle.load(open('diabetes_model.sav', 'rb')) 
 parkinson = pickle.load(open('parkinson.pkl', 'rb'))
+kidney_model =  pickle.load(open('kidney_disease.sav', 'rb'))
+Breast_Cancer_model = pickle.load(open('Breast_Cancer.sav', 'rb'))
 # Email & Password Validation
 def validate_email(email):
     return re.match(r"^[a-zA-Z0-9._%+-]+@gmail\.com$", email)
@@ -239,6 +241,75 @@ def predict():
 
         except Exception as e:
             return render_template('parkinson.html', prediction_text=f"Error: {str(e)}")
+
+@app.route('/Breast_cancer', methods=['GET', 'POST'])
+def Breast_cancer():
+    if request.method == 'POST':
+        try:
+            # Extract form values and convert them into float
+            input_data = [float(request.form[key]) for key in [
+                                                            'radius_mean', 'texture_mean', 'perimeter_mean', 'area_mean', 'smoothness_mean',
+                                                            'compactness_mean', 'concavity_mean', 'concave points_mean', 'symmetry_mean', 'fractal_dimension_mean',
+                                                            'radius_se ', 'texture_se', 'perimeter_se', 'area_se', 'smoothness_se',
+                                                            'compactness_se', 'concavity_se', 'concave points_se', 'symmetry_se', 'fractal_dimension_se',
+                                                            'radius_worst', 'texture_worst', 'perimeter_worst', 'area_worst', 'smoothness_worst',
+                                                            'compactness_worst', 'concavity_worst', 'concave points_worst', 'symmetry_worst', 'fractal_dimension_worst'
+                                                            ]]
+            # Convert into numpy array for model prediction
+            input_array = np.array(input_data).reshape(1, -1)
+
+            # Predict using model
+            prediction = Breast_Cancer_model.predict(input_array)[0]
+
+            # Determine result
+            result_text = "The Breast Cancer is Benign" if prediction == 1 else "The Breast cancer is Malignant"
+
+            return jsonify({"success": True, "prediction": result_text})
+
+        except Exception as e:
+            return jsonify({"success": False, "error": str(e)})
+
+    return render_template('Breast_cancer.html')
+
+
+
+@app.route('/kidney', methods=['GET', 'POST'])
+def kidney():
+    if request.method == 'POST':
+        try:
+            # Extract form values and convert them into float
+
+            
+            input_data = [request.form[key] for key in [ 'Age', 'Blood Pressure', 'Specific gravity(Urine cocentration)', 'Albumin',
+                                                        'Blood Sugar', 'Red Blood cells in Urine', 'Pus Cells in urine',
+                                                        'Pus Cell Clumps in Urine', 'Bacteria in Urine', 'Blood Glucose',
+                                                        'Blood Urea ', 'Serum Creatinine', 'Sodium', 'Potassium', 'Hemoglobin',
+                                                        'Packed Cell Volume', 'White Blood Cell Count (/cubic mm)',
+                                                        'Red Blood Cell Count (million/cumm)', 'Hypertension', 'Diabetes',
+                                                        'Coronary Artery Disease', 'Appetite', 'Pedal Edema (swelling in leg/feet)',
+                                                        'Anemia']]
+
+            # input_data = [request.form[key] for key in [ 'age', 'bp', 'sg', 'al', 'su', 'rbc', 'pc', 'pcc', 'ba',
+            #                                             'bgr', 'bu', 'sc', 'sod', 'pot', 'hemo', 'pcv',
+            #                                             'wc', 'rc', 'htn', 'dm', 'cad', 'appet', 'pe', 'ane']]
+            
+            # Convert into numpy array for model prediction
+            input_array = np.array(input_data).reshape(1, -1)
+
+            # Predict using model
+            prediction = kidney_model.predict(input_array)[0]
+
+            # Determine result
+            result_text = "The prediction indicates a positive case of chronic kidney disease." if prediction == 0 else "You are predicted safe from Chronic Kidney disease (Negative)"
+
+            return jsonify({"success": True, "prediction": result_text})
+
+        except Exception as e:
+            return jsonify({"success": False, "error": str(e)})
+
+    return render_template('kidney.html')
+
+
 
 
 @app.route('/profile')
