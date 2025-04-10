@@ -32,7 +32,7 @@ def allowed_file(filename):
 # Load the trained model
 heart_model = pickle.load(open('heart_disease_model.sav', 'rb'))
 diabetes_model = pickle.load(open('diabetes_model.sav', 'rb')) 
-
+parkinson = pickle.load(open('parkinson.pkl', 'rb'))
 # Email & Password Validation
 def validate_email(email):
     return re.match(r"^[a-zA-Z0-9._%+-]+@gmail\.com$", email)
@@ -201,6 +201,45 @@ def diabetes():
             return jsonify({"success": False, "error": str(e)})
 
     return render_template('diabetes.html')
+
+@app.route('/parkinson', methods=['POST','GET'])
+def predict():
+    if request.method == 'POST':
+        try:
+            # Get form values
+            features = [
+                float(request.form['fo']),
+                float(request.form['fhi']),
+                float(request.form['flo']),
+                float(request.form['Jitter_percent']),
+                float(request.form['Jitter_Abs']),
+                float(request.form['RAP']),
+                float(request.form['PPQ']),
+                float(request.form['DFA']),
+                float(request.form['Shimmer']),
+                float(request.form['Shimmer_dB']),
+                float(request.form['APQ3']),
+                float(request.form['APQ5']),
+                float(request.form['APQ']),
+                float(request.form['DDA']),
+                float(request.form['NHR']),
+                float(request.form['HNR']),
+                float(request.form['RPDE']),
+                float(request.form['D2']),
+                float(request.form['spread1']),
+                float(request.form['spread2']),
+                float(request.form['PPE'])
+            ]
+
+            input_data = np.array([features])
+            prediction = parkinson.predict(input_data)
+
+            result = "Parkinson's Detected" if prediction[0] == 1 else "Healthy - No Parkinson's Detected"
+            return render_template('parkinson.html', prediction_text=result)
+
+        except Exception as e:
+            return render_template('parkinson.html', prediction_text=f"Error: {str(e)}")
+
 
 @app.route('/profile')
 def profile():
