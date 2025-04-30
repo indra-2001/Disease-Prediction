@@ -2,16 +2,38 @@ from flask import Flask, render_template, request, redirect, flash,session,url_f
 from flask_mysqldb import MySQL
 import re
 import os
+import joblib
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
 import pickle
 import numpy as np
+import pandas as pd
+from datetime import timedelta
+from flask_mail import Mail, Message
+from itsdangerous import URLSafeTimedSerializer
+import dotenv
 import warnings
 warnings.filterwarnings('ignore')
 
+
+dotenv.load_dotenv()
+
 app = Flask(__name__)
 app.secret_key = "group10"
+app.permanent_session_lifetime = timedelta(minutes=5)
+
+# Email configuration
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+
+
+mail = Mail(app)
+serializer = URLSafeTimedSerializer(app.secret_key)
 
 # MySQL Configuration
 app.config['MYSQL_HOST'] = 'localhost'
@@ -35,6 +57,9 @@ diabetes_model = pickle.load(open('diabetes_model.sav', 'rb'))
 parkinson = pickle.load(open('parkinson.pkl', 'rb'))
 kidney_model =  pickle.load(open('kidney_disease.sav', 'rb'))
 Breast_Cancer_model = pickle.load(open('Breast_Cancer.sav', 'rb'))
+model = joblib.load('parkinsons_model_8features.sav')
+scaler = joblib.load('scaler_8features.sav')
+selected_features = joblib.load('selected_8features.sav')
 # Email & Password Validation
 def validate_email(email):
     return re.match(r"^[a-zA-Z0-9._%+-]+@gmail\.com$", email)
@@ -113,6 +138,12 @@ def login():
             session['phone'] = user[3]
             session['gender'] = user[4]
 
+            if remember:
+                session.permanent = True
+                app.permanent_session_lifetime = timedelta(days=30)
+            else:
+                session.permanent = False
+
             flash("Login successful!", "success")
             return render_template('dashboard.html')
         else:
@@ -127,6 +158,71 @@ def logout():
     session.clear()
     flash("You have been logged out.", "info")
     return redirect('/')
+
+# Route for Forgot Password Page
+@app.route('/forgot-password', methods=['GET', 'POST'])
+def forgot_password():
+    if request.method == 'POST':
+        email = request.form['email'].strip()
+
+        # Validate email format
+        if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+            flash("Invalid email format", "danger")
+            return redirect(url_for('forgot_password'))
+
+        # Check if email exists in DB
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM users WHERE email = %s", (email,))
+        user = cur.fetchone()
+        cur.close()
+
+        if user:
+            # Generate token
+            token = serializer.dumps(email, salt='password-reset-salt')
+            reset_url = url_for('reset_password_token', token=token, _external=True)
+
+            # Send email
+            msg = Message("Reset Your HealthCheck Password", sender=os.environ.get('MAIL_USERNAME'), recipients=[email])
+            msg.body = f"Hi, click the link below to reset your password:\n\n{reset_url}\n\nThis link is valid for 10 minutes."
+            mail.send(msg)
+
+            flash("A password reset link has been sent to your email.", "info")
+            return redirect(url_for('login'))
+        else:
+            flash("Email not found in our records", "danger")
+            return redirect(url_for('forgot_password'))
+
+    return render_template('forgot_password.html')
+
+
+@app.route('/reset-password/<token>', methods=['GET', 'POST'])
+def reset_password_token(token):
+    try:
+        email = serializer.loads(token, salt='password-reset-salt', max_age=600)  # 10 minutes validity
+    except Exception as e:
+        flash("The reset link is invalid or has expired.", "danger")
+        return redirect(url_for('forgot_password'))
+
+    if request.method == 'POST':
+        new_password = request.form.get('new_password')
+        confirm_password = request.form.get('confirm_password')
+
+        if not new_password or new_password != confirm_password:
+            flash("Passwords do not match or are empty", "danger")
+            return redirect(url_for('reset_password_token', token=token))
+
+        hashed_password = generate_password_hash(new_password)
+        cur = mysql.connection.cursor()
+        cur.execute("UPDATE users SET password = %s WHERE email = %s", (hashed_password, email))
+        mysql.connection.commit()
+        cur.close()
+
+        flash("Your password has been updated. Please log in.", "success")
+        return redirect(url_for('login'))
+
+    return render_template('reset_password_form.html', token=token)
+
+
 
 # About Route
 @app.route('/about')
@@ -204,43 +300,68 @@ def diabetes():
 
     return render_template('diabetes.html')
 
-@app.route('/parkinson', methods=['POST','GET'])
-def predict():
+# @app.route('/parkinson', methods=['POST','GET'])
+# def predict():
+#     if request.method == 'POST':
+#         try:
+#             # Get form values
+#             features = [
+#                 float(request.form['fo']),
+#                 float(request.form['fhi']),
+#                 float(request.form['flo']),
+#                 float(request.form['Jitter_percent']),
+#                 float(request.form['Jitter_Abs']),
+#                 float(request.form['RAP']),
+#                 float(request.form['PPQ']),
+#                 float(request.form['DFA']),
+#                 float(request.form['Shimmer']),
+#                 float(request.form['Shimmer_dB']),
+#                 float(request.form['APQ3']),
+#                 float(request.form['APQ5']),
+#                 float(request.form['APQ']),
+#                 float(request.form['DDA']),
+#                 float(request.form['NHR']),
+#                 float(request.form['HNR']),
+#                 float(request.form['RPDE']),
+#                 float(request.form['D2']),
+#                 float(request.form['spread1']),
+#                 float(request.form['spread2']),
+#                 float(request.form['PPE'])
+#             ]
+
+#             input_data = np.array([features])
+#             prediction = parkinson.predict(input_data)
+
+#             result = "Parkinson's Detected" if prediction[0] == 1 else "Healthy - No Parkinson's Detected"
+#             return jsonify({"success": True, "prediction": result})
+        
+#         except Exception as e:
+#             return jsonify({"success": False, "error": str(e)})
+#     return render_template('parkinson.html')
+
+@app.route('/parkinson', methods=['GET', 'POST'])
+def parkinson():
+    result = None
     if request.method == 'POST':
         try:
-            # Get form values
-            features = [
-                float(request.form['fo']),
-                float(request.form['fhi']),
-                float(request.form['flo']),
-                float(request.form['Jitter_percent']),
-                float(request.form['Jitter_Abs']),
-                float(request.form['RAP']),
-                float(request.form['PPQ']),
-                float(request.form['DFA']),
-                float(request.form['Shimmer']),
-                float(request.form['Shimmer_dB']),
-                float(request.form['APQ3']),
-                float(request.form['APQ5']),
-                float(request.form['APQ']),
-                float(request.form['DDA']),
-                float(request.form['NHR']),
-                float(request.form['HNR']),
-                float(request.form['RPDE']),
-                float(request.form['D2']),
-                float(request.form['spread1']),
-                float(request.form['spread2']),
-                float(request.form['PPE'])
-            ]
+            # Get input values from the form
+            input_values = [float(request.form[feature]) for feature in selected_features]
 
-            input_data = np.array([features])
-            prediction = parkinson.predict(input_data)
+            # Create DataFrame
+            input_df = pd.DataFrame([input_values], columns=selected_features)
 
-            result = "Parkinson's Detected" if prediction[0] == 1 else "Healthy - No Parkinson's Detected"
-            return render_template('parkinson.html', prediction_text=result)
+            # Scale and predict
+            input_scaled = scaler.transform(input_df)
+            prediction = model.predict(input_scaled)[0]
+
+            # Generate result
+            result = "Parkinson's Detected 😔" if prediction == 1 else "Healthy 🙂"
 
         except Exception as e:
-            return render_template('parkinson.html', prediction_text=f"Error: {str(e)}")
+            result = f"Error occurred: {e}"
+
+    return render_template('parkinson.html', features=selected_features, result=result)
+
 
 @app.route('/Breast_cancer', methods=['GET', 'POST'])
 def Breast_cancer():
