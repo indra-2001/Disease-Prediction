@@ -212,7 +212,7 @@ def diabetes():
 
 @app.route('/parkinson', methods=['GET', 'POST'])
 def parkinson():
-    
+    result = None
     if request.method == 'POST':
         try:
             # Get input values from the form
