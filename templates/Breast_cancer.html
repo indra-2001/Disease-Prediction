@@ -79,7 +79,7 @@
         <div class="col-md-6">
           <div class="mb-3">
             <label class="form-label">radius_mean</label>
-            <input type="number" step="0.01" class="form-control" name="radius_mean" required/>
+            <input type="number" step="0.001" class="form-control" name="radius_mean" required/>
           </div>
           <div class="mb-3">
             <label class="form-label">texture_mean</label>
@@ -95,9 +95,9 @@
           </div>
           <div class="mb-3">
             <label class="form-label">smoothness_mean</label>
-            <input type="number" step="0.0001" class="form-control" name="smoothness_mean" required/>
+            <input type="number" step="0.00001" class="form-control" name="smoothness_mean" required/>
           </div>
-          <div class="mb-3">
+          <!--<div class="mb-3">
             <label class="form-label">compactness_mean</label>
             <input type="number" step="0.00001" class="form-control" name="compactness_mean" required/>
           </div>
@@ -116,8 +116,8 @@
           <div class="mb-3">
             <label class="form-label">fractal_dimension_mean</label>
             <input type="number" step="0.00001" class="form-control" name="fractal_dimension_mean" required/>
-          </div>
-          <div class="mb-3">
+          </div>-->
+          <!--<div class="mb-3">
             <label class="form-label">radius_se</label>
             <input type="number" step="0.0001" class="form-control" name="radius_se " required/>
           </div>
@@ -136,12 +136,12 @@
           <div class="mb-3">
             <label class="form-label">smoothness_se</label>
             <input type="number" step="0.000001" class="form-control" name="smoothness_se" required/>
-          </div>
+          </div>-->
         </div>
 
         <!-- Right Column -->
         <div class="col-md-6">
-          <div class="mb-3">
+          <!--<div class="mb-3">
             <label class="form-label">compactness_se</label>
             <input type="number" step="0..00001" class="form-control" name="compactness_se"/>
           </div>
@@ -200,6 +200,26 @@
           <div class="mb-3">
             <label class="form-label">fractal_dimension_worst</label>
             <input type="number" step="0.00001" class="form-control" name="fractal_dimension_worst" required/>
+          </div>-->
+          <div class="mb-3">
+            <label class="form-label">compactness_mean</label>
+            <input type="number" step="0.00001" class="form-control" name="compactness_mean" required/>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">concavity_mean</label>
+            <input type="number" step="0.00001" class="form-control" name="concavity_mean" required/>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">concave points_mean</label>
+            <input type="number" step="0.000001" class="form-control" name="concave points_mean" required/>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">symmetry_mean</label>
+            <input type="number" step="0.0001" class="form-control" name="symmetry_mean" required/>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">fractal_dimension_mean</label>
+            <input type="number" step="0.00001" class="form-control" name="fractal_dimension_mean" required/>
           </div>
         </div>
       </div>
@@ -219,10 +239,41 @@
         </thead>
         <tbody id="resultBody"></tbody>
       </table>
+      <button id="downloadPdf" class="btn btn-success btn-custom mt-2">Download Report</button>
     </div>
   </div>
 
   <script>
+    document.getElementById("downloadPdf").addEventListener("click", function() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // Title
+    doc.setFontSize(18);
+    doc.text("Breast Cancer Classification Report", 14, 22);
+
+    // User Input Data
+    doc.setFontSize(12);
+    doc.text("User Input Data:", 14, 32);
+
+    const inputData = [];
+    document.querySelectorAll("#resultBody tr").forEach(row => {
+        const cols = row.querySelectorAll("td");
+        inputData.push([cols[0].innerText, cols[1].innerText]);
+    });
+
+    doc.autoTable({
+        startY: 36,
+        head: [['Parameter', 'Value']],
+        body: inputData,
+        theme: 'grid',
+        styles: { fontSize: 10 }
+    });
+
+    // Save the PDF
+    doc.save("Breast_Cancer_Classification_Report.pdf");
+});
+
     document.getElementById("Breast_cancer_Form").addEventListener("submit", function (event) {
       event.preventDefault();
       const formData = new FormData(this);
@@ -243,5 +294,8 @@
       });
     });
   </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
 </body>
 </html>
