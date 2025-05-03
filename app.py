@@ -15,6 +15,10 @@ from itsdangerous import URLSafeTimedSerializer
 import dotenv
 import joblib
 import pandas as pd
+from datetime import timedelta
+from flask_mail import Mail, Message
+from itsdangerous import URLSafeTimedSerializer
+import dotenv
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -58,6 +62,8 @@ heart_model = pickle.load(open('heart_disease_model.sav', 'rb'))
 diabetes_model = pickle.load(open('diabetes_model.sav', 'rb')) 
 parkinson = pickle.load(open('parkinson.pkl', 'rb'))
 diabetes_model = pickle.load(open('diabetes_model.sav', 'rb'))
+kidney_model =  pickle.load(open('kidney_disease.sav', 'rb'))
+Breast_Cancer_model = pickle.load(open('Breast_Cancer.sav', 'rb'))
 model_package = joblib.load('parkinsons_model_package.sav')
 model = model_package['model']
 scaler = model_package['scaler']
@@ -67,6 +73,7 @@ Breast_Cancer_model = pickle.load(open('Breast_Cancer.sav', 'rb'))
 model = joblib.load('parkinsons_model_8features.sav')
 scaler = joblib.load('scaler_8features.sav')
 selected_features = joblib.load('selected_8features.sav')
+
 # Email & Password Validation
 def validate_email(email):
     return re.match(r"^[a-zA-Z0-9._%+-]+@gmail\.com$", email)
@@ -347,10 +354,10 @@ def diabetes():
 #             return jsonify({"success": False, "error": str(e)})
 #     return render_template('parkinson.html')
 
-
 @app.route('/parkinson', methods=['GET', 'POST'])
 def parkinson():
     result = None
+    suggestion = None
     if request.method == 'POST':
         try:
             # Get input values from the form
@@ -364,12 +371,19 @@ def parkinson():
             input_scaled = scaler.transform(input_df)
             prediction = model.predict(input_scaled)[0]
 
-            # Generate result
-            result = "Parkinson's Detected 😔" if prediction == 1 else "Healthy 🙂"
+            # Generate result and suggestion
+            if prediction == 1:
+                result = "Parkinson's Detected 😔"
+                suggestion = (
+                    "Please consult a neurologist for a detailed diagnosis. "
+                    "Engaging in physical therapy, voice exercises, a healthy diet, and regular follow-ups "
+                    "can help manage symptoms effectively. Joining a support group is also highly beneficial."
+                )
+            else:
+                result = "Healthy 🙂"
 
         except Exception as e:
             result = f"Error occurred: {e}"
-
     return render_template('parkinson.html', features=selected_features, result=result)
           # Create DataFrame
           #input_df = pd.DataFrame([input_values], columns=selected_features)
@@ -384,7 +398,9 @@ def parkinson():
         #except Exception as e:
             #result = f"Error occurred: {e}"
 
-    return render_template('parkinson.html', features=selected_features, result=result)
+    #return render_template('parkinson.html', features=selected_features, result=result)
+    return render_template('parkinson.html', features=selected_features, result=result, suggestion=suggestion)
+
 
 @app.route('/Breast_cancer', methods=['GET', 'POST'])
 def Breast_cancer():

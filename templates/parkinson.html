@@ -67,12 +67,6 @@
         .secondary-btn:hover {
             background-color: #777;
         }
-
-        .result {
-            margin-top: 30px;
-            font-size: 1.5em;
-            font-weight: bold;
-        }
     </style>
 </head>
 <body>
@@ -91,21 +85,57 @@
                 <button type="button" class="secondary-btn">Recheck</button>
             </a>
 
-<<<<<<< HEAD
             <a href="../templates/dashboard.html" style="text-decoration: none;">
-=======
             <a href="/" style="text-decoration: none;">
->>>>>>> d49171d8403b9d4c0a0e6b13f39260a3b391167c
                 <button type="button">Back</button>
             </a>
         </div>
     </form>
-
     {% if result %}
-        <div class="result">
-            Prediction: {{ result }}
+    <div class="result" style="margin-top: 30px;">
+        {% if 'Detected' in result %}
+            <div style="
+                background-color: #ffe6e6;
+                color: #cc0000;
+                border: 1px solid #cc0000;
+                padding: 20px;
+                border-radius: 8px;
+                font-size: 1.3em;
+            ">
+                <strong>🩺 Prediction:</strong> {{ result }}
+            </div>
+        {% else %}
+            <div style="
+                background-color: #e6f7ff;
+                color: #0066cc;
+                border: 1px solid #0066cc;
+                padding: 20px;
+                border-radius: 8px;
+                font-size: 1.3em;
+            ">
+                <strong>🩺 Prediction:</strong> {{ result }}
+            </div>
+        {% endif %}
+
+        {% if suggestion %}
+        <div style="
+            background-color: #fffbe6;
+            color: #8a6d3b;
+            border: 1px solid #faebcc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 1em;
+            text-align: left;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        ">
+            <strong>💡 Advice:</strong> {{ suggestion }}
         </div>
-    {% endif %}
+        {% endif %}
+    </div>
+{% endif %}
 </body>
 </html>
 
@@ -1991,6 +2021,7 @@
 
 
 
+<<<<<<< HEAD
 
 
 
@@ -2090,3 +2121,5 @@
 =======
 
 >>>>>>> d49171d8403b9d4c0a0e6b13f39260a3b391167c
+=======
+>>>>>>> 885eece7d6b3946b728ccff004f204332e18f2ee
