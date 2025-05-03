@@ -13,6 +13,8 @@ from datetime import timedelta
 from flask_mail import Mail, Message
 from itsdangerous import URLSafeTimedSerializer
 import dotenv
+import joblib
+import pandas as pd
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -55,6 +57,11 @@ def allowed_file(filename):
 heart_model = pickle.load(open('heart_disease_model.sav', 'rb'))
 diabetes_model = pickle.load(open('diabetes_model.sav', 'rb')) 
 parkinson = pickle.load(open('parkinson.pkl', 'rb'))
+diabetes_model = pickle.load(open('diabetes_model.sav', 'rb'))
+model_package = joblib.load('parkinsons_model_package.sav')
+model = model_package['model']
+scaler = model_package['scaler']
+selected_features = model_package['features']
 kidney_model =  pickle.load(open('kidney_disease.sav', 'rb'))
 Breast_Cancer_model = pickle.load(open('Breast_Cancer.sav', 'rb'))
 model = joblib.load('parkinsons_model_8features.sav')
@@ -300,6 +307,7 @@ def diabetes():
 
     return render_template('diabetes.html')
 
+
 # @app.route('/parkinson', methods=['POST','GET'])
 # def predict():
 #     if request.method == 'POST':
@@ -339,6 +347,7 @@ def diabetes():
 #             return jsonify({"success": False, "error": str(e)})
 #     return render_template('parkinson.html')
 
+
 @app.route('/parkinson', methods=['GET', 'POST'])
 def parkinson():
     result = None
@@ -346,6 +355,7 @@ def parkinson():
         try:
             # Get input values from the form
             input_values = [float(request.form[feature]) for feature in selected_features]
+
 
             # Create DataFrame
             input_df = pd.DataFrame([input_values], columns=selected_features)
@@ -361,7 +371,20 @@ def parkinson():
             result = f"Error occurred: {e}"
 
     return render_template('parkinson.html', features=selected_features, result=result)
+          # Create DataFrame
+          #input_df = pd.DataFrame([input_values], columns=selected_features)
 
+            # Scale and predict
+            #input_scaled = scaler.transform(input_df)
+            #prediction = model.predict(input_scaled)[0]
+
+            # Generate result
+            #result = "Parkinson's Detected 😔" if prediction == 1 else "Healthy 🙂"
+
+        #except Exception as e:
+            #result = f"Error occurred: {e}"
+
+    return render_template('parkinson.html', features=selected_features, result=result)
 
 @app.route('/Breast_cancer', methods=['GET', 'POST'])
 def Breast_cancer():
