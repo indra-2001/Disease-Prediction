@@ -60,19 +60,12 @@ def allowed_file(filename):
 # Load the trained model
 heart_model = pickle.load(open('heart_disease_model.sav', 'rb'))
 diabetes_model = pickle.load(open('diabetes_model.sav', 'rb')) 
-parkinson = pickle.load(open('parkinson.pkl', 'rb'))
-diabetes_model = pickle.load(open('diabetes_model.sav', 'rb'))
 kidney_model =  pickle.load(open('kidney_disease.sav', 'rb'))
 Breast_Cancer_model = pickle.load(open('Breast_Cancer.sav', 'rb'))
 model_package = joblib.load('parkinsons_model_package.sav')
 model = model_package['model']
 scaler = model_package['scaler']
 selected_features = model_package['features']
-kidney_model =  pickle.load(open('kidney_disease.sav', 'rb'))
-Breast_Cancer_model = pickle.load(open('Breast_Cancer.sav', 'rb'))
-model = joblib.load('parkinsons_model_8features.sav')
-scaler = joblib.load('scaler_8features.sav')
-selected_features = joblib.load('selected_8features.sav')
 
 # Email & Password Validation
 def validate_email(email):
