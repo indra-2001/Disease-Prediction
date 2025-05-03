@@ -62,6 +62,8 @@ heart_model = pickle.load(open('heart_disease_model.sav', 'rb'))
 diabetes_model = pickle.load(open('diabetes_model.sav', 'rb')) 
 kidney_model =  pickle.load(open('kidney_disease.sav', 'rb'))
 Breast_Cancer_model = pickle.load(open('Breast_Cancer.sav', 'rb'))
+Liver_model = pickle.load(open('liver_model.sav', 'rb'))
+Liver_scaler_model = pickle.load(open('liver_scaler.sav', 'rb'))
 model_package = joblib.load('parkinsons_model_package.sav')
 model = model_package['model']
 scaler = model_package['scaler']
@@ -423,6 +425,39 @@ def Breast_cancer():
             return jsonify({"success": False, "error": str(e)})
 
     return render_template('Breast_cancer.html')
+
+@app.route('/liver', methods=['GET', 'POST'])
+def liver():
+    if request.method == 'POST':
+        try:
+            # Extract form values and convert them into float
+            input_data = [float(request.form[key]) for key in [
+                                                                    'Age',
+                                                                    'Gender',
+                                                                    'Total_Bilirubin',
+                                                                    'Direct_Bilirubin',
+                                                                    'Alkaline_Phosphotase',
+                                                                    'Alamine_Aminotransferase',
+                                                                    'Aspartate_Aminotransferase',
+                                                                    'Total_Protiens',
+                                                                    'Albumin',
+                                                                    'Albumin_and_Globulin_Ratio'
+                                                                ]]
+            #input_array = np.array(input_data).reshape(1, -1)
+            input_scaled = Liver_scaler_model.transform([input_data])
+
+            # Predict using model
+            prediction = Liver_model.predict(input_scaled)
+
+            # Determine result
+            result_text = "The prediction indicates a positive case of liver disease." if prediction == 1 else "You are predicted safe from liver disease (Negative)"
+
+            return jsonify({"success": True, "prediction": result_text})
+
+        except Exception as e:
+            return jsonify({"success": False, "error": str(e)})
+
+    return render_template('liver.html')
 
 
 

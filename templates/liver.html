@@ -73,7 +73,7 @@
 <body>
   <div class="container">
     <h2 class="text-center"><i class="fas fa-heartbeat me-2"></i>Liver Disease Prediction</h2>
-    <form id="#">
+    <form id="liverForm">
       <div class="row">
         <!-- Left Column -->
         <div class="col-md-6">
@@ -85,8 +85,8 @@
             <label class="form-label">Gender</label>
             <select name="Gender" class="form-select">
               <option value="">Select</option>
-              <option value="1">Female</option>
-              <option value="0">Male</option>
+              <option value="0">Female</option>
+              <option value="1">Male</option>
             </select>
           </div>
           <div class="mb-3">
@@ -143,14 +143,45 @@
         </thead>
         <tbody id="resultBody"></tbody>
       </table>
+      <button id="downloadPdf" class="btn btn-success btn-custom mt-2">Download Report</button>
     </div>
   </div>
 
   <script>
-    document.getElementById("kidneyForm").addEventListener("submit", function (event) {
+  document.getElementById("downloadPdf").addEventListener("click", function() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // Title
+    doc.setFontSize(18);
+    doc.text("Liver Disease Prediction Report", 14, 22);
+
+    // User Input Data
+    doc.setFontSize(12);
+    doc.text("User Input Data:", 14, 32);
+
+    const inputData = [];
+    document.querySelectorAll("#resultBody tr").forEach(row => {
+        const cols = row.querySelectorAll("td");
+        inputData.push([cols[0].innerText, cols[1].innerText]);
+    });
+
+    doc.autoTable({
+        startY: 36,
+        head: [['Parameter', 'Value']],
+        body: inputData,
+        theme: 'grid',
+        styles: { fontSize: 10 }
+    });
+
+    // Save the PDF
+    doc.save("Liver_Disease_Prediction_Report.pdf");
+});
+
+    document.getElementById("liverForm").addEventListener("submit", function (event) {
       event.preventDefault();
       const formData = new FormData(this);
-      fetch("/kidney", {
+      fetch("/liver", {
         method: "POST",
         body: new URLSearchParams(formData)
       })
@@ -167,5 +198,7 @@
       });
     });
   </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
 </body>
 </html>
