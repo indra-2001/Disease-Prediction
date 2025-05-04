@@ -13,8 +13,17 @@ from datetime import timedelta
 from flask_mail import Mail, Message
 from itsdangerous import URLSafeTimedSerializer
 import dotenv
+
 from fpdf import FPDF
 from datetime import datetime
+
+import joblib
+import pandas as pd
+from datetime import timedelta
+from flask_mail import Mail, Message
+from itsdangerous import URLSafeTimedSerializer
+import dotenv
+
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -56,12 +65,23 @@ def allowed_file(filename):
 # Load the trained model
 heart_model = pickle.load(open('heart_disease_model.sav', 'rb'))
 diabetes_model = pickle.load(open('diabetes_model.sav', 'rb')) 
+
 parkinson = pickle.load(open('parkinson.pkl', 'rb'))
 kidney_model =  pickle.load(open('kidney_disease(short).sav', 'rb'))
 Breast_Cancer_model = pickle.load(open('Breast_Cancer.sav', 'rb'))
 model = joblib.load('parkinsons_model_8features.sav')
 scaler = joblib.load('scaler_8features.sav')
 selected_features = joblib.load('selected_8features.sav')
+
+kidney_model =  pickle.load(open('kidney_disease.sav', 'rb'))
+Breast_Cancer_model = pickle.load(open('Breast_Cancer.sav', 'rb'))
+Liver_model = pickle.load(open('liver_model.sav', 'rb'))
+Liver_scaler_model = pickle.load(open('liver_scaler.sav', 'rb'))
+model_package = joblib.load('parkinsons_model_package.sav')
+model = model_package['model']
+scaler = model_package['scaler']
+selected_features = model_package['features']
+
 
 # Email & Password Validation
 def validate_email(email):
@@ -477,6 +497,7 @@ def diabetes():
 
     return render_template('diabetes.html')
 
+
 # @app.route('/parkinson', methods=['POST','GET'])
 # def predict():
 #     if request.method == 'POST':
@@ -519,10 +540,12 @@ def diabetes():
 @app.route('/parkinson', methods=['GET', 'POST'])
 def parkinson():
     result = None
+    suggestion = None
     if request.method == 'POST':
         try:
             # Get input values from the form
             input_values = [float(request.form[feature]) for feature in selected_features]
+
 
             # Create DataFrame
             input_df = pd.DataFrame([input_values], columns=selected_features)
@@ -531,13 +554,35 @@ def parkinson():
             input_scaled = scaler.transform(input_df)
             prediction = model.predict(input_scaled)[0]
 
-            # Generate result
-            result = "Parkinson's Detected 😔" if prediction == 1 else "Healthy 🙂"
+            # Generate result and suggestion
+            if prediction == 1:
+                result = "Parkinson's Detected 😔"
+                suggestion = (
+                    "Please consult a neurologist for a detailed diagnosis. "
+                    "Engaging in physical therapy, voice exercises, a healthy diet, and regular follow-ups "
+                    "can help manage symptoms effectively. Joining a support group is also highly beneficial."
+                )
+            else:
+                result = "Healthy 🙂"
 
         except Exception as e:
             result = f"Error occurred: {e}"
-
     return render_template('parkinson.html', features=selected_features, result=result)
+          # Create DataFrame
+          #input_df = pd.DataFrame([input_values], columns=selected_features)
+
+            # Scale and predict
+            #input_scaled = scaler.transform(input_df)
+            #prediction = model.predict(input_scaled)[0]
+
+            # Generate result
+            #result = "Parkinson's Detected 😔" if prediction == 1 else "Healthy 🙂"
+
+        #except Exception as e:
+            #result = f"Error occurred: {e}"
+
+    #return render_template('parkinson.html', features=selected_features, result=result)
+    return render_template('parkinson.html', features=selected_features, result=result, suggestion=suggestion)
 
 
 @app.route('/Breast_cancer', methods=['GET', 'POST'])
@@ -547,11 +592,11 @@ def Breast_cancer():
             # Extract form values and convert them into float
             input_data = [float(request.form[key]) for key in [
                                                             'radius_mean', 'texture_mean', 'perimeter_mean', 'area_mean', 'smoothness_mean',
-                                                            'compactness_mean', 'concavity_mean', 'concave points_mean', 'symmetry_mean', 'fractal_dimension_mean',
-                                                            'radius_se ', 'texture_se', 'perimeter_se', 'area_se', 'smoothness_se',
-                                                            'compactness_se', 'concavity_se', 'concave points_se', 'symmetry_se', 'fractal_dimension_se',
-                                                            'radius_worst', 'texture_worst', 'perimeter_worst', 'area_worst', 'smoothness_worst',
-                                                            'compactness_worst', 'concavity_worst', 'concave points_worst', 'symmetry_worst', 'fractal_dimension_worst'
+                                                            'compactness_mean', 'concavity_mean', 'concave points_mean', 'symmetry_mean', 'fractal_dimension_mean'
+                                                            #'radius_se ', 'texture_se', 'perimeter_se', 'area_se', 'smoothness_se',
+                                                            #'compactness_se', 'concavity_se', 'concave points_se', 'symmetry_se', 'fractal_dimension_se',
+                                                            #'radius_worst', 'texture_worst', 'perimeter_worst', 'area_worst', 'smoothness_worst',
+                                                            #'compactness_worst', 'concavity_worst', 'concave points_worst', 'symmetry_worst', 'fractal_dimension_worst'
                                                             ]]
             # Convert into numpy array for model prediction
             input_array = np.array(input_data).reshape(1, -1)
@@ -560,7 +605,7 @@ def Breast_cancer():
             prediction = Breast_Cancer_model.predict(input_array)[0]
 
             # Determine result
-            result_text = "The Breast Cancer is Benign" if prediction == 1 else "The Breast cancer is Malignant"
+            result_text = "The Breast Cancer is Benign" if prediction == 0 else "The Breast cancer is Malignant"
 
             return jsonify({"success": True, "prediction": result_text})
 
@@ -568,6 +613,39 @@ def Breast_cancer():
             return jsonify({"success": False, "error": str(e)})
 
     return render_template('Breast_cancer.html')
+
+@app.route('/liver', methods=['GET', 'POST'])
+def liver():
+    if request.method == 'POST':
+        try:
+            # Extract form values and convert them into float
+            input_data = [float(request.form[key]) for key in [
+                                                                    'Age',
+                                                                    'Gender',
+                                                                    'Total_Bilirubin',
+                                                                    'Direct_Bilirubin',
+                                                                    'Alkaline_Phosphotase',
+                                                                    'Alamine_Aminotransferase',
+                                                                    'Aspartate_Aminotransferase',
+                                                                    'Total_Protiens',
+                                                                    'Albumin',
+                                                                    'Albumin_and_Globulin_Ratio'
+                                                                ]]
+            #input_array = np.array(input_data).reshape(1, -1)
+            input_scaled = Liver_scaler_model.transform([input_data])
+
+            # Predict using model
+            prediction = Liver_model.predict(input_scaled)
+
+            # Determine result
+            result_text = "The prediction indicates a positive case of liver disease." if prediction == 1 else "You are predicted safe from liver disease (Negative)"
+
+            return jsonify({"success": True, "prediction": result_text})
+
+        except Exception as e:
+            return jsonify({"success": False, "error": str(e)})
+
+    return render_template('liver.html')
 
 
 
