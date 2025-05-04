@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CKD Prediction</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
   <style>
     body {
@@ -33,7 +34,8 @@
       color: #333;
     }
 
-    .form-control, .form-select {
+    .form-control,
+    .form-select {
       border-radius: 8px;
     }
 
@@ -79,15 +81,16 @@
         <div class="col-md-6">
           <div class="mb-3">
             <label class="form-label">Age</label>
-            <input type="number" class="form-control" name="Age" required/>
+            <input type="number" class="form-control" name="Age" required />
           </div>
           <div class="mb-3">
             <label class="form-label">Blood Pressure</label>
-            <input type="number" step="0.01" class="form-control" name="Blood Pressure" required/>
+            <input type="number" step="0.01" class="form-control" name="Blood Pressure" required />
           </div>
           <div class="mb-3">
             <label class="form-label">Specific Gravity (Urine Concentration)</label>
-            <input type="number" step="0.001" class="form-control" name="Specific gravity(Urine cocentration)" required/>
+            <input type="number" step="0.001" class="form-control" name="Specific gravity (Urine cocentration)"
+              required />
           </div>
           <div class="mb-3">
             <label class="form-label">Albumin</label>
@@ -101,7 +104,7 @@
               <option value="5">Extremely high</option>
             </select>
           </div>
-          <div class="mb-3">
+          <!-- <div class="mb-3">
             <label class="form-label">Blood Sugar</label>
             <select name="Blood Sugar" class="form-select">
               <option value="">Select</option>
@@ -112,7 +115,7 @@
               <option value="4">Very high</option>
               <option value="5">Extremely high</option>
             </select>
-          </div>
+          </div> -->
           <div class="mb-3">
             <label class="form-label">Red Blood Cells in Urine</label>
             <select name="Red Blood cells in Urine" class="form-select">
@@ -121,7 +124,7 @@
               <option value="0">RBCs present</option>
             </select>
           </div>
-          <div class="mb-3">
+          <!-- <div class="mb-3">
             <label class="form-label">Pus Cells in Urine</label>
             <select name="Pus Cells in urine" class="form-select">
               <option value="">Select</option>
@@ -148,43 +151,47 @@
           <div class="mb-3">
             <label class="form-label">Blood Glucose (mg/dL)</label>
             <input type="number" step="0.01" class="form-control" name="Blood Glucose" required/>
-          </div>
+          </div> -->
           <div class="mb-3">
             <label class="form-label">Blood Urea (mg/dL)</label>
-            <input type="number" step="0.01" class="form-control" name="Blood Urea " required/>
+            <input type="number" step="0.01" class="form-control" name="Blood Urea(mg/dL)" required />
           </div>
-          <div class="mb-3">
+          <!-- <div class="mb-3">
             <label class="form-label">Serum Creatinine (mg/dL)</label>
             <input type="number" step="0.01" class="form-control" name="Serum Creatinine" required/>
-          </div>
+          </div> -->
         </div>
 
         <!-- Right Column -->
         <div class="col-md-6">
           <div class="mb-3">
+            <label class="form-label">Serum Creatinine (mg/dL)</label>
+            <input type="number" step="0.01" class="form-control" name="Serum Creatinine(mg/dL)" required />
+          </div>
+          <!-- <div class="mb-3">
             <label class="form-label">Sodium (mEq/L)</label>
             <input type="number" step="0.1" class="form-control" name="Sodium" required/>
           </div>
           <div class="mb-3">
             <label class="form-label">Potassium (mEq/L)</label>
             <input type="number" step="0.1" class="form-control" name="Potassium" required/>
-          </div>
+          </div> -->
           <div class="mb-3">
             <label class="form-label">Hemoglobin (g/dL)</label>
-            <input type="number" step="0.1" class="form-control" name="Hemoglobin" required/>
+            <input type="number" step="0.1" class="form-control" name="Hemoglobin(g/dl)" required />
           </div>
           <div class="mb-3">
             <label class="form-label">Packed Cell Volume (%)</label>
-            <input type="number" step="1" class="form-control" name="Packed Cell Volume"/>
+            <input type="number" step="1" class="form-control" name="Packed Cell Volume(%)" />
           </div>
-          <div class="mb-3">
+          <!-- <div class="mb-3">
             <label class="form-label">WBC Count (/cmm)</label>
             <input type="number" step="1" class="form-control" name="White Blood Cell Count (/cubic mm)"/>
           </div>
           <div class="mb-3">
             <label class="form-label">RBC Count (million/cumm)</label>
             <input type="number" step="0.01" class="form-control" name="Red Blood Cell Count (million/cumm)"/>
-          </div>
+          </div> -->
           <div class="mb-3">
             <label class="form-label">Hypertension</label>
             <select name="Hypertension" class="form-select">
@@ -194,14 +201,14 @@
             </select>
           </div>
           <div class="mb-3">
-            <label class="form-label">Diabetes</label>
+            <label class="form-label">Diabetes Mellitus</label>
             <select name="Diabetes" class="form-select">
               <option value="">Select</option>
               <option value="1">Yes</option>
               <option value="0">No</option>
             </select>
           </div>
-          <div class="mb-3">
+          <!-- <div class="mb-3">
             <label class="form-label">Coronary Artery Disease</label>
             <select name="Coronary Artery Disease" class="form-select">
               <option value="">Select</option>
@@ -232,7 +239,7 @@
               <option value="1">Yes</option>
               <option value="0">No</option>
             </select>
-          </div>
+          </div> -->
         </div>
       </div>
 
@@ -251,10 +258,140 @@
         </thead>
         <tbody id="resultBody"></tbody>
       </table>
+      <button id="downloadPdf" class="btn btn-success btn-custom mt-2"><i class="fas fa-download me-2"></i>Download Report</button>
     </div>
   </div>
 
   <script>
+    //For report PDF generation
+    document.getElementById("downloadPdf").addEventListener("click", function () {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      // Title
+      doc.setFontSize(18);
+      doc.text("Kidney Disease Prediction Report", 14, 22);
+
+      // User Input Data
+      doc.setFontSize(12);
+      doc.text("User Input Data:", 14, 32);
+
+      const inputData = [];
+      document.querySelectorAll("#resultBody tr").forEach(row => {
+        const cols = row.querySelectorAll("td");
+        inputData.push([cols[0].innerText, cols[1].innerText]);
+      });
+
+      doc.autoTable({
+        startY: 36,
+        head: [['Parameter', 'Value']],
+        body: inputData,
+        theme: 'grid',
+        styles: { fontSize: 10 }
+      });
+
+      //Adding advise:---->
+
+      // Gather form data for sending again
+      const formData = new FormData(document.getElementById("kidneyForm"));
+
+      fetch("/kidney", {
+        method: "POST",
+        body: new URLSearchParams(formData)
+      })
+        .then(response => response.json())
+        .then(data => {
+          // Add advice only if prediction is positive
+          if (data.result == 0) {
+            let y = doc.lastAutoTable.finalY + 15;
+            doc.setFontSize(18);
+            doc.setFont("helvetica", "bold");
+            // doc.text("Trusted Advices for You", 14, doc.lastAutoTable.finalY + 10);
+            doc.text("Trusted Advices for You", 14, y);
+            y+=15
+
+            doc.setFontSize(11);
+            doc.setFont("helvetica", "bold");
+            doc.text("Diet & Nutrition", 14, y);
+            doc.setFontSize(9);
+            doc.setFont("helvetica", "normal");
+            y += 4;
+            doc.text("- Limit salt intake to control blood pressure.", 14, y);
+            y += 4;
+            doc.text("- Reduce protein (meat, eggs, dairy) to ease kidney workload.", 14, y);
+            y += 4;
+            doc.text("- Limit potassium (bananas, oranges, potatoes).", 14, y);
+            y += 4;
+            doc.text("- Avoid phosphorus-rich foods (nuts, cheese, colas).", 14, y);
+            y += 4;
+            doc.text("- Drink adequate water; adjust if fluid retention occurs.", 14, y);
+            y += 4;
+            doc.text("- Avoid processed foods; choose fresh fruits and vegetables.", 14, y);
+
+            y += 12;
+            doc.setFontSize(11);
+            doc.setFont("helvetica", "bold");
+            doc.text("Medication", 14, y);
+            doc.setFontSize(9);
+            doc.setFont("helvetica", "normal");
+            y += 4;
+            doc.text("- Take all prescribed medicines regularly.", 14, y);
+            y += 4;
+            doc.text("- Avoid NSAIDs like ibuprofen (can damage kidneys).", 14, y);
+            y += 4;
+            doc.text("- Discuss supplements and OTC drugs with your doctor.", 14, y);
+
+            y += 12;
+            doc.setFontSize(11);
+            doc.setFont("helvetica", "bold");
+            doc.text("Monitor Health", 14, y);
+            doc.setFontSize(9);
+            doc.setFont("helvetica", "normal");
+            y += 4;
+            doc.text("- Check blood pressure regularly and keep it under control.", 14, y);
+            y += 4;
+            doc.text("- Get regular blood and urine tests.", 14, y);
+            y += 4;
+            doc.text("- Monitor blood sugar levels if diabetic.", 14, y);
+
+            y += 12;
+            doc.setFontSize(11);
+            doc.setFont("helvetica", "bold");
+            doc.text("Lifestyle", 14, y);
+            doc.setFontSize(9);
+            doc.setFont("helvetica", "normal");
+            y += 4;
+            doc.text("- Quit smoking – it worsens kidney damage.", 14, y);
+            y += 4;
+            doc.text("- Limit alcohol – it can raise blood pressure.", 14, y);
+            y += 4;
+            doc.text("- Exercise moderately (e.g., walk 30 minutes daily).", 14, y);
+            y += 4;
+            doc.text("- Maintain a healthy weight.", 14, y);
+
+            y += 12;
+            doc.setFontSize(11);
+            doc.setFont("helvetica", "bold");
+            doc.text("Seek Immediate Medical Attention If", 14, y);
+            doc.setFontSize(9);
+            doc.setFont("helvetica", "normal");
+            y += 4;
+            doc.text("- You notice swelling, fatigue, breathlessness, or urine changes.", 14, y);
+            y += 4;
+            doc.text("- You develop itchiness, nausea, or confusion (could indicate worsening CKD).", 14, y);
+          }
+
+          // Save the PDF after advice is added
+          doc.save("Chronic_Kidney_Disease_Prediction_Report.pdf");
+        });
+
+      // Save the PDF
+      // doc.save("Chronic Kidney Disease Prediction Report.pdf");
+    });
+
+
+
+    // Displaying result table
     document.getElementById("kidneyForm").addEventListener("submit", function (event) {
       event.preventDefault();
       const formData = new FormData(this);
@@ -262,18 +399,28 @@
         method: "POST",
         body: new URLSearchParams(formData)
       })
-      .then(response => response.json())
-      .then(data => {
-        const resultTable = document.querySelector(".result-table");
-        const resultBody = document.getElementById("resultBody");
-        resultBody.innerHTML = "";
-        for (let [key, value] of formData.entries()) {
-          resultBody.innerHTML += `<tr><td>${key}</td><td>${value}</td></tr>`;
-        }
-        resultBody.innerHTML += `<tr><td><strong>Prediction</strong></td><td><strong>${data.prediction}</strong></td></tr>`;
-        resultTable.style.display = "block";
-      });
+        .then(response => response.json())
+        .then(data => {
+          const resultTable = document.querySelector(".result-table");
+          const resultBody = document.getElementById("resultBody");
+          resultBody.innerHTML = "";
+          for (let [key, value] of formData.entries()) {
+            const element = document.querySelector(`[name="${key}"]`);
+            let displayValue = value;
+
+            if (element && element.tagName === "SELECT") {
+              displayValue = element.options[element.selectedIndex].text;
+            }
+
+            resultBody.innerHTML += `<tr><td>${key}</td><td>${displayValue}</td></tr>`;
+          }
+          resultBody.innerHTML += `<tr><td><strong>Prediction</strong></td><td><strong>${data.prediction}</strong></td></tr>`;
+          resultTable.style.display = "block";
+        });
     });
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
 </body>
+
 </html>
