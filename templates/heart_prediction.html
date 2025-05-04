@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+<<<<<<< HEAD
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Heart Disease Prediction</title>
@@ -33,10 +34,38 @@
             display: none;
         }
     </style>
+=======
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Heart Disease Prediction</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+  <style>
+    body {
+      background-color: #f4f6f9;
+    }
+    .container {
+      max-width: 900px;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      margin-top: 50px;
+    }
+    .btn-custom {
+      width: 100%;
+      font-size: 18px;
+    }
+    .result-table {
+      margin-top: 20px;
+      display: none;
+    }
+  </style>
+>>>>>>> e278a9677880a953e36208cfc4725abe38bd2685
 </head>
 
 <body>
 
+<<<<<<< HEAD
     <div class="container">
         <h2 class="text-center"><i class="fas fa-heartbeat me-2"></i>Diabetes Prediction</h2>
         <form id="heartForm">
@@ -135,6 +164,185 @@
             // User Input Data
             doc.setFontSize(12);
             doc.text("User Input Data:", 14, 32);
+=======
+<div class="container">
+  <h2 class="text-center">Heart Disease Prediction</h2>
+  <form id="heartForm">
+    <div class="row">
+      <!-- Left Column -->
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label class="form-label">Age:</label>
+          <input type="number" class="form-control" name="age" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Sex (1=Male, 0=Female):</label>
+          <input type="number" class="form-control" name="sex" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Chest Pain Type (0-3):</label>
+          <input type="number" class="form-control" name="cp" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Resting Blood Pressure:</label>
+          <input type="number" class="form-control" name="trestbps" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Cholesterol:</label>
+          <input type="number" class="form-control" name="chol" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Fasting Blood Sugar (>120 mg/dl, 1=True, 0=False):</label>
+          <input type="number" class="form-control" name="fbs" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Resting ECG (0-2):</label>
+          <input type="number" class="form-control" name="restecg" required>
+        </div>
+      </div>
+      <!-- Right Column -->
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label class="form-label">Max Heart Rate Achieved:</label>
+          <input type="number" class="form-control" name="thalach" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Exercise Induced Angina (1=Yes, 0=No):</label>
+          <input type="number" class="form-control" name="exang" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">ST Depression Induced by Exercise:</label>
+          <input type="number" class="form-control" name="oldpeak" step="0.1" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Slope of Peak Exercise ST Segment (0-2):</label>
+          <input type="number" class="form-control" name="slope" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Number of Major Vessels Colored by Fluoroscopy (0-3):</label>
+          <input type="number" class="form-control" name="ca" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Thalassemia (1, 2, or 3):</label>
+          <input type="number" class="form-control" name="thal" required>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-custom">Predict</button>
+    <a href="/dashboard" class="btn btn-secondary btn-custom mt-2">Back</a>
+  </form>
+
+  <div class="result-table">
+    <h4 class="text-center mt-4">Prediction Result</h4>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Parameter</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody id="resultBody"></tbody>
+    </table>
+    <!-- Manual Download Button stays separate -->
+    <button id="downloadPdf" class="btn btn-success btn-custom mt-2">Download Report</button>
+  </div>
+</div>
+
+<!-- jsPDF libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+
+<script>
+// When the Predict form is submitted:
+document.getElementById("heartForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    let formData = new FormData(this);
+
+    fetch("/heart_prediction", {
+        method: "POST",
+        body: new URLSearchParams(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        let resultTable = document.querySelector(".result-table");
+        let resultBody = document.getElementById("resultBody");
+        resultBody.innerHTML = "";
+
+        // Display all submitted parameters
+        for (let [key, value] of formData.entries()) {
+            resultBody.innerHTML += `<tr><td>${key}</td><td>${value}</td></tr>`;
+        }
+
+        // Display the prediction and advice
+        resultBody.innerHTML += `<tr><td><strong>Prediction</strong></td><td><strong>${data.prediction}</strong></td></tr>`;
+        resultBody.innerHTML += `<tr><td><strong>Advice</strong></td><td>${data.advice.replace(/\n/g, '<br>')}</td></tr>`;
+        resultTable.style.display = "block";
+
+        // Automatically generate and save the PDF to server without triggering a download.
+        generateAndSavePDF(formData, data.prediction, data.advice);
+    });
+});
+
+// Function to generate PDF and send it to the server
+function generateAndSavePDF(formData, predictionResult, adviceText) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // Title and header for the PDF
+    doc.setFontSize(18);
+    doc.text("Heart Disease Prediction Report", 14, 22);
+    doc.setFontSize(12);
+    doc.text("User Input Data:", 14, 32);
+
+    const inputData = [];
+    for (let [key, value] of formData.entries()) {
+        inputData.push([key, value]);
+    }
+
+    // Create table with user data
+    doc.autoTable({
+        startY: 36,
+        head: [['Parameter', 'Value']],
+        body: inputData,
+        theme: 'grid',
+        styles: { fontSize: 10 }
+    });
+
+    let finalY = doc.lastAutoTable.finalY + 10;
+    doc.setFontSize(12);
+    doc.text("Prediction Result: " + predictionResult, 14, finalY);
+
+    if (adviceText) {
+        finalY += 10;
+        doc.text("Advice:", 14, finalY);
+        const splitAdvice = doc.splitTextToSize(adviceText, 180);
+        doc.text(splitAdvice, 14, finalY + 6);
+    }
+
+    // Convert PDF to Blob and prepare for upload
+    const pdfBlob = doc.output("blob");
+    const uploadFormData = new FormData();
+    uploadFormData.append("pdf", pdfBlob, "heart_report.pdf");
+    uploadFormData.append("prediction_result", predictionResult);
+    uploadFormData.append("disease_name", "Heart Disease");
+
+    fetch("/save_pdf", {
+        method: "POST",
+        body: uploadFormData
+    });
+}
+
+// Manual download remains a separate option via the Download Report button
+document.getElementById("downloadPdf").addEventListener("click", function() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    doc.setFontSize(18);
+    doc.text("Heart Disease Prediction Report", 14, 22);
+    doc.setFontSize(12);
+    doc.text("User Input Data:", 14, 32);
+>>>>>>> e278a9677880a953e36208cfc4725abe38bd2685
 
             const inputData = [];
             document.querySelectorAll("#resultBody tr").forEach(row => {
@@ -150,6 +358,7 @@
                 styles: { fontSize: 10 }
             });
 
+<<<<<<< HEAD
             // Save the PDF
             doc.save("Heart_Disease_Prediction_Report.pdf");
         });
@@ -177,6 +386,22 @@
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+=======
+    let finalY = doc.lastAutoTable.finalY + 10;
+    doc.setFontSize(12);
+    let predictionText = "";
+    document.querySelectorAll("#resultBody tr").forEach(row => {
+        const cols = row.querySelectorAll("td");
+        if (cols[0].innerText.toLowerCase().includes("prediction")) {
+            predictionText = cols[1].innerText;
+        }
+    });
+    doc.text("Prediction Result: " + predictionText, 14, finalY);
+    // Manually trigger download of the PDF
+    doc.save("heart_report.pdf");
+});
+</script>
+>>>>>>> e278a9677880a953e36208cfc4725abe38bd2685
 
 </body>
 

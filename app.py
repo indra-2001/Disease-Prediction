@@ -13,6 +13,8 @@ from datetime import timedelta
 from flask_mail import Mail, Message
 from itsdangerous import URLSafeTimedSerializer
 import dotenv
+from fpdf import FPDF
+from datetime import datetime
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -121,6 +123,7 @@ def signup():
 def login():
     if request.method == 'POST':
         email = request.form['email']
+        print(email)
         password = request.form['password']
         remember = request.form.get('remember')
 
@@ -135,6 +138,8 @@ def login():
             session['id'] = user[0]
             session['username']=user[1]
             session['email'] = user[2]
+            session['email'] = email
+            print(session['email'])
             session['profile_pic'] = user[6]
             session['phone'] = user[3]
             session['gender'] = user[4]
@@ -270,12 +275,183 @@ def heart_prediction():
             # Result message
             result_text = "Heart Disease Detected (Positive)" if prediction == 1 else "No Heart Disease (Negative)"
 
-            return jsonify({"success": True, "prediction": result_text})
+            # Medicine advice if prediction is positive
+            if prediction == 1:
+                advice = (
+                    "Suggested actions:\n"
+                    "- Aspirin (blood thinner)\n"
+                    "- Beta-blockers (e.g., Metoprolol)\n"
+                    "- Statins (e.g., Atorvastatin for cholesterol)\n"
+                    "- ACE inhibitors (e.g., Ramipril)\n"
+                    "- Lifestyle: quit smoking, reduce salt intake, exercise regularly"
+                )
+            else:
+                advice = "Keep maintaining a healthy lifestyle — regular exercise, healthy diet, avoid smoking."
+
+            return jsonify({
+                "success": True,
+                "prediction": result_text,
+                "advice": advice
+            })
 
         except Exception as e:
             return jsonify({"success": False, "error": str(e)})
 
     return render_template('heart_prediction.html')
+
+@app.route("/save_pdf", methods=["POST"])
+def save_pdf():
+    try:
+        if 'username' not in session:
+            return jsonify({"success": False, "error": "User not logged in"})
+
+        if 'pdf' not in request.files:
+            return jsonify({"success": False, "error": "No PDF uploaded"})
+
+        # Get data from request
+        pdf_file = request.files['pdf']
+        prediction_result = request.form.get("prediction_result", "Unknown")
+        disease_name = request.form.get("disease_name", "Unknown_Disease")  # Generic disease name
+        username = session['username']
+
+        # Generate filename
+        timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+        sanitized_disease = disease_name.lower().replace(" ", "_")
+        filename = f"{username}_{sanitized_disease}_report_{timestamp}.pdf"
+        save_path = os.path.join("static/reports", filename)
+
+        # Save PDF to directory
+        os.makedirs("static/reports", exist_ok=True)
+        pdf_file.save(save_path)
+
+        # Save entry to database
+        cursor = mysql.connection.cursor()
+        cursor.execute("""
+            INSERT INTO user_activity (username, disease_name, prediction_result, pdf_report)
+            VALUES (%s, %s, %s, %s)
+        """, (
+            username,
+            disease_name,
+            prediction_result,
+            save_path
+        ))
+        mysql.connection.commit()
+        cursor.close()
+
+        return jsonify({"success": True, "pdf_report_url": "/" + save_path})
+
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)})
+
+
+@app.route('/activity')
+def user_activity():
+    # Get the user ID from session (assuming it's stored in session)
+    username = session.get('username')
+    
+    if username is None:
+        # Handle if the user is not logged in
+        return redirect(url_for('login'))
+
+    # Query the user_activity table
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT * FROM user_activity WHERE username = %s ORDER BY created_at DESC", (username,))
+    activities = cursor.fetchall()
+    cursor.close()
+
+    # Render the template with the fetched activities
+    return render_template('activity.html', activities=activities)
+# @app.route('/heart_prediction', methods=['GET', 'POST'])
+# def heart_prediction():
+#     if request.method == 'POST':
+#         try:
+#             # if 'user_id' not in session or 'username' not in session:
+#             #     return jsonify({"success": False, "error": "User not logged in"})
+
+#             # Extract input values
+#             input_data = [
+#                 float(request.form.get('age', 0)),
+#                 float(request.form.get('sex', 0)),
+#                 float(request.form.get('cp', 0)),
+#                 float(request.form.get('trestbps', 0)),
+#                 float(request.form.get('chol', 0)),
+#                 float(request.form.get('fbs', 0)),
+#                 float(request.form.get('restecg', 0)),
+#                 float(request.form.get('thalach', 0)),
+#                 float(request.form.get('exang', 0)),
+#                 float(request.form.get('oldpeak', 0)),
+#                 float(request.form.get('slope', 0)),
+#                 float(request.form.get('ca', 0)),
+#                 float(request.form.get('thal', 0))
+#             ]
+
+#             input_array = np.array(input_data).reshape(1, -1)
+#             prediction = heart_model.predict(input_array)[0]
+#             result_text = "Heart Disease Detected (Positive)" if prediction == 1 else "No Heart Disease (Negative)"
+
+#             if prediction == 1:
+#                 advice = (
+#                     "Suggested actions:\n"
+#                     "- Aspirin (blood thinner)\n"
+#                     "- Beta-blockers (e.g., Metoprolol)\n"
+#                     "- Statins (e.g., Atorvastatin)\n"
+#                     "- ACE inhibitors (e.g., Ramipril)\n"
+#                     "- Lifestyle: quit smoking, reduce salt intake, exercise regularly"
+#                 )
+#             else:
+#                 advice = "Keep maintaining a healthy lifestyle — regular exercise, healthy diet, avoid smoking."
+
+#             # PDF generation
+#             if 'email' in session:
+#                 print("email is:", session['email'])  
+#             else:
+#                 print("No email found in session")
+#             username = session['username']
+#             print(username)
+#             timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+#             filename = f"{username}_heart_report_{timestamp}.pdf"
+#             pdf_path = os.path.join("static/reports", filename)
+
+#             pdf = FPDF()
+#             pdf.add_page()
+#             pdf.set_font("Arial", size=12)
+#             pdf.cell(200, 10, txt="Heart Disease Prediction Report", ln=True, align="C")
+#             pdf.ln(10)
+#             pdf.cell(200, 10, txt=f"Username: {username}", ln=True)
+#             pdf.cell(200, 10, txt=f"Disease: Heart Disease", ln=True)
+#             pdf.cell(200, 10, txt=f"Prediction: {result_text}", ln=True)
+#             pdf.ln(10)
+#             pdf.multi_cell(0, 10, txt=f"Advice:\n{advice}")
+
+#             os.makedirs("static/reports", exist_ok=True)
+#             pdf.output(pdf_path)
+#             print(pdf_path)
+
+#             # Save activity to DB
+#             cursor = mysql.connection.cursor()
+#             cursor.execute("""
+#                 INSERT INTO user_activity (username, disease_name, prediction_result, pdf_report)
+#                 VALUES (%s, %s, %s, %s)
+#             """, (
+#                 username,
+#                 "Heart Disease",
+#                 result_text,
+#                 pdf_path
+#             ))
+#             mysql.connection.commit()
+#             cursor.close()
+
+#             return jsonify({
+#                 "success": True,
+#                 "prediction": result_text,
+#                 "advice": advice,
+#                 "pdf_report_url": "/" + pdf_path
+#             })
+
+#         except Exception as e:
+#             return jsonify({"success": False, "error": str(e)})
+
+#     return render_template('heart_prediction.html')
 
 @app.route('/diabetes', methods=['GET', 'POST'])
 def diabetes():
