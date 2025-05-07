@@ -18,7 +18,7 @@ from fpdf import FPDF
 from datetime import datetime
 
 import joblib
-import pandas as pd
+# import pandas as pd
 from datetime import timedelta
 from flask_mail import Mail, Message
 from itsdangerous import URLSafeTimedSerializer
@@ -65,15 +65,7 @@ def allowed_file(filename):
 # Load the trained model
 heart_model = pickle.load(open('heart_disease_model.sav', 'rb'))
 diabetes_model = pickle.load(open('diabetes_model.sav', 'rb')) 
-
-parkinson = pickle.load(open('parkinson.pkl', 'rb'))
 kidney_model =  pickle.load(open('kidney_disease(short).sav', 'rb'))
-Breast_Cancer_model = pickle.load(open('Breast_Cancer.sav', 'rb'))
-model = joblib.load('parkinsons_model_8features.sav')
-scaler = joblib.load('scaler_8features.sav')
-selected_features = joblib.load('selected_8features.sav')
-
-kidney_model =  pickle.load(open('kidney_disease.sav', 'rb'))
 Breast_Cancer_model = pickle.load(open('Breast_Cancer.sav', 'rb'))
 Liver_model = pickle.load(open('liver_model.sav', 'rb'))
 Liver_scaler_model = pickle.load(open('liver_scaler.sav', 'rb'))
@@ -685,6 +677,13 @@ def kidney():
     return render_template('kidney.html')
 
 
+@app.route("/BMI")
+def bmi():
+    return render_template("BMI.html")
+
+@app.route("/BMR")
+def bmr():
+    return render_template("BMR.html")
 
 
 @app.route('/profile')
