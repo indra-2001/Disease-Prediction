@@ -19,7 +19,8 @@
     <link href="../static/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="../static/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
 
-   
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
     <link href="../static/css/bootstrap.min.css" rel="stylesheet">
 
     <link href="../static/css/doc.css" rel="stylesheet">
@@ -39,6 +40,31 @@
             background: linear-gradient(120deg,#5969C2 40%,#663399);
             color: #fff;
         }
+        .toast.slide-in {
+    animation: slideIn 0.6s ease-out;
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .toast.fade-out {
+    animation: fadeOut 1s ease-in forwards;
+  }
+
+  @keyframes fadeOut {
+    to {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+  }
     </style>
 </head>
 
@@ -71,7 +97,54 @@
     </nav>
     <!-- Navbar End -->
 
+ <!-- Toast Container -->
+ {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 1100;">
+      {% for category, message in messages %}
+        {% set toast_config = {
+          'success': {'class': 'bg-success text-white', 'icon': 'bi-check-circle-fill'},
+          'error': {'class': 'bg-danger text-white', 'icon': 'bi-x-circle-fill'},
+          'info': {'class': 'bg-info text-white', 'icon': 'bi-info-circle-fill'},
+          'warning': {'class': 'bg-warning text-dark', 'icon': 'bi-exclamation-triangle-fill'}
+        }[category] %}
+        <div class="toast align-items-center slide-in shadow {{ toast_config.class }} border-0 rounded mb-2" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="d-flex">
+            <div class="toast-body d-flex align-items-center gap-2">
+              <i class="bi {{ toast_config.icon }}"></i>
+              {{ message }}
+            </div>
+            <button type="button" class="btn-close {{ 'btn-close-white' if category != 'warning' else '' }} me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
 
+
+  <!-- Bootstrap JS (with Popper) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Activate All Toasts -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const toastElList = [].slice.call(document.querySelectorAll('.toast'));
+      toastElList.forEach(function (toastEl) {
+        const toast = new bootstrap.Toast(toastEl, {
+          delay: 2000
+        });
+  
+        toast.show();
+  
+        // Add fade-out before toast disappears
+        setTimeout(() => {
+          toastEl.classList.add("fade-out");
+        }, 1000); // slightly before it auto-dismisses
+      });
+    });
+  </script>
+  
     <!-- predictions -->
     <div class="container-fluid py-5">
         <div class="container">
@@ -180,7 +253,23 @@
         </div>
     </div>
     <!-- prediction -->
-
+    <div class="team-item">
+        <div class="row g-0 bg-light rounded overflow-hidden">
+            <div class="col-12 col-sm-5 h-100">
+                <img class="img-fluid h-100" src="../static/images/symptom_predictor.jpg" style="object-fit: cover;">
+            </div>
+            <div class="col-12 col-sm-7 h-100 d-flex flex-column">
+                <div class="mt-auto p-4">
+                    <h3>Multi-Symptom Disease Predictor</h3>
+                    <p class="m-0">Select symptoms to get the top possible disease predictions.</p>
+                </div>
+                <div class="d-flex mt-auto border-top p-4">
+                    <a href="/predict_disease_symptoms" class="btns">Predict Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
 
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-light mt-5 py-5">
@@ -238,6 +327,8 @@
 
     <!-- Template Javascript -->
     <script src="../static/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 
 </html>
