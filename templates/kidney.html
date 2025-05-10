@@ -337,7 +337,9 @@
           const adviceHtml = getAdvice(parseInt(data.result));
 
           // Replace icons and remove tags
-          const adviceText = adviceHtml.replace(/<[^>]+>/g, ''); // Strip all remaining tags
+          const adviceText = adviceHtml
+            .replace(/<li>/g, '• ')
+            .replace(/<[^>]+>/g, '');
 
           const wrappedAdvice = doc.splitTextToSize(adviceText, 180);
           const lineHeight = 4.5;
@@ -350,9 +352,9 @@
           }
 
           doc.setFontSize(16);
-          doc.text("Advices:", 14, y);
+          doc.text("Trusted Advices For You :", 14, y);
 
-          doc.setFontSize(12);
+          doc.setFontSize(10);
           doc.text(wrappedAdvice, 14, y + 6);
 
           doc.save("Chronic Kidney Disease Prediction Report.pdf");
@@ -408,9 +410,9 @@
         return `
         Your test indicates signs of CKD. It's important to adopt lifestyle and dietary changes, and follow medical advice to manage the condition.<br><br><br>
 
-        <h5 class="text-danger"><i class="bi bi-check-circle-fill"></i>Trusted Advices for you ----</h5>
+        <h5 class="text-danger"><i class="bi bi-check-circle-fill"></i>Advices to manage your condition ----</h5>
 
-        <h6 class="mt-3 text-success"><i class="bi bi-basket-fill"></i> Diet & Nutrition :</h6>
+        <h6 class="mt-3 text-success"><i class="bi bi-basket-fill"></i>Diet & Nutrition :</h6>
         <ul class="text-start">
           <li>Limit salt intake to control blood pressure.</li>
           <li>Reduce protein (meat, eggs, dairy) to ease kidney workload.</li>
