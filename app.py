@@ -762,5 +762,3 @@ def update_profile():
 if __name__ == '__main__':
     app.secret_key = "group10"
     app.run(debug=True)
-
-
