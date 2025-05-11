@@ -599,7 +599,7 @@ def Breast_cancer():
             # Determine result
             result_text = "The Breast Cancer is Benign" if prediction == 0 else "The Breast cancer is Malignant"
 
-            return jsonify({"success": True, "prediction": result_text})
+            return jsonify({"success": True, "prediction": result_text, "result": int(prediction)})
 
         except Exception as e:
             return jsonify({"success": False, "error": str(e)})
@@ -632,7 +632,8 @@ def liver():
             # Determine result
             result_text = "The prediction indicates a positive case of liver disease." if prediction == 1 else "You are predicted safe from liver disease (Negative)"
 
-            return jsonify({"success": True, "prediction": result_text})
+             # return jsonify({"success": True, "prediction": result_text})
+            return jsonify({"success": True, "prediction": result_text, "result": int(prediction)})
 
         except Exception as e:
             return jsonify({"success": False, "error": str(e)})
