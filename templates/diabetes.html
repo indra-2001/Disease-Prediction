@@ -7,6 +7,7 @@
   <title>Diabetes Prediction</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
   <style>
     body {
@@ -31,6 +32,11 @@
     .result-table {
       margin-top: 20px;
       display: none;
+    }
+
+    .modal-content {
+      border: 6px solid #1fe0b0;
+      border-radius: 10px;
     }
   </style>
 </head>
@@ -97,15 +103,40 @@
         </thead>
         <tbody id="resultBody"></tbody>
       </table>
-      <button id="downloadPdf" class="btn btn-success btn-custom mt-2"><i class="fas fa-download me-2"></i>Download Report</button>
+      <button type="button" id="adviceBtn" class="btn btn-success mt-3" data-bs-toggle="modal"
+        data-bs-target="#staticBackdrop" style="display: inline-block;">
+        <i class="fas fa-notes-medical me-2"></i>See Advices
+      </button>
+      <button id="downloadPdf" class="btn btn-success btn-custom mt-2"><i class="fas fa-download me-2"></i>Download
+        Report</button>
     </div>
   </div>
+
+  <!-- modal for advises start-->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel"></h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="adviceContent">
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- modal for advises End-->
 
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
 
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
 
 
@@ -240,32 +271,84 @@ document.getElementById("downloadPdf").addEventListener("click", function () {
 });
 </script> -->
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<script>
-document.getElementById("diabetesForm").addEventListener("submit", function (event) {
-  event.preventDefault();
-  let formData = new FormData(this);
+  <script>
 
-  fetch("/diabetes", {
-    method: "POST",
-    body: new URLSearchParams(formData),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      let resultTable = document.querySelector(".result-table");
-      let resultBody = document.getElementById("resultBody");
-      resultBody.innerHTML = "";
+    let globalFormData = null;
+    document.getElementById("diabetesForm").addEventListener("submit", function (event) {
+      event.preventDefault();
+      let formData = new FormData(this);
+      globalFormData = formData
 
-      for (let [key, value] of formData.entries()) {
-        resultBody.innerHTML += `<tr><td>${key}</td><td>${value}</td></tr>`;
-      }
+      fetch("/diabetes", {
+        method: "POST",
+        body: new URLSearchParams(formData),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          let resultTable = document.querySelector(".result-table");
+          let resultBody = document.getElementById("resultBody");
+          resultBody.innerHTML = "";
 
-      resultBody.innerHTML += `<tr><td><strong>Prediction</strong></td><td><strong>${data.prediction}</strong></td></tr>`;
-      resultTable.style.display = "block";
+          for (let [key, value] of formData.entries()) {
+            resultBody.innerHTML += `<tr><td>${key}</td><td>${value}</td></tr>`;
+          }
 
-      // ✅ Generate PDF and send to server immediately after prediction
+          resultBody.innerHTML += `<tr><td><strong>Prediction</strong></td><td><strong>${data.prediction}</strong></td></tr>`;
+          resultTable.style.display = "block";
+
+          //integrating modal data
+          document.getElementById('staticBackdropLabel').innerText = data.decission;
+          document.getElementById('adviceContent').innerHTML = data.advice;
+
+          // ✅ Generate PDF and send to server immediately after prediction
+          const { jsPDF } = window.jspdf;
+          const doc = new jsPDF();
+
+          doc.setFontSize(18);
+          doc.text("Diabetes Prediction Report", 14, 22);
+
+          doc.setFontSize(12);
+          doc.text("User Input Data:", 14, 32);
+
+          const inputData = [];
+          let predictionResult = data.prediction;
+
+          for (let [key, value] of formData.entries()) {
+            inputData.push([key, value]);
+          }
+
+          doc.autoTable({
+            startY: 36,
+            head: [['Parameter', 'Value']],
+            body: inputData,
+            theme: 'grid',
+            styles: { fontSize: 10 }
+          });
+
+          let finalY = doc.lastAutoTable.finalY + 10;
+          doc.setFontSize(12);
+          doc.text("Prediction Result: " + predictionResult, 14, finalY);
+
+          const pdfBlob = doc.output("blob");
+
+          const pdfFormData = new FormData();
+          pdfFormData.append("pdf", pdfBlob, "diabetes_report.pdf");
+          pdfFormData.append("prediction_result", predictionResult);
+          pdfFormData.append("disease_name", "Diabetes");
+
+          fetch("/save_pdf", {
+            method: "POST",
+            body: pdfFormData
+          });
+        });
+    });
+
+    // Still keep this if you want manual download later
+    document.getElementById("downloadPdf").addEventListener("click", function () {
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
 
@@ -276,11 +359,22 @@ document.getElementById("diabetesForm").addEventListener("submit", function (eve
       doc.text("User Input Data:", 14, 32);
 
       const inputData = [];
-      let predictionResult = data.prediction;
+      let adviceText = "";
+      let predictionResult = "";
 
-      for (let [key, value] of formData.entries()) {
-        inputData.push([key, value]);
-      }
+      document.querySelectorAll("#resultBody tr").forEach(row => {
+        const cols = row.querySelectorAll("td");
+        const key = cols[0].innerText;
+        const value = cols[1].innerText;
+
+        if (key.toLowerCase().includes("advice")) {
+          adviceText = value;
+        } else if (key.toLowerCase().includes("prediction")) {
+          predictionResult = value;
+        } else {
+          inputData.push([key, value]);
+        }
+      });
 
       doc.autoTable({
         startY: 36,
@@ -294,81 +388,50 @@ document.getElementById("diabetesForm").addEventListener("submit", function (eve
       doc.setFontSize(12);
       doc.text("Prediction Result: " + predictionResult, 14, finalY);
 
+      // adding the advices to thr pdf:
+      fetch("diabetes", {
+        method: "POST",
+        body: new URLSearchParams(globalFormData)
+      })
+        .then(response => response.json())
+        .then(data => {
+          const adviceHtml = data.advice;
+          const adviceText = adviceHtml
+          .replace(/<li>/g, '• ')
+          .replace(/<h6[^>]*>/g, '# ')
+          .replace(/<[^>]+>/g, '');
+
+          const wrappedAdvice = doc.splitTextToSize(adviceText, 180);
+          const lineHeight = 4.5;
+          const requiredHeight = wrappedAdvice.length * lineHeight;
+          let y = finalY + 10;
+
+          if (y + requiredHeight > doc.internal.pageSize.height - 10) {
+            doc.addPage();
+            y = 20;
+          }
+
+          doc.setFontSize(16);
+          doc.text("Trusted Advices For You :", 14, y);
+
+          doc.setFontSize(10);
+          doc.text(wrappedAdvice, 14, y + 6);
+
+          doc.save("Diabetes Prediction Report.pdf");
+        });
+
       const pdfBlob = doc.output("blob");
 
-      const pdfFormData = new FormData();
-      pdfFormData.append("pdf", pdfBlob, "diabetes_report.pdf");
-      pdfFormData.append("prediction_result", predictionResult);
-      pdfFormData.append("disease_name", "Diabetes");
-
-      fetch("/save_pdf", {
-        method: "POST",
-        body: pdfFormData
-      });
+      const blobUrl = URL.createObjectURL(pdfBlob);
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.download = "diabetes_report.pdf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(blobUrl);
     });
-});
-
-// Still keep this if you want manual download later
-document.getElementById("downloadPdf").addEventListener("click", function () {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-
-    doc.setFontSize(18);
-    doc.text("Diabetes Prediction Report", 14, 22);
-
-    doc.setFontSize(12);
-    doc.text("User Input Data:", 14, 32);
-
-    const inputData = [];
-    let adviceText = "";
-    let predictionResult = "";
-
-    document.querySelectorAll("#resultBody tr").forEach(row => {
-        const cols = row.querySelectorAll("td");
-        const key = cols[0].innerText;
-        const value = cols[1].innerText;
-
-        if (key.toLowerCase().includes("advice")) {
-            adviceText = value;
-        } else if (key.toLowerCase().includes("prediction")) {
-            predictionResult = value;
-        } else {
-            inputData.push([key, value]);
-        }
-    });
-
-    doc.autoTable({
-        startY: 36,
-        head: [['Parameter', 'Value']],
-        body: inputData,
-        theme: 'grid',
-        styles: { fontSize: 10 }
-    });
-
-    let finalY = doc.lastAutoTable.finalY + 10;
-    doc.setFontSize(12);
-    doc.text("Prediction Result: " + predictionResult, 14, finalY);
-
-    if (adviceText) {
-        finalY += 10;
-        doc.setFontSize(12);
-        doc.text("Advice:", 14, finalY);
-        const splitAdvice = doc.splitTextToSize(adviceText, 180);
-        doc.text(splitAdvice, 14, finalY + 6);
-    }
-
-    const pdfBlob = doc.output("blob");
-
-    const blobUrl = URL.createObjectURL(pdfBlob);
-    const link = document.createElement("a");
-    link.href = blobUrl;
-    link.download = "diabetes_report.pdf";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(blobUrl);
-});
-</script>
+  </script>
 
 
 

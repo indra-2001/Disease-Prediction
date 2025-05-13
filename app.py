@@ -287,23 +287,98 @@ def heart_prediction():
             # Result message
             result_text = "Heart Disease Detected (Positive)" if prediction == 1 else "No Heart Disease (Negative)"
 
-            # Medicine advice if prediction is positive
+            # advices according to condition
             if prediction == 1:
-                advice = (
-                    "Suggested actions:\n"
-                    "- Aspirin (blood thinner)\n"
-                    "- Beta-blockers (e.g., Metoprolol)\n"
-                    "- Statins (e.g., Atorvastatin for cholesterol)\n"
-                    "- ACE inhibitors (e.g., Ramipril)\n"
-                    "- Lifestyle: quit smoking, reduce salt intake, exercise regularly"
-                )
+                decission = "🔴 Heart Disease Detected (Positive)";
+                advice = """
+<p>Your test suggests signs of heart disease. Early intervention through medication, lifestyle changes, and regular monitoring is essential to reduce risk and improve quality of life.</p>
+
+<h5 class="mt-4 fw-bold text-danger"><i class="bi bi-activity text-primary fs-3 me-2"></i>Advices to Manage Your Condition ----</h5>
+
+<h6 class="mt-3" style="color:#d63384;"><i class="bi bi-capsule-pill me-2"></i>Medications:</h6>
+<ul class="ms-3">
+    <li>Do not stop medications without consulting your doctor.</li>
+    <li>Take prescribed medicines on time (e.g., beta-blockers, statins, aspirin, ACE inhibitors).</li>
+    <li>Avoid over-the-counter NSAIDs like ibuprofen unless approved by your cardiologist.</li>
+    <li>Inform your doctor about all supplements or herbal products you're using.</li>
+</ul>
+
+<h6 class="mt-3" style="color:#20c997;"><i class="bi bi-egg-fried me-2"></i>Diet & Nutrition:</h6>
+<ul class="ms-3">
+    <li>Eat more fruits, vegetables, whole grains, and lean proteins.</li>
+    <li>Reduce salt intake to lower blood pressure.</li>
+    <li>Avoid saturated fats and trans fats — limit red meat, butter, and fried foods.</li>
+    <li>Cut back on sugar and processed foods to manage weight and blood sugar.</li>
+</ul>
+
+<h6 class="mt-3" style="color:#fd7e14;"><i class="bi bi-person-walking me-2"></i>Lifestyle:</h6>
+<ul class="ms-3">
+    <li>Quit smoking — it significantly worsens heart and blood vessel health.</li>
+    <li>Exercise regularly (e.g., brisk walking 30 minutes a day, 5 days a week).</li>
+    <li>Maintain a healthy weight and BMI.</li>
+    <li>Limit alcohol — excess drinking raises blood pressure and heart risk.</li>
+    <li>Sleep 7–8 hours daily and manage stress with relaxation techniques like yoga or meditation.</li>
+</ul>
+
+<h6 class="mt-3" style="color:#0d6efd;"><i class="bi bi-heart-pulse me-2"></i>Monitor Your Health:</h6>
+<ul class="ms-3">
+    <li>Check blood pressure and cholesterol levels regularly.</li>
+    <li>Monitor heart rate and report irregular beats or chest discomfort.</li>
+    <li>Keep diabetes under control if present.</li>
+    <li>Attend regular follow-ups and screenings (e.g., ECG, echocardiogram if advised).</li>
+</ul>
+
+<h6 class="mt-3" style="color:#dc3545;"><i class="bi bi-exclamation-triangle-fill me-2"></i>Seek Medical Help If:</h6>
+<ul class="ms-3">
+    <li>You feel chest pain, tightness, or pressure.</li>
+    <li>You experience sudden fatigue, breathlessness, or dizziness.</li>
+    <li>You notice swelling in legs, ankles, or sudden weight gain.</li>
+    <li>Your symptoms worsen or new ones appear.</li>
+</ul>
+
+<p class="mt-3"><strong>Note:</strong> Always follow up with your cardiologist for a tailored treatment plan.</p>
+            """
+
             else:
-                advice = "Keep maintaining a healthy lifestyle — regular exercise, healthy diet, avoid smoking."
+                decission = "🟢 No Heart Disease Detected (Negative)";        
+                advice = """
+<p>Great news! Your test results do not show signs of heart disease. But staying heart-healthy is a lifelong effort.</p>
+
+<h5 class="mt-4 fw-bold text-success"><i class="bi bi-heart-pulse text-primary fs-4 me-2 align-middle"></i>Continue with These Practices to Maintain Your Heart Health ----</h5>
+
+<h6 class="mt-3" style="color:#20c997;"><i class="bi bi-egg-fried me-2"></i>Diet & Nutrition:</h6>
+<ul class="ms-3">
+    <li>Follow a Mediterranean-style diet: rich in vegetables, fruits, whole grains, and lean proteins.</li>
+    <li>Avoid processed, sugary, and fatty foods.</li>
+    <li>Use healthy fats like olive oil instead of butter or margarine.</li>
+    <li>Reduce salt to help keep blood pressure in check.</li>
+</ul>
+
+<h6 class="mt-3" style="color:#fd7e14;"><i class="bi bi-person-walking me-2"></i>Lifestyle:</h6>
+<ul class="ms-3">
+    <li>Be physically active at least 150 minutes a week (e.g., brisk walking, cycling).</li>
+    <li>Avoid tobacco in all forms — it damages your heart and blood vessels.</li>
+    <li>Limit alcohol consumption.</li>
+    <li>Maintain a healthy weight and sleep 7–8 hours nightly.</li>
+    <li>Practice stress reduction techniques such as yoga, meditation, or deep breathing.</li>
+</ul>
+
+<h6 class="mt-3" style="color:#0d6efd;"><i class="bi bi-clipboard-pulse me-2"></i>Monitor Regularly:</h6>
+<ul class="ms-3">
+    <li>Get your blood pressure, cholesterol, and glucose levels checked routinely.</li>
+    <li>If you have a family history of heart disease, keep up with screenings.</li>
+</ul>
+
+<p class="mt-3 fw-semibold">Keep in touch with your healthcare provider for periodic evaluations.</p>
+<p><strong>A healthy lifestyle today means a healthier heart tomorrow!</strong></p>
+            """
+
 
             return jsonify({
                 "success": True,
                 "prediction": result_text,
-                "advice": advice
+                "advice": advice,
+                "decission": decission
             })
 
         except Exception as e:
@@ -481,8 +556,97 @@ def diabetes():
 
             # Determine result
             result_text = "Diabetes Detected (Positive)" if prediction == 1 else "No Diabetes (Negative)"
+            
+            # advices according to condition
+            if prediction == 1:
+                decission = "🔴 Diabetes Detected (Positive)";
+                advice = """
+<p>Your test indicates signs of Diabetes. Managing blood sugar levels through diet, exercise, medication, and monitoring is crucial to prevent complications and maintain a healthy life.</p>
 
-            return jsonify({"success": True, "prediction": result_text})
+<h5 class="mt-4 fw-bold text-danger"><i class="bi bi-graph-up-arrow text-primary fs-3 me-2"></i>Advices to Manage Your Condition ----</h5>
+
+<h6 style="color: #1E90FF; margin-top: 20px;"><i class="bi bi-capsule me-2"></i>Medications</h6>
+<ul>
+  <li>Take your diabetes medications exactly as prescribed.</li>
+  <li>Do not skip doses and never change dosages without consulting your doctor.</li>
+  <li>If using insulin, store it properly and learn correct injection techniques.</li>
+  <li>Discuss all supplements or herbal remedies with your healthcare provider before using them.</li>
+</ul>
+
+<h6 style="color: #d35400; margin-top: 20px;"><i class="bi bi-egg-fried me-2"></i>Diet & Nutrition</h6>
+<ul>
+  <li>Focus on whole grains, fresh vegetables, lean proteins, and healthy fats.</li>
+  <li>Limit sugary foods, sweetened drinks, and processed snacks.</li>
+  <li>Watch carbohydrate intake and follow a consistent meal plan.</li>
+  <li>Reduce sodium to help control blood pressure.</li>
+</ul>
+
+<h6 style="color: #27ae60; margin-top: 20px;"><i class="bi bi-heart-pulse me-2"></i>Lifestyle</h6>
+<ul>
+  <li>Engage in at least 30 minutes of physical activity most days of the week.</li>
+  <li>Quit smoking — it raises your risk of complications.</li>
+  <li>Limit alcohol intake; it can affect blood sugar levels.</li>
+  <li>Maintain a healthy weight and aim for steady, gradual weight loss if overweight.</li>
+  <li>Get enough restful sleep and manage stress effectively.</li>
+</ul>
+
+<h6 style="color: #8e44ad; margin-top: 20px;"><i class="bi bi-clipboard2-pulse me-2"></i>Monitor Your Health</h6>
+<ul>
+  <li>Check your blood sugar regularly and track results.</li>
+  <li>Monitor blood pressure and cholesterol levels.</li>
+  <li>Keep an eye on your feet for cuts, blisters, or infections.</li>
+  <li>Get regular eye exams and kidney function tests.</li>
+</ul>
+
+<h6 style="color: #c0392b; margin-top: 20px;"><i class="bi bi-exclamation-triangle me-2"></i>Seek Medical Help If</h6>
+<ul>
+  <li>You experience frequent urination, extreme thirst, or fatigue.</li>
+  <li>You notice blurred vision or slow-healing wounds.</li>
+  <li>You feel tingling, numbness, or pain in hands and feet.</li>
+  <li>You have sudden changes in blood sugar readings.</li>
+</ul>
+
+<p style="margin-top: 15px;"><strong>Note:</strong> Diabetes is manageable with the right care plan. Stay in regular contact with your healthcare team and attend all follow-up appointments.</p>
+        """
+
+            else:
+                decission = "🟢 No Diabetes Detected (Negative)";        
+                advice = """
+<p>Great news! Your test results do not show signs of diabetes. However, maintaining healthy habits is essential to prevent the onset of diabetes in the future.</p>
+
+<h5 class="mt-4 fw-bold text-primary"><i class="bi bi-shield-check fs-3 me-2 text-success"></i>Continue with These Practices to Manage and Prevent Diabetes ----</h5>
+
+<h6 style="color: #2c3e50; margin-top: 20px;"><i class="bi bi-nutrition me-2"></i>Diet & Nutrition</h6>
+<ul>
+  <li>Eat a balanced diet rich in whole grains, vegetables, fruits, and lean proteins.</li>
+  <li>Limit consumption of sugary foods, sweetened beverages, and processed snacks.</li>
+  <li>Control portion sizes to maintain a healthy weight and prevent blood sugar spikes.</li>
+  <li>Choose fiber-rich foods like oats, legumes, and brown rice to improve insulin sensitivity.</li>
+</ul>
+
+<h6 style="color: #27ae60; margin-top: 20px;"><i class="bi bi-bicycle me-2"></i>Lifestyle</h6>
+<ul>
+  <li>Engage in regular physical activity — at least 150 minutes per week (e.g., walking, cycling, swimming).</li>
+  <li>Avoid tobacco use — it increases the risk of type 2 diabetes and other health issues.</li>
+  <li>Limit alcohol intake to moderate levels (if consumed at all).</li>
+  <li>Maintain a healthy body weight and body mass index (BMI).</li>
+  <li>Get adequate sleep and manage stress through mindfulness or relaxation techniques.</li>
+</ul>
+
+<h6 style="color: #8e44ad; margin-top: 20px;"><i class="bi bi-activity me-2"></i>Monitor Your Health</h6>
+<ul>
+  <li>Get blood sugar levels tested annually, especially if you have a family history of diabetes.</li>
+  <li>Check blood pressure and cholesterol regularly as part of routine health checks.</li>
+  <li>Watch for early signs of insulin resistance like fatigue, weight gain, or increased thirst.</li>
+</ul>
+
+<p style="margin-top: 15px;"><strong>Keep up the good work!</strong> A healthy lifestyle helps you stay diabetes-free and supports your overall well-being.</p>
+                """
+
+            return jsonify({"success": True,
+                            "prediction": result_text,
+                            "advice": advice,
+                            "decission": decission})
 
         except Exception as e:
             return jsonify({"success": False, "error": str(e)})
