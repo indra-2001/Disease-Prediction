@@ -88,20 +88,20 @@
         <div class="col-md-6">
           <div class="mb-3">
             <label class="form-label">Age</label>
-            <input type="number" class="form-control" name="Age" required />
+            <input type="number" class="form-control" name="Age" min="1" max="120" required />
           </div>
           <div class="mb-3">
-            <label class="form-label">Blood Pressure</label>
-            <input type="number" step="0.01" class="form-control" name="Blood Pressure" required />
+            <label class="form-label">Blood Pressure (systolic)</label>
+            <input type="number" step="0.01" class="form-control" name="Blood Pressure" min="50" max="200" required />
           </div>
           <div class="mb-3">
             <label class="form-label">Specific Gravity (Urine Concentration)</label>
             <input type="number" step="0.001" class="form-control" name="Specific gravity (Urine cocentration)"
-              required />
+              min="1.000" max="1.035" required />
           </div>
           <div class="mb-3">
             <label class="form-label">Albumin</label>
-            <select name="Albumin" class="form-select">
+            <select name="Albumin" class="form-select" required>
               <option value="">Select</option>
               <option value="0">No albumin</option>
               <option value="1">Small amount</option>
@@ -125,7 +125,7 @@
           </div> -->
           <div class="mb-3">
             <label class="form-label">Red Blood Cells in Urine</label>
-            <select name="Red Blood cells in Urine" class="form-select">
+            <select name="Red Blood cells in Urine" class="form-select" required>
               <option value="">Select</option>
               <option value="1">No RBCs</option>
               <option value="0">RBCs present</option>
@@ -161,7 +161,7 @@
           </div> -->
           <div class="mb-3">
             <label class="form-label">Blood Urea (mg/dL)</label>
-            <input type="number" step="0.01" class="form-control" name="Blood Urea(mg/dL)" required />
+            <input type="number" step="0.01" class="form-control" name="Blood Urea(mg/dL)" min="0" max="200" required />
           </div>
           <!-- <div class="mb-3">
             <label class="form-label">Serum Creatinine (mg/dL)</label>
@@ -173,7 +173,7 @@
         <div class="col-md-6">
           <div class="mb-3">
             <label class="form-label">Serum Creatinine (mg/dL)</label>
-            <input type="number" step="0.01" class="form-control" name="Serum Creatinine(mg/dL)" required />
+            <input type="number" step="0.01" class="form-control" name="Serum Creatinine(mg/dL)" min="0" max="10" required />
           </div>
           <!-- <div class="mb-3">
             <label class="form-label">Sodium (mEq/L)</label>
@@ -185,11 +185,11 @@
           </div> -->
           <div class="mb-3">
             <label class="form-label">Hemoglobin (g/dL)</label>
-            <input type="number" step="0.1" class="form-control" name="Hemoglobin(g/dl)" required />
+            <input type="number" step="0.1" class="form-control" name="Hemoglobin(g/dl)" min="5" max="20" required />
           </div>
           <div class="mb-3">
             <label class="form-label">Packed Cell Volume (%)</label>
-            <input type="number" step="1" class="form-control" name="Packed Cell Volume(%)" />
+            <input type="number" step="1" class="form-control" name="Packed Cell Volume(%)" min="0" max="100" required/>
           </div>
           <!-- <div class="mb-3">
             <label class="form-label">WBC Count (/cmm)</label>
@@ -201,7 +201,7 @@
           </div> -->
           <div class="mb-3">
             <label class="form-label">Hypertension</label>
-            <select name="Hypertension" class="form-select">
+            <select name="Hypertension" class="form-select" required>
               <option value="">Select</option>
               <option value="1">Yes</option>
               <option value="0">No</option>
@@ -209,7 +209,7 @@
           </div>
           <div class="mb-3">
             <label class="form-label">Diabetes Mellitus</label>
-            <select name="Diabetes" class="form-select">
+            <select name="Diabetes" class="form-select" required>
               <option value="">Select</option>
               <option value="1">Yes</option>
               <option value="0">No</option>
@@ -333,6 +333,14 @@
         styles: { fontSize: 12 }
       });
 
+      let y = doc.lastAutoTable.finalY + 10;
+      doc.setFontSize(14);
+      if (window.lastResult==0){
+        doc.text("Prediction Result:  Positive (Chronic Kidney Disease Detected)", 14, y);
+      }else{
+        doc.text("Prediction Result:  Negetive (Safe from Chronic Kidney Disease)", 14, y) ;    
+      }
+
       fetch("/kidney", {
         method: "POST",
         body: new URLSearchParams(globalFormData)
@@ -350,7 +358,7 @@
           const wrappedAdvice = doc.splitTextToSize(adviceText, 180);
           const lineHeight = 4.5;
           const requiredHeight = wrappedAdvice.length * lineHeight;
-          let y = doc.lastAutoTable.finalY + 10;
+          y = y + 10;
 
           if (y + requiredHeight > doc.internal.pageSize.height - 10) {
             doc.addPage();
@@ -406,7 +414,7 @@
           document.getElementById("adviceContent").innerHTML = getAdvice(parseInt(data.result));
 
           // Save prediction globally if needed later
-          window.lastPrediction = data.result;
+          window.lastResult = data.result;
         });
     });
 
