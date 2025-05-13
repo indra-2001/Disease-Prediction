@@ -195,8 +195,50 @@
         }
         resultBody.innerHTML += `<tr><td><strong>Prediction</strong></td><td><strong>${data.prediction}</strong></td></tr>`;
         resultTable.style.display = "block";
+
+        // ✅ Generate PDF and send to server immediately after prediction
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      doc.setFontSize(18);
+      doc.text("Kidney Prediction Report", 14, 22);
+
+      doc.setFontSize(12);
+      doc.text("User Input Data:", 14, 32);
+
+      const inputData = [];
+      let predictionResult = data.prediction;
+
+      for (let [key, value] of formData.entries()) {
+        inputData.push([key, value]);
+      }
+
+      doc.autoTable({
+        startY: 36,
+        head: [['Parameter', 'Value']],
+        body: inputData,
+        theme: 'grid',
+        styles: { fontSize: 10 }
+      });
+
+      let finalY = doc.lastAutoTable.finalY + 10;
+      doc.setFontSize(12);
+      doc.text("Prediction Result: " + predictionResult, 14, finalY);
+
+      const pdfBlob = doc.output("blob");
+
+      const pdfFormData = new FormData();
+      pdfFormData.append("pdf", pdfBlob, "Liver_Report.pdf");
+      pdfFormData.append("prediction_result", predictionResult);
+      pdfFormData.append("disease_name", "Liver");
+
+      fetch("/save_pdf", {
+        method: "POST",
+        body: pdfFormData
       });
     });
+});
+     
   </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>

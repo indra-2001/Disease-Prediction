@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BMI Calculator</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    body {
+      background: linear-gradient(to right, #dfe9f3, #ffffff);
+      font-family: 'Segoe UI', sans-serif;
+
+      margin: 0;
+      padding: 0;
+      background-image: url('../static/images/bmi2.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .bmi-container {
+      max-width: 600px;
+      margin: 80px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      border: 5px solid #007BFF;
+    }
+
+    .result-box {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .result-box h4 {
+      color: #007bff;
+    }
+
+    .modal-content {
+      border: 6px solid #1fe0b0;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="bmi-container">
+      <h2 class="text-center mb-4"><i class="fas fa-weight me-2"></i><strong>BMI Calculator</strong></h2>
+
+      <form id="bmiForm">
+        <div class="mb-3">
+          <label class="form-label"><strong>Height (cm):</strong></label>
+          <input type="number" class="form-control" id="height" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label"><strong>Weight (kg):</strong></label>
+          <input type="number" class="form-control" id="weight" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 mb-2"><i class="fas fa-calculator me-2"></i>Calculate
+          BMI</button>
+        <a href="/dashboard" class="btn btn-secondary w-100"><i class="fas fa-arrow-left me-2"></i>Back</a>
+      </form>
+
+      <div class="result-box mt-4 text-center" id="bmiResultBox">
+        <h4>Your BMI: <span id="bmiValue"></span></h4>
+        <p class="mt-2" id="bmiCategory"></p>
+        <button type="button" id="adviceBtn" class="btn btn-success mt-3" data-bs-toggle="modal"
+          data-bs-target="#staticBackdrop" style="display: none;">
+          <i class="fas fa-notes-medical me-2"></i>Get Advices
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- modal start-->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel"></h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="adviceContent">
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-success" onclick="downloadAdvicePDF()"><i
+              class="fas fa-download me-2"></i>Download report and advises</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- modal End-->
+
+
+
+
+
+  <script>
+     document.getElementById("bmiForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const heightCm = parseFloat(document.getElementById("height").value);
+    const weightKg = parseFloat(document.getElementById("weight").value);
+
+    if (heightCm > 0 && weightKg > 0) {
+      const heightM = heightCm / 100;
+      const bmi = weightKg / (heightM * heightM);
+      const roundedBmi = bmi.toFixed(1);
+
+      let category = "";
+      if (bmi < 18.5) category = "Underweight";
+      else if (bmi < 24.9) category = "Normal weight";
+      else if (bmi < 29.9) category = "Overweight";
+      else category = "Obesity";
+
+      document.getElementById("bmiValue").innerText = roundedBmi;
+      document.getElementById("bmiCategory").innerText = `Category: ${category}`;
+      document.getElementById("bmiResultBox").style.display = "block";
+      document.getElementById("staticBackdropLabel").innerText = `Your BMI : ${roundedBmi} -- ${category}`;
+
+      const adviceHtml = getAdvice(category);
+      document.getElementById("adviceBtn").style.display = "inline-block";
+      document.getElementById("adviceContent").innerHTML = adviceHtml;
+
+      // Create PDF content
+      const pdfContent = document.createElement('div');
+
+      const heading = document.createElement('h1');
+      heading.style.textAlign = "center";
+      heading.style.color = "#007bff";
+      heading.style.borderBottom = "5px solid #2196f3";
+      heading.style.marginBottom = "50px";
+      heading.innerText = `Your BMI : ${roundedBmi} -- ${category}`;
+
+      const clonedAdvice = document.createElement('div');
+      clonedAdvice.innerHTML = adviceHtml;
+      clonedAdvice.style.fontSize = "16px";
+      clonedAdvice.style.lineHeight = "1.7";
+      clonedAdvice.style.fontFamily = "Arial, sans-serif";
+
+      pdfContent.appendChild(heading);
+      pdfContent.appendChild(clonedAdvice);
+
+      const opt = {
+        margin: 0.5,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+
+      // Create Blob from HTML content
+      const pdfBlob = await html2pdf().set(opt).from(pdfContent).output('blob');
+
+     const formData = new FormData();
+      formData.append("height", heightCm);
+      formData.append("weight", weightKg);
+      formData.append("category", "BMI");
+      formData.append("result_value", roundedBmi);
+      formData.append("pdf", pdfBlob, "bmi_report.pdf");
+
+      fetch("/save_health_result", {
+        method: "POST",
+        body: formData
+      })
+      .then(response => {
+        if (response.ok) {
+          alert("✅ BMI data and report saved to database.");
+        } else {
+          alert("❌ Failed to save data.");
+        }
+      })
+      .catch(err => {
+        console.error("Error:", err);
+        alert("❌ Error sending data to server.");
+      });
+    }
+  });
+
+  function downloadAdvicePDF() {
+    const adviceHtml = document.getElementById("adviceContent").innerHTML;
+    const modalTitle = document.getElementById("staticBackdropLabel").innerText;
+
+    const pdfContent = document.createElement('div');
+
+    const heading = document.createElement('h1');
+    heading.style.textAlign = "center";
+    heading.style.color = "#007bff";
+    heading.style.borderBottom = "5px solid #2196f3";
+    heading.style.marginBottom = "50px";
+    heading.innerText = modalTitle;
+
+    const clonedAdvice = document.createElement('div');
+    clonedAdvice.innerHTML = adviceHtml;
+    clonedAdvice.style.fontSize = "16px";
+    clonedAdvice.style.lineHeight = "1.7";
+    clonedAdvice.style.fontFamily = "Arial, sans-serif";
+
+    pdfContent.appendChild(heading);
+    pdfContent.appendChild(clonedAdvice);
+
+    const opt = {
+      margin: 0.5,
+      filename: `BMI_Advice_Report.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(pdfContent).save();
+  }
+      function getAdvice(category) {
+        switch (category) {
+          case "Underweight":
+            return `
+<strong style="font-size: 1.3rem;">🔵 You Are Underweight</strong><br>
+👤 <strong>Profile:</strong> Often seen in individuals with fast metabolism, poor appetite, or medical issues affecting nutrient absorption. May appear slim with low muscle mass.<br><br>
+
+<h5 class="text-primary">✅ Advice for Underweight</h5>
+<p><strong>Trusted Advices for You</strong></p>
+<h6 class="mt-3 text-success">🧀 Diet & Nutrition</h6>
+<ul class="text-start">
+  <li>Eat calorie-dense, nutrient-rich foods (e.g., nuts, avocados, dairy, lean meats).</li>
+  <li>Increase protein intake to build lean muscle mass.</li>
+  <li>Add healthy snacks (e.g., smoothies, peanut butter, trail mix) between meals.</li>
+  <li>Eat small, frequent meals (5–6 times/day).</li>
+  <li>Include complex carbs like oats, brown rice, and sweet potatoes.</li>
+</ul>
+<h6 class="mt-3 text-warning">🩺 Monitor Health</h6>
+<ul class="text-start">
+  <li>Track weight weekly to ensure gradual weight gain.</li>
+  <li>Consult a doctor to rule out medical issues (e.g., thyroid, malabsorption).</li>
+  <li>Get regular blood tests to check for deficiencies (iron, vitamin B12, etc.).</li>
+</ul>
+<h6 class="mt-3 text-info">💪 Lifestyle</h6>
+<ul class="text-start">
+  <li>Avoid skipping meals.</li>
+  <li>Do strength/resistance training to gain muscle.</li>
+  <li>Manage stress and get adequate sleep.</li>
+</ul>`;
+
+          case "Normal weight":
+            return `
+<strong style="font-size: 1.3rem;">🟢 You Have Normal Weight</strong><br>
+👤 <strong>Profile:</strong> Typically active individuals maintaining a balanced diet and lifestyle. Body proportions are generally healthy and well-maintained.<br><br>
+
+<h5 class="text-primary">✅ Advice for Normal Weight</h5>
+<p><strong>Trusted Advices for You</strong></p>
+<h6 class="mt-3 text-success">🥗 Diet & Nutrition</h6>
+<ul class="text-start">
+  <li>Maintain a balanced diet: fruits, vegetables, whole grains, and lean proteins.</li>
+  <li>Limit added sugars, excessive fats, and processed foods.</li>
+  <li>Stay hydrated with 2–3 liters of water daily.</li>
+  <li>Control salt intake to prevent blood pressure rise.</li>
+</ul>
+<h6 class="mt-3 text-warning">🩺 Monitor Health</h6>
+<ul class="text-start">
+  <li>Monitor weight monthly to catch early fluctuations.</li>
+  <li>Get annual health checkups for cholesterol, glucose, and BP.</li>
+  <li>Watch for symptoms of nutritional deficiencies.</li>
+</ul>
+<h6 class="mt-3 text-info">🏃 Lifestyle</h6>
+<ul class="text-start">
+  <li>Exercise regularly (e.g., 30 mins brisk walk or cycling).</li>
+  <li>Avoid sedentary habits (limit screen time, move every hour).</li>
+  <li>Maintain a regular sleep schedule (7–9 hours/day).</li>
+</ul>`;
+
+          case "Overweight":
+            return `
+<strong style="font-size: 1.3rem;">🟠 You Are Overweight</strong><br>
+👤 <strong>Profile:</strong> Common among individuals with sedentary habits, high calorie intake, or irregular exercise. May have visible fat accumulation in the belly or thighs.<br><br>
+
+<h5 class="text-primary">✅ Advice for Overweight</h5>
+<p><strong>Trusted Advices for You</strong></p>
+<h6 class="mt-3 text-success">🍽️ Diet & Nutrition</h6>
+<ul class="text-start">
+  <li>Reduce calorie intake with portion control.</li>
+  <li>Eat high-fiber foods (vegetables, fruits, whole grains).</li>
+  <li>Avoid sugary drinks, deep-fried items, and junk food.</li>
+  <li>Prefer grilled or baked over fried foods.</li>
+  <li>Reduce snacking and late-night eating.</li>
+</ul>
+<h6 class="mt-3 text-warning">🩺 Monitor Health</h6>
+<ul class="text-start">
+  <li>Check blood pressure and blood sugar regularly.</li>
+  <li>Monitor weight weekly and set achievable goals.</li>
+  <li>Get medical advice before starting any intensive diet.</li>
+</ul>
+<h6 class="mt-3 text-info">🏃‍♂️ Lifestyle</h6>
+<ul class="text-start">
+  <li>Exercise 4–5 times/week (walking, cardio, yoga).</li>
+  <li>Increase daily activity (take stairs, walk short distances).</li>
+  <li>Avoid smoking and excessive alcohol.</li>
+  <li>Manage stress with mindfulness or breathing exercises.</li>
+</ul>`;
+
+          case "Obesity":
+            return `
+<strong style="font-size: 1.3rem;">🔴 You Are in the Obese Range</strong><br>
+👤 <strong>Profile:</strong> Often linked to prolonged unhealthy eating habits, low physical activity, or hormonal issues. Higher risk of lifestyle-related diseases like diabetes or hypertension.<br><br>
+
+<h5 class="text-danger">✅ Advice for Obesity</h5>
+<p><strong>Trusted Advices for You</strong></p>
+<h6 class="mt-3 text-success">🥦 Diet & Nutrition</h6>
+<ul class="text-start">
+  <li>Follow a calorie-restricted, medically guided diet plan.</li>
+  <li>Avoid sugary, fried, and ultra-processed foods.</li>
+  <li>Increase intake of high-fiber, low-calorie foods.</li>
+  <li>Avoid high-sugar fruits and sweetened beverages.</li>
+  <li>Seek help from a dietitian for personalized meal planning.</li>
+</ul>
+<h6 class="mt-3 text-warning">🩺 Monitor Health</h6>
+<ul class="text-start">
+  <li>Regularly monitor blood pressure, blood sugar, and cholesterol.</li>
+  <li>Track weight weekly and consult a healthcare provider.</li>
+  <li>Undergo full metabolic panel every 6–12 months.</li>
+</ul>
+<h6 class="mt-3 text-info">💡 Lifestyle</h6>
+<ul class="text-start">
+  <li>Engage in low-impact but consistent physical activity (walking, aqua aerobics).</li>
+  <li>Prioritize sleep and stress management.</li>
+  <li>Avoid alcohol and quit smoking immediately.</li>
+  <li>Join support groups or behavioral counseling for motivation.</li>
+</ul>`;
+
+          default:
+            return `<p>No advice available for this category.</p>`;
+        }
+      }   
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+</body>
+
+</html>

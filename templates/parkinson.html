@@ -10,13 +10,11 @@
             text-align: center;
             padding: 40px;
         }
-
         h1 {
             font-size: 2.5em;
             color: #0066cc;
             margin-bottom: 20px;
         }
-
         form {
             margin: 30px auto;
             width: 60%;
@@ -24,19 +22,16 @@
             grid-template-columns: 1fr 1fr;
             gap: 15px;
         }
-
         label {
             text-align: left;
             font-weight: 600;
         }
-
         input[type="number"] {
             padding: 10px;
             border-radius: 5px;
             border: 1px solid #ccc;
             width: 100%;
         }
-
         .button-group {
             grid-column: span 2;
             display: flex;
@@ -44,7 +39,6 @@
             gap: 20px;
             margin-top: 10px;
         }
-
         button {
             padding: 10px 20px;
             background-color: #0066cc;
@@ -55,15 +49,12 @@
             font-weight: bold;
             transition: background-color 0.3s;
         }
-
         button:hover {
             background-color: #005bb5;
         }
-
         .secondary-btn {
             background-color: #999;
         }
-
         .secondary-btn:hover {
             background-color: #777;
         }
@@ -72,7 +63,7 @@
 <body>
     <h1>🧠 Parkinson's Disease Predictor</h1>
 
-    <form action="/parkinson" method="POST" id="predict-form">
+    <form id="predict-form">
         {% for feature in features %}
             <label for="{{ feature }}">{{ feature }}</label>
             <input type="number" step="any" name="{{ feature }}" required>
@@ -80,45 +71,21 @@
 
         <div class="button-group">
             <button type="submit">Predict</button>
-
-            <a href="/" style="text-decoration: none;">
-                <button type="button" class="secondary-btn">Recheck</button>
-            </a>
-
-            <a href="../templates/dashboard.html" style="text-decoration: none;">
-            <a href="/" style="text-decoration: none;">
-                <button type="button">Back</button>
-            </a>
+            <button type="button" class="secondary-btn" onclick="window.location.reload()">Recheck</button>
+            <button type="button" onclick="window.location.href='/dashboard'">Back</button>
         </div>
     </form>
-    {% if result %}
-    <div class="result" style="margin-top: 30px;">
-        {% if 'Detected' in result %}
-            <div style="
-                background-color: #ffe6e6;
-                color: #cc0000;
-                border: 1px solid #cc0000;
-                padding: 20px;
-                border-radius: 8px;
-                font-size: 1.3em;
-            ">
-                <strong>🩺 Prediction:</strong> {{ result }}
-            </div>
-        {% else %}
-            <div style="
-                background-color: #e6f7ff;
-                color: #0066cc;
-                border: 1px solid #0066cc;
-                padding: 20px;
-                border-radius: 8px;
-                font-size: 1.3em;
-            ">
-                <strong>🩺 Prediction:</strong> {{ result }}
-            </div>
-        {% endif %}
 
-        {% if suggestion %}
-        <div style="
+    <div id="resultContainer" style="margin-top: 30px; display: none;">
+        <div id="predictionBox" style="
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 1.3em;
+            max-width: 600px;
+            margin: 0 auto;
+        "></div>
+
+        <div id="suggestionBox" style="
             background-color: #fffbe6;
             color: #8a6d3b;
             border: 1px solid #faebcc;
@@ -130,68 +97,113 @@
             max-width: 700px;
             margin-left: auto;
             margin-right: auto;
-        ">
-            <strong>💡 Advice:</strong> {{ suggestion }}
+        "></div>
+
+        <div style="margin-top: 20px;">
+            <button id="downloadPdf">Download Report</button>
         </div>
-        {% endif %}
     </div>
-{% endif %}
-<div class="result-table" style="margin-top: 30px; display: block;">
-    <h4 class="text-center mt-4">Prediction Result</h4>
-    <table class="table table-bordered" style="margin: auto; max-width: 600px;">
-        <thead>
-            <tr>
-                <th>Parameter</th>
-                <th>Value</th>
-            </tr>
-        </thead>
-        <tbody id="resultBody">
-            {% for feature in features %}
-                <tr>
-                    <td>{{ feature }}</td>
-                    <td>{{ request.form.get(feature) }}</td>
-                </tr>
-            {% endfor %}
-            <tr>
-                <td><strong>Prediction</strong></td>
-                <td><strong>{{ result }}</strong></td>
-            </tr>
-        </tbody>
-    </table>
-    <button id="downloadPdf" class="btn btn-success mt-3">Download Report</button>
-</div>
 
+    <!-- Table (hidden until prediction done) -->
+    <div id="resultTable" style="display: none; margin-top: 30px;">
+        <h4>Prediction Result</h4>
+        <table border="1" style="margin: auto; max-width: 600px; width: 100%;">
+            <thead>
+                <tr><th>Parameter</th><th>Value</th></tr>
+            </thead>
+            <tbody id="resultBody"></tbody>
+        </table>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+
+    <script>
+        document.getElementById("predict-form").addEventListener("submit", function (event) {
+            event.preventDefault();
+            const form = this;
+            const formData = new FormData(form);
+
+            fetch("/parkinson", {
+                method: "POST",
+                body: new URLSearchParams(formData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                const resultContainer = document.getElementById("resultContainer");
+                const predictionBox = document.getElementById("predictionBox");
+                const suggestionBox = document.getElementById("suggestionBox");
+                const resultBody = document.getElementById("resultBody");
+                const resultTable = document.getElementById("resultTable");
+
+                resultContainer.style.display = "block";
+                resultTable.style.display = "block";
+
+                // Clear previous entries
+                resultBody.innerHTML = "";
+
+                // Fill input values into table
+                for (let [key, value] of formData.entries()) {
+                    resultBody.innerHTML += `<tr><td>${key}</td><td>${value}</td></tr>`;
+                }
+                resultBody.innerHTML += `<tr><td><strong>Prediction</strong></td><td><strong>${data.prediction}</strong></td></tr>`;
+
+                // Display prediction
+                predictionBox.innerHTML = `<strong>🩺 Prediction:</strong> ${data.prediction}`;
+                predictionBox.style.backgroundColor = data.prediction.includes('Detected') ? "#ffe6e6" : "#e6f7ff";
+                predictionBox.style.color = data.prediction.includes('Detected') ? "#cc0000" : "#0066cc";
+                predictionBox.style.border = `1px solid ${data.prediction.includes('Detected') ? "#cc0000" : "#0066cc"}`;
+
+                // Display suggestion
+                suggestionBox.innerHTML = `<strong>💡 Advice:</strong> ${data.suggestion}`;
+
+                // Generate and auto-upload PDF
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+
+                doc.setFontSize(18);
+                doc.text("Parkinson's Disease Prediction Report", 14, 22);
+
+                doc.setFontSize(12);
+                doc.text("User Input Data:", 14, 32);
+
+                const inputData = [];
+                for (let [key, value] of formData.entries()) {
+                    inputData.push([key, value]);
+                }
+
+                doc.autoTable({
+                    startY: 36,
+                    head: [['Parameter', 'Value']],
+                    body: inputData,
+                    theme: 'grid',
+                    styles: { fontSize: 10 }
+                });
+
+                let finalY = doc.lastAutoTable.finalY + 10;
+                doc.text("Prediction Result: " + data.prediction, 14, finalY);
+
+                // Send PDF to /save_pdf
+                const pdfBlob = doc.output("blob");
+                const pdfFormData = new FormData();
+                pdfFormData.append("pdf", pdfBlob, "parkinson_report.pdf");
+                pdfFormData.append("prediction_result", data.prediction);
+                pdfFormData.append("disease_name", "parkinson");
+
+                fetch("/save_pdf", {
+                    method: "POST",
+                    body: pdfFormData
+                });
+
+                // Allow download
+                document.getElementById("downloadPdf").onclick = () => {
+                    doc.save("Parkinson_Prediction_Report.pdf");
+                };
+            })
+            .catch(error => {
+                alert("An error occurred: " + error);
+            });
+        });
+    </script>
 </body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
-<script>
-    document.getElementById("downloadPdf").addEventListener("click", function() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-
-        doc.setFontSize(18);
-        doc.text("Parkinson's Disease Prediction Report", 14, 22);
-
-        doc.setFontSize(12);
-        doc.text("User Input Data:", 14, 32);
-
-        const inputData = [];
-        document.querySelectorAll("#resultBody tr").forEach(row => {
-            const cols = row.querySelectorAll("td");
-            inputData.push([cols[0].innerText, cols[1].innerText]);
-        });
-
-        doc.autoTable({
-            startY: 36,
-            head: [['Parameter', 'Value']],
-            body: inputData,
-            theme: 'grid',
-            styles: { fontSize: 10 }
-        });
-
-        doc.save("Parkinson_Prediction_Report.pdf");
-    });
-</script>
-
 </html>
-

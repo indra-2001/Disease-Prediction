@@ -3,6 +3,8 @@ from flask_mysqldb import MySQL
 import re
 import os
 import joblib
+import io
+from reportlab.pdfgen import canvas
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
@@ -23,7 +25,7 @@ dotenv.load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = "group10"
-app.permanent_session_lifetime = timedelta(minutes=5)
+app.permanent_session_lifetime = timedelta(minutes=50)
 
 # Email configuration
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
@@ -42,6 +44,7 @@ app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''  # Change to your MySQL password
 app.config['MYSQL_DB'] = 'healthcheck'
+#app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 mysql = MySQL(app)
 
@@ -56,13 +59,8 @@ def allowed_file(filename):
 # Load the trained model
 heart_model = pickle.load(open('heart_disease_model.sav', 'rb'))
 diabetes_model = pickle.load(open('diabetes_model.sav', 'rb')) 
-
-#parkinson = pickle.load(open('parkinson.pkl', 'rb'))
 kidney_model =  pickle.load(open('kidney_disease(short).sav', 'rb'))
 Breast_Cancer_model = pickle.load(open('Breast_Cancer.sav', 'rb'))
-#model = joblib.load('parkinsons_model_8features.sav')
-#scaler = joblib.load('scaler_8features.sav')
-#selected_features = joblib.load('selected_8features.sav')
 Liver_model = pickle.load(open('liver_model.sav', 'rb'))
 Liver_scaler_model = pickle.load(open('liver_scaler.sav', 'rb'))
 model_package = joblib.load('parkinsons_model_package.sav')
@@ -90,6 +88,7 @@ def validate_password(password):
 def validate_phone(phone):
     return re.match(r"^[6-9]\d{9}$", phone)  # Starts with 6-9 and has exactly 10 digits
 
+# Username Validation
 def validate_username(username):
     return re.match(r"^[A-Za-z][A-Za-z0-9_]{2,19}$", username)
 
@@ -168,16 +167,17 @@ def signup():
 def login():
     if request.method == 'POST':
         email = request.form['email']
-        print(email)
         password = request.form['password']
         remember = request.form.get('remember')
-
         cur = mysql.connection.cursor()
         cur.execute("SELECT * FROM users WHERE email = %s", (email,))
         user = cur.fetchone()
+        print(user)
         cur.close()
 
         if user and check_password_hash(user[5], password):  # user[5] is the password column
+        #if user and check_password_hash(user['password'], password):
+
             session['logged_in'] = True
             #session['email'] = user[2]
             session['id'] = user[0]
@@ -613,6 +613,13 @@ def kidney():
     return render_template('kidney.html')
 
 
+@app.route("/BMI")
+def bmi():
+    return render_template("BMI.html")
+
+@app.route("/BMR")
+def bmr():
+    return render_template("BMR.html")
 
 
 @app.route('/profile')
@@ -670,7 +677,7 @@ def update_profile():
             filename = secure_filename(file.filename)
             filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(filepath)
-            profile_pic = f"/static/profile_pics/{filename}"
+            profile_pic = filename
 
     cur = mysql.connection.cursor()
 
@@ -686,6 +693,60 @@ def update_profile():
 
     return jsonify({"success": True, "message": "Profile updated successfully!"})
 
+@app.route("/save_health_result", methods=["POST"])
+def save_health_result():
+    if 'username' not in session:
+        flash("You must be logged in to save your result.", "danger")
+        return redirect(url_for('login'))
+
+    username = session['username']
+    height = request.form.get("height")
+    weight = request.form.get("weight")
+    result_type = request.form.get("category")  # Either 'BMI' or 'BMR'
+    result_value = request.form.get("result_value")  # BMI/BMR number
+    pdf_file = request.files.get("pdf")
+
+    if not all([height, weight, result_type, result_value, pdf_file]):
+        return "Missing form data", 400
+
+    # Save PDF file securely
+    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+    filename = secure_filename(f"{username}_{result_type}_{timestamp}.pdf")
+    pdf_path = os.path.join("static/pdfs", filename)
+
+    # Save PDF to directory
+    os.makedirs("static/pdfs", exist_ok=True)
+    pdf_file.save(pdf_path)
+    
+
+    # Save to database
+    cur = mysql.connection.cursor()
+    cur.execute(
+        "INSERT INTO health_reports (username, height, weight, category, result_value, pdf_path, created_at) VALUES (%s, %s, %s, %s, %s, %s, NOW())",
+        (username, height, weight, result_type, result_value, pdf_path)
+    )
+    mysql.connection.commit()
+    cur.close()
+
+    return "✅ Report saved successfully", 200
+
+@app.route('/healthactivity')
+def health_activity():
+    # Get the user ID from session (assuming it's stored in session)
+    username = session.get('username')
+    
+    if username is None:
+        # Handle if the user is not logged in
+        return redirect(url_for('login'))
+
+    # Query the user_activity table
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT * FROM health_reports WHERE username = %s ORDER BY created_at DESC", (username,))
+    activities = cursor.fetchall()
+    cursor.close()
+
+    # Render the template with the fetched activities
+    return render_template('bmi_bmr_activity.html', activities=activities)
 
 
 if __name__ == '__main__':
