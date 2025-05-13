@@ -692,53 +692,36 @@ def diabetes():
 #         except Exception as e:
 #             return jsonify({"success": False, "error": str(e)})
 #     return render_template('parkinson.html')
-
-@app.route('/parkinson', methods=['GET', 'POST'])
-def parkinson():
-    result = None
-    suggestion = None
+@app.route('/parkinson', methods=['POST'])
+def predict_parkinson():
     if request.method == 'POST':
         try:
-            # Get input values from the form
-            input_values = [float(request.form[feature]) for feature in selected_features]
+            # Extract float values from form for selected features
+            input_data = [float(request.form.get(feat, 0)) for feat in selected_features]
 
-
-            # Create DataFrame
-            input_df = pd.DataFrame([input_values], columns=selected_features)
+            # Prepare DataFrame
+            input_df = pd.DataFrame([input_data], columns=selected_features)
 
             # Scale and predict
             input_scaled = scaler.transform(input_df)
             prediction = model.predict(input_scaled)[0]
 
-            # Generate result and suggestion
             if prediction == 1:
                 result = "Parkinson's Detected 😔"
-                suggestion = (
-                    "Please consult a neurologist for a detailed diagnosis. "
-                    "Engaging in physical therapy, voice exercises, a healthy diet, and regular follow-ups "
-                    "can help manage symptoms effectively. Joining a support group is also highly beneficial."
-                )
             else:
                 result = "Healthy 🙂"
 
+            return jsonify({
+                "prediction": result,
+                "result": int(prediction)
+            })
+
         except Exception as e:
-            result = f"Error occurred: {e}"
-    return render_template('parkinson.html', features=selected_features, result=result)
-          # Create DataFrame
-          #input_df = pd.DataFrame([input_values], columns=selected_features)
-
-            # Scale and predict
-            #input_scaled = scaler.transform(input_df)
-            #prediction = model.predict(input_scaled)[0]
-
-            # Generate result
-            #result = "Parkinson's Detected 😔" if prediction == 1 else "Healthy 🙂"
-
-        #except Exception as e:
-            #result = f"Error occurred: {e}"
-
-    #return render_template('parkinson.html', features=selected_features, result=result)
-    return render_template('parkinson.html', features=selected_features, result=result, suggestion=suggestion)
+            return jsonify({
+                "prediction": f"Error: {str(e)}",
+                "result": -1
+            })
+    return render_template('parkinson.html', features=selected_features)
 
 
 @app.route('/Breast_cancer', methods=['GET', 'POST'])
@@ -763,7 +746,7 @@ def Breast_cancer():
             # Determine result
             result_text = "The Breast Cancer is Benign" if prediction == 0 else "The Breast cancer is Malignant"
 
-            return jsonify({"success": True, "prediction": result_text})
+            return jsonify({"success": True, "prediction": result_text, "result": int(prediction)})
 
         except Exception as e:
             return jsonify({"success": False, "error": str(e)})
@@ -796,7 +779,8 @@ def liver():
             # Determine result
             result_text = "The prediction indicates a positive case of liver disease." if prediction == 1 else "You are predicted safe from liver disease (Negative)"
 
-            return jsonify({"success": True, "prediction": result_text})
+             # return jsonify({"success": True, "prediction": result_text})
+            return jsonify({"success": True, "prediction": result_text, "result": int(prediction)})
 
         except Exception as e:
             return jsonify({"success": False, "error": str(e)})
