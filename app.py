@@ -692,7 +692,7 @@ def diabetes():
 #         except Exception as e:
 #             return jsonify({"success": False, "error": str(e)})
 #     return render_template('parkinson.html')
-@app.route('/parkinson', methods=['POST'])
+@app.route('/parkinson', methods=['GET', 'POST'])
 def predict_parkinson():
     if request.method == 'POST':
         try:
@@ -707,9 +707,9 @@ def predict_parkinson():
             prediction = model.predict(input_scaled)[0]
 
             if prediction == 1:
-                result = "Parkinson's Detected 😔"
+                result = "Parkinson's Detected"
             else:
-                result = "Healthy 🙂"
+                result = "Healthy"
 
             return jsonify({
                 "prediction": result,

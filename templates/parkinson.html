@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Parkinson's Disease Prediction</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
         body {
@@ -101,22 +103,24 @@
                         <input type="number" step="any" class="form-control" name="MDVP:APQ" required />
                     </div>
                     <div class="mb-3">
-                      <label class="form-label">Shimmer:APQ5</label>
-                      <input type="number" step="any" class="form-control" name="Shimmer:APQ5" required />
+                        <label class="form-label">Shimmer:APQ5</label>
+                        <input type="number" step="any" class="form-control" name="Shimmer:APQ5" required />
                     </div>
                     <div class="mb-3">
-                      <label class="form-label">Shimmer:APQ3</label>
-                      <input type="number" step="any" class="form-control" name="Shimmer:APQ3" />
+                        <label class="form-label">Shimmer:APQ3</label>
+                        <input type="number" step="any" class="form-control" name="Shimmer:APQ3" />
                     </div>
                     <div class="mb-3">
-                      <label class="form-label">MDVP:Shimmer(dB)</label>
-                      <input type="number" step="any" class="form-control" name="MDVP:Shimmer(dB)" />
+                        <label class="form-label">MDVP:Shimmer(dB)</label>
+                        <input type="number" step="any" class="form-control" name="MDVP:Shimmer(dB)" />
                     </div>
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary btn-custom"><i class="fas fa-microscope me-2"></i>Predict</button>
-            <a href="/dashboard" class="btn btn-secondary btn-custom mt-3"><i class="fas fa-arrow-left me-2"></i>Back</a>
+            <button type="submit" class="btn btn-primary btn-custom"><i
+                    class="fas fa-microscope me-2"></i>Predict</button>
+            <a href="/dashboard" class="btn btn-secondary btn-custom mt-3"><i
+                    class="fas fa-arrow-left me-2"></i>Back</a>
         </form>
 
         <div class="result-table">
@@ -130,7 +134,8 @@
                 </thead>
                 <tbody id="resultBody"></tbody>
             </table>
-            <button id="downloadPdf" class="btn btn-success btn-custom mt-2"><i class="fas fa-download me-2"></i>Download Report</button>
+            <button id="downloadPdf" class="btn btn-success btn-custom mt-2"><i
+                    class="fas fa-download me-2"></i>Download Report</button>
             <br>
             <div class="d-flex justify-content-center">
                 <button type="button" id="adviceBtn" class="btn btn-success mt-3" data-bs-toggle="modal"
@@ -173,7 +178,7 @@
             doc.text("Parkinson Disease Prediction Report", 14, 22);
 
             // User Input Data
-            doc.setFontSize(12);
+            doc.setFontSize(14);
             doc.text("User Input Data:", 14, 32);
 
             const inputData = [];
@@ -190,6 +195,14 @@
                 styles: { fontSize: 9 }
             });
 
+            let y = doc.lastAutoTable.finalY + 10;
+            doc.setFontSize(14);
+            if (window.lastResult == 1) {
+                doc.text("Prediction Result:  Positive (Signs of Parkinson's Disease Detected)", 14, y);
+            } else {
+                doc.text("Prediction Result:  Negetive (No Strong Signs of Parkinson's Disease Detected)", 14, y);
+            }
+
             // Gather form data for sending again
             fetch("/parkinson", {
                 method: "POST",
@@ -197,24 +210,29 @@
             })
                 .then(response => response.json())
                 .then(data => {
-                    // Add advice based on prediction
-                    let y = doc.lastAutoTable.finalY + 15;
-                    doc.setFontSize(16);
-                    doc.setFont("helvetica", "bold");
-                    doc.text("Trusted Advices:", 14, y);
-                    y += 8;
-                    doc.setFontSize(11);
-                    doc.setFont("helvetica", "normal");
+                    const adviceHtml = getAdvice(parseInt(data.result));
 
-                    if (parseInt(data.result) === 1) {
-                        const adviceText = `The prediction suggests the presence of indicators associated with Parkinson's Disease. It is crucial to consult with a neurologist for a comprehensive evaluation and diagnosis. They may recommend further tests and discuss potential management strategies. Maintaining a healthy lifestyle, including regular exercise and a balanced diet, can also be beneficial. Support groups and resources are available to help individuals and their families cope with Parkinson's Disease.`;
-                        const wrappedAdvice = doc.splitTextToSize(adviceText, 180);
-                        doc.text(wrappedAdvice, 14, y);
-                    } else {
-                        const adviceText = `The prediction does not indicate the presence of typical indicators associated with Parkinson's Disease based on the provided data. However, if you have any concerns or experience any new symptoms, it is always recommended to consult with a healthcare professional for a thorough evaluation. Maintaining a healthy lifestyle is important for overall well-being.`;
-                        const wrappedAdvice = doc.splitTextToSize(adviceText, 180);
-                        doc.text(wrappedAdvice, 14, y);
+                    // Replace icons and remove tags
+                    const adviceText = adviceHtml
+                        .replace(/<li>/g, '• ')
+                        .replace(/<h6[^>]*>/g, '# ')
+                        .replace(/<[^>]+>/g, '');
+
+                    const wrappedAdvice = doc.splitTextToSize(adviceText, 180);
+                    const lineHeight = 4.5;
+                    const requiredHeight = wrappedAdvice.length * lineHeight;
+                    y = y + 10;
+
+                    if (y + requiredHeight > doc.internal.pageSize.height - 10) {
+                        doc.addPage();
+                        y = 20;
                     }
+
+                    doc.setFontSize(16);
+                    doc.text("Trusted Advices For You :", 14, y);
+
+                    doc.setFontSize(10);
+                    doc.text(wrappedAdvice, 14, y + 6);
 
                     // Save the PDF after advice is added
                     doc.save("Parkinson_Disease_Prediction_Report.pdf");
@@ -252,13 +270,99 @@
 
                     if (parseInt(data.result) === 1) {
                         document.getElementById("staticBackdropLabel").innerHTML = `<strong style="font-size: 1.3rem;">🔴 Signs of Parkinson's Disease Detected</strong>`;
-                        document.getElementById("adviceContent").innerHTML = `The prediction suggests the presence of indicators associated with Parkinson's Disease. It is crucial to consult with a neurologist for a comprehensive evaluation and diagnosis. They may recommend further tests and discuss potential management strategies. Maintaining a healthy lifestyle, including regular exercise and a balanced diet, can also be beneficial. Support groups and resources are available to help individuals and their families cope with Parkinson's Disease.`;
                     } else {
                         document.getElementById("staticBackdropLabel").innerHTML = `<strong style="font-size: 1.3rem;">🟢 No Strong Signs of Parkinson's Disease Detected</strong>`;
-                        document.getElementById("adviceContent").innerHTML = `The prediction does not indicate the presence of typical indicators associated with Parkinson's Disease based on the provided data. However, if you have any concerns or experience any new symptoms, it is always recommended to consult with a healthcare professional for a thorough evaluation. Maintaining a healthy lifestyle is important for overall well-being.`;
                     }
+
+                    document.getElementById("adviceContent").innerHTML = getAdvice(parseInt(data.result));
+                    window.lastResult = data.result;
                 });
         });
+
+        function getAdvice(category) {
+            if (category == 1) {
+                return `
+Your test indicates signs of Parkinson's disease. Though there's no cure, but early treatment and lifestyle adjustments can help manage symptoms and improve quality of life.<br><br><br>
+
+<h5 class="text-danger"><i class="bi bi-check-circle-fill"></i> Advices to Manage Your Condition ----</h5>
+
+<h6 class="mt-3 text-success"><i class="bi bi-basket-fill"></i> Diet & Nutrition :</h6>
+<ul class="text-start">
+  <li>Eat a fiber-rich diet to prevent constipation.</li>
+  <li>Stay hydrated – drink enough water daily.</li>
+  <li>Limit protein intake around medication time (e.g., levodopa).</li>
+  <li>Include omega-3 fatty acids (e.g., fish, flaxseeds).</li>
+  <li>Reduce processed foods and sugar.</li>
+</ul>
+
+<h6 class="mt-3 text-warning"><i class="bi bi-capsule-pill"></i> Medication & Treatment :</h6>
+<ul class="text-start">
+  <li>Take prescribed medications consistently and on schedule.</li>
+  <li>Report any side effects to your doctor promptly.</li>
+  <li>Consider physiotherapy or occupational therapy.</li>
+  <li>Join support groups for shared experiences and mental health.</li>
+</ul>
+
+<h6 class="mt-3 text-primary"><i class="bi bi-heart-pulse-fill"></i> Monitor Symptoms :</h6>
+<ul class="text-start">
+  <li>Keep track of tremors, stiffness, and mobility changes.</li>
+  <li>Note changes in sleep, speech, or balance.</li>
+  <li>Regular follow-ups with a neurologist are essential.</li>
+</ul>
+
+<h6 class="mt-3 text-info"><i class="bi bi-activity"></i> Lifestyle & Exercise :</h6>
+<ul class="text-start">
+  <li>Exercise regularly – walking, stretching, or tai chi helps.</li>
+  <li>Practice hand coordination and balance activities.</li>
+  <li>Get enough sleep and maintain a routine sleep schedule.</li>
+</ul>
+
+<h6 class="mt-3 text-danger"><i class="bi bi-exclamation-diamond-fill"></i> Seek Medical Help If :</h6>
+<ul class="text-start">
+  <li>You experience falls or loss of balance.</li>
+  <li>There's difficulty swallowing or severe stiffness.</li>
+  <li>You feel anxious, depressed, or confused often.</li>
+</ul>
+
+<p class="mt-3 text-muted"><em>Note: Work closely with your neurologist to personalize your care plan.</em></p>
+    `;
+            } else if (category == 0) {
+                return `
+Your test results show no signs of Parkinson’s disease. Keep maintaining healthy habits that support long-term brain and motor function.<br><br><br>
+
+<h5 class="text-success"><i class="bi bi-check-circle-fill"></i> Preventive Advice for Brain & Nerve Health ----</h5>
+
+<h6 class="mt-3 text-success"><i class="bi bi-basket-fill"></i> Diet & Nutrition :</h6>
+<ul class="text-start">
+  <li>Eat a balanced diet rich in antioxidants – fruits, vegetables, and whole grains.</li>
+  <li>Include omega-3 fats (from fish, walnuts, flaxseeds).</li>
+  <li>Stay hydrated and avoid excessive caffeine or alcohol.</li>
+</ul>
+
+<h6 class="mt-3 text-primary"><i class="bi bi-shield-plus"></i> Brain Health Monitoring :</h6>
+<ul class="text-start">
+  <li>Stay mentally active – puzzles, reading, learning new skills.</li>
+  <li>Sleep 7–9 hours per night for brain repair.</li>
+  <li>Manage chronic conditions like diabetes and high blood pressure.</li>
+</ul>
+
+<h6 class="mt-3 text-info"><i class="bi bi-activity"></i> Active Lifestyle :</h6>
+<ul class="text-start">
+  <li>Exercise regularly to maintain balance, flexibility, and strength.</li>
+  <li>Avoid smoking and limit alcohol.</li>
+  <li>Manage stress through yoga, meditation, or hobbies.</li>
+</ul>
+
+<h6 class="mt-3 text-warning"><i class="bi bi-search"></i> Early Warning Awareness :</h6>
+<ul class="text-start">
+  <li>If you notice tremors, slow movement, or stiffness, consult a doctor early.</li>
+</ul>
+    `;
+            } else {
+                return `<p>No advice available for this category.</p>`;
+            }
+        }
+
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
