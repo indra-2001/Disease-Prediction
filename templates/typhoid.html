@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Typhoid Disease Prediction</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #e0f2f7, #f0f8ff);
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            padding: 40px 30px;
+            max-width: 1000px;
+            margin-top: 50px;
+        }
+
+        h2 {
+            font-weight: bold;
+            color: #008080;
+            /* Teal */
+            margin-bottom: 30px;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-control,
+        .form-select {
+            border-radius: 8px;
+        }
+
+        .btn-custom {
+            width: 100%;
+            padding: 12px;
+            font-size: 18px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #008080;
+            border-color: #008080;
+        }
+
+        .btn-primary:hover {
+            background-color: #006666;
+        }
+
+        .btn-secondary:hover {
+            background-color: #6c757d;
+        }
+
+        .result-table {
+            margin-top: 30px;
+            display: none;
+            /* Keep this as initially hidden */
+        }
+
+        .table th {
+            background-color: #008080;
+            color: white;
+        }
+
+        .form-icon {
+            margin-right: 8px;
+            color: #008080;
+        }
+
+        .modal-content {
+            border: 6px solid #80cbc4;
+            /* Light Teal */
+            border-radius: 10px;
+        }
+
+        /* Added for better error display */
+        .error-message {
+            color: #dc3545;
+            /* Red */
+            font-weight: bold;
+        }
+
+        #predictionResult {
+            margin-top: 25px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-left: 5px solid #007bff;
+            border-radius: 5px;
+            font-size: 1.1em;
+        }
+
+        #predictionResult.positive {
+            border-left-color: #dc3545;
+        }
+
+        #predictionResult.negative {
+            border-left-color: #28a745;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2 class="text-center"><i class="fas fa-thermometer-high me-2"></i>Typhoid Disease Prediction</h2>
+        <form id="typhoidForm">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Platelet Count (10^9/L)</label>
+                        <input type="number" class="form-control" name="Platelet Count" min="0" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Age (Years)</label>
+                        <input type="number" class="form-control" name="Age" min="0" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Hemoglobin (g/dL)</label>
+                        <input type="number" step="0.1" class="form-control" name="Hemoglobin (g/dL)" min="0" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Calcium (mg/dL)</label>
+                        <input type="number" step="0.1" class="form-control" name="Calcium (mg/dL)" min="0" required />
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Potassium (mmol/L)</label>
+                        <input type="number" step="0.1" class="form-control" name="Potassium (mmol/L)" min="0" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Treatment Duration (Days)</label>
+                        <input type="number" class="form-control" name="Treatment Duration" min="0" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Blood Culture Bacteria</label>
+                        <input type="text" class="form-control" name="Blood Culture Bacteria" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Urine Culture Bacteria</label>
+                        <input type="text" class="form-control" name="Urine Culture Bacteria" required />
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-custom"><i class="fas fa-microscope me-2"></i>Predict</button>
+            <a href="/dashboard" class="btn btn-secondary btn-custom mt-3"><i class="fas fa-arrow-left me-2"></i>Back</a>
+        </form>
+
+        <div class="result-table" id="predictionResultTable">
+            <h4 class="text-center mt-4">Prediction Result</h4>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody id="resultBody"></tbody>
+            </table>
+            <button id="downloadPdf" class="btn btn-success btn-custom mt-2">Download Report</button>
+            <br>
+            <div class="d-flex justify-content-center">
+                <button type="button" id="adviceBtn" class="btn btn-success mt-3" data-bs-toggle="modal"
+                    data-bs-target="#staticBackdrop" style="display: inline-block;">
+                    <i class="fas fa-notes-medical me-2"></i>See Advices
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel"></h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="adviceContent">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <script>
+        // Global variables to store form data and last prediction result
+        let globalFormData = null;
+        let lastPredictionResult = null; // Stores the entire JSON response from Flask
+
+        // Function to determine advice based on prediction category
+        function getAdvice(category) {
+            if (category == 1) { // Assuming 1 means Typhoid Detected
+                return `
+                    <h6 class="advice-title">🔴 Typhoid Detected</h6>
+                    <p class="advice-text">
+                    Your test indicates the presence of typhoid fever. It's crucial to consult a healthcare professional immediately for proper diagnosis and management. Typhoid fever is a serious infection that requires prompt medical attention.
+                    </p>
+
+                    <h6 class="advice-title"><i class="bi bi-check-circle-fill"></i> Advice for Managing Typhoid Fever</h6>
+
+                    <h6 class="advice-title"><i class="bi bi-hospital-fill"></i> Seek Immediate Medical Attention:</h6>
+                    <ul class="advice-list">
+                        <li>Consult a doctor or visit a hospital as soon as possible.</li>
+                        <li>Typhoid fever requires antibiotic treatment, and early treatment can prevent severe complications.</li>
+                    </ul>
+
+                    <h6 class="advice-title"><i class="bi-capsule-pill"></i> Medication:</h6>
+                    <ul class="advice-list">
+                        <li>Take the prescribed antibiotics exactly as directed by your doctor. Complete the full course of medication, even if you start feeling better.</li>
+                        <li>Do not share your medication with others.</li>
+                    </ul>
+
+                    <h6 class="advice-title"><i class="bi-droplet-fill"></i> Hydration and Nutrition:</h6>
+                    <ul class="advice-list">
+                        <li>Drink plenty of fluids, such as water, oral rehydration solutions (ORS), and clear broths, to prevent dehydration.</li>
+                        <li>Eat small, easily digestible meals. Avoid solid foods and high-fiber foods initially.</li>
+                        <li>As you recover, gradually introduce soft foods like boiled rice, mashed potatoes, and cooked vegetables.</li>
+                    </ul>
+
+                    <h6 class="advice-title"><i class="bi-thermometer-half"></i> Monitor Your Condition:</h6>
+                    <ul class="advice-list">
+                        <li>Monitor your temperature regularly.</li>
+                        <li>Watch for any worsening symptoms, such as severe abdominal pain, bleeding, or changes in mental state.</li>
+                    </ul>
+
+                    <h6 class="advice-title"><i class="bi-house-heart-fill"></i> Rest and Hygiene:</h6>
+                    <ul class="advice-list">
+                        <li>Get plenty of rest to allow your body to recover.</li>
+                        <li>Practice strict hygiene to prevent spreading the infection to others. Wash your hands frequently with soap and water, especially after using the bathroom and before eating.</li>
+                        <li>Avoid preparing food for others until you have been cleared by your doctor.</li>
+                    </ul>
+
+                    <h6 class="advice-title"><i class="bi-exclamation-diamond-fill"></i> Prevention of Spread:</h6>
+                    <ul class="advice-list">
+                        <li>Typhoid is highly contagious. Follow your doctor's instructions on how to prevent spreading the infection to others.</li>
+                        <li>Inform your close contacts (family members, etc.) about your diagnosis so they can get tested if necessary.</li>
+                    </ul>
+
+                    <p class="advice-text mt-3"><em><strong class="strong">Note:</strong> This advice is general. Always consult with your healthcare provider for personalized management of your typhoid fever.</em></p>
+                `;
+            } else if (category == 0) { // Assuming 0 means No Typhoid Detected
+                return `
+                    <h6 class="advice-title">🟢 No Typhoid Detected</h6>
+                    <p class="advice-text">
+                    Your test results indicate no signs of typhoid fever. However, maintaining good hygiene and taking preventive measures are always recommended.
+                    </p>
+
+                    <h6 class="advice-title"><i class="bi-check-circle-fill"></i> Advice for Preventing Typhoid Fever</h6>
+
+                    <h6 class="advice-title"><i class="bi-hands-wash"></i> Practice Good Hygiene:</h6>
+                    <ul class="advice-list">
+                        <li>Wash your hands frequently with soap and water, especially after using the bathroom, before eating, and after touching potentially contaminated surfaces.</li>
+                        <li>Use an alcohol-based hand sanitizer if soap and water are not available.</li>
+                    </ul>
+
+                    <h6 class="advice-title"><i class="bi-utensils"></i> Food and Water Safety:</h6>
+                    <ul class="advice-list">
+                        <li>Drink safe water. If you are unsure of the water quality, boil it or use a reliable water purification method.</li>
+                        <li>Eat food that is properly cooked and served hot.</li>
+                        <li>Avoid raw fruits and vegetables that you have not peeled yourself.</li>
+                        <li>Be cautious of street food. Choose vendors that appear clean and follow good hygiene practices.</li>
+                    </ul>
+
+                    <h6 class="advice-title"><i class="bi-globe"></i> Travel Precautions:</h6>
+                    <ul class="advice-list">
+                        <li>If you are traveling to an area where typhoid fever is common, talk to your doctor about getting vaccinated against typhoid.</li>
+                        <li>Follow strict food and water safety guidelines while traveling.</li>
+                    </ul>
+
+                    <h6 class="advice-title"><i class="bi-house-heart-fill"></i> General Health:</h6>
+                    <ul class="advice-list">
+                        <li>Maintain a healthy lifestyle with a balanced diet, regular exercise, and adequate sleep.</li>
+                        <li>Strengthen your immune system to help your body fight off infections.</li>
+                    </ul>
+
+                    <h6 class="advice-title"><i class="bi-search"></i> Stay Informed:</h6>
+                    <ul class="advice-list">
+                        <li>Stay informed about typhoid fever outbreaks and health advisories in your area or in areas you plan to visit.</li>
+                    </ul>
+                `;
+            }
+            return ""; // Fallback
+        }
+
+        // --- Event Listener for Form Submission ---
+        document.getElementById("typhoidForm").addEventListener("submit", async function (event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const formData = new FormData(this);
+            globalFormData = formData; // Store for PDF generation
+            const dataBody = new URLSearchParams(formData).toString(); // Prepare for POST request
+
+            const resultTableDiv = document.getElementById("predictionResultTable"); // Use the ID here
+            const resultBody = document.getElementById("resultBody");
+            resultBody.innerHTML = ""; // Clear previous results
+            resultTableDiv.style.display = "none"; // Hide results initially
+
+            try {
+                const response = await fetch("/typhoid", { // Corrected route to /typhoid
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: dataBody
+                });
+
+                // Check if the HTTP response itself was successful
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    resultBody.innerHTML = `<tr><td colspan="2" class="error-message">HTTP Error: ${response.status} ${response.statusText}</td></tr><tr><td colspan="2">Server Response: ${errorText}</td></tr>`;
+                    resultTableDiv.style.display = "block"; // Show error in table
+                    console.error('HTTP Error:', response.status, response.statusText, errorText);
+                    return;
+                }
+
+                // Try to parse the JSON response
+                let data;
+                try {
+                    data = await response.json();
+                    lastPredictionResult = data; // Store the full successful response
+                } catch (jsonError) {
+                    const rawText = await response.text();
+                    resultBody.innerHTML = `<tr><td colspan="2" class="error-message">JSON Parse Error: Invalid server response.</td></tr><tr><td colspan="2">Raw Response: ${rawText}</td></tr>`;
+                    resultTableDiv.style.display = "block"; // Show error in table
+                    console.error('JSON Parse Error:', jsonError, 'Raw response:', rawText);
+                    return;
+                }
+
+                // Check the 'success' flag from Flask's JSON response
+                if (data.success) {
+                    // Populate the result table with input data
+                    for (let [key, value] of formData.entries()) {
+                        const element = document.querySelector(`[name="${key}"]`);
+                        let displayValue = value;
+                        // For select/dropdowns, get the display text
+                        if (element && element.tagName === "SELECT") {
+                            displayValue = element.options[element.selectedIndex].text;
+                        }
+                        resultBody.innerHTML += `<tr><td>${key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}</td><td>${displayValue}</td></tr>`;
+                    }
+                    // Add prediction result to the table
+                    resultBody.innerHTML += `<tr><td><strong>Prediction</strong></td><td><strong>${data.prediction}</strong></td></tr>`;
+                    // Add probabilities if they exist
+                    if (data.probability_no_typhoid !== undefined && data.probability_typhoid !== undefined) {
+                        resultBody.innerHTML += `<tr><td>Probability (No Typhoid)</td><td>${(data.probability_no_typhoid * 100).toFixed(2)}%</td></tr>`;
+                        resultBody.innerHTML += `<tr><td>Probability (Typhoid)</td><td>${(data.probability_typhoid * 100).toFixed(2)}%</td></tr>`;
+                    }
+
+                    resultTableDiv.style.display = "block"; // Show the result table
+
+                    // Update modal title and content based on prediction
+                    if (data.result == 1) { // Note: using result for consistency with Flask output
+                        document.getElementById("staticBackdropLabel").innerHTML = `<strong style="font-size: 1.3rem;">🔴 Typhoid Detected</strong>`;
+                    } else if (data.result == 0) {
+                        document.getElementById("staticBackdropLabel").innerHTML = `<strong style="font-size: 1.3rem;">🟢 No Typhoid Detected</strong>`;
+                    } else {
+                        document.getElementById("staticBackdropLabel").innerHTML = `<strong style="font-size: 1.3rem;">❓ Prediction Status Unknown</strong>`;
+                    }
+                    document.getElementById("adviceContent").innerHTML = getAdvice(data.result); // Pass result
+
+                } else {
+                    // Flask returned success: false (application-level error)
+                    resultBody.innerHTML = `<tr><td colspan="2" class="error-message">Prediction Error: ${data.error || 'Unknown error from server'}</td></tr>`;
+                    resultTableDiv.style.display = "block"; // Show error in table
+                    console.error('Server side prediction error:', data.error);
+                }
+
+            } catch (error) {
+                // Catch network errors (e.g., server down, no internet)
+                resultBody.innerHTML = `<tr><td colspan="2" class="error-message">A network error occurred: ${error.message}</td></tr>`;
+                resultTableDiv.style.display = "block"; // Show error in table
+                console.error('Fetch error:', error);
+            }
+        });
+
+        // --- PDF Generation Logic ---
+        document.getElementById("downloadPdf").addEventListener("click", function () {
+            if (!globalFormData || !lastPredictionResult) {
+                alert("Please submit the form first to generate a report.");
+                return;
+            }
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Title
+            doc.setFontSize(18);
+            doc.text("Typhoid Disease Prediction Report", 14, 22);
+
+            // Date of Report
+            doc.setFontSize(10);
+            doc.setTextColor(100);
+            doc.text(`Date: ${new Date().toLocaleDateString()}`, 14, 28);
+            doc.setTextColor(0); // Reset color
+
+            // User Input Data (from globalFormData for the original values)
+            doc.setFontSize(12);
+            doc.text("Patient Input Data:", 14, 40);
+
+            const inputTableData = [];
+            for (let [key, value] of globalFormData.entries()) {
+                // Clean up key for display in PDF
+                const displayName = key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                inputTableData.push([displayName, value]);
+            }
+
+            doc.autoTable({
+                startY: 44,
+                head: [['Parameter', 'Value']],
+                body: inputTableData,
+                theme: 'grid',
+                styles: {
+                    fontSize: 10,
+                    cellPadding: 2
+                },
+                headStyles: {
+                    fillColor: [0, 128, 128],
+                    textColor: 255
+                }, // Teal color for header
+                margin: {
+                    left: 14,
+                    right: 14
+                }
+            });
+
+            let y = doc.lastAutoTable.finalY + 15;
+
+            // Prediction Result
+            doc.setFontSize(14);
+            const predictionText = lastPredictionResult.prediction;
+            doc.text(`Prediction Result: ${predictionText}`, 14, y);
+            y += 8;
+
+            // Probabilities
+            if (lastPredictionResult.probability_no_typhoid !== undefined && lastPredictionResult.probability_typhoid !== undefined) {
+                doc.setFontSize(10);
+                doc.text(`Probability (No Typhoid): ${(lastPredictionResult.probability_no_typhoid * 100).toFixed(2)}%`, 14, y);
+                y += 5;
+                doc.text(`Probability (Typhoid): ${(lastPredictionResult.probability_typhoid * 100).toFixed(2)}%`, 14, y);
+                y += 10;
+            }
+
+            // Advice Section
+            const adviceHtml = getAdvice(lastPredictionResult.result); // Use result from stored data
+            const adviceTitle = lastPredictionResult.result === 1 ? "🔴 Typhoid Detected" : "🟢 No Typhoid Detected";
+
+            doc.setFontSize(16);
+            doc.text(`Trusted Advices For You:`, 14, y);
+            y += 8; // Small gap after section title
+
+            // Extract and clean advice text for PDF
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = adviceHtml; // Render HTML into a temporary div
+            const adviceParagraphs = Array.from(tempDiv.querySelectorAll('p, li, h6')).map(el => {
+                if (el.tagName === 'LI') return `• ${el.textContent}`;
+                if (el.tagName === 'H6') return `\n${el.textContent.replace(/<i[^>]*>.*?<\/i>/g, '').trim()}\n`; // Add line breaks around headings
+                return el.textContent;
+            }).join('\n'); // Join with newline to maintain structure
+
+            doc.setFontSize(10);
+            const wrappedAdvice = doc.splitTextToSize(adviceParagraphs, doc.internal.pageSize.width - 28); // Account for margins
+
+            let currentY = y;
+            for (let i = 0; i < wrappedAdvice.length; i++) {
+                if (currentY + 6 > doc.internal.pageSize.height - 10) { // Check if new page is needed
+                    doc.addPage();
+                    currentY = 20; // Reset Y for new page
+                }
+                doc.text(wrappedAdvice[i], 14, currentY);
+                currentY += 4.5; // Line height
+            }
+
+            // Disclaimer
+            doc.setFontSize(8);
+            doc.setTextColor(150);
+            doc.text("Note: This report is generated by an AI model and is for informational purposes only. Always consult a qualified healthcare professional for diagnosis and treatment.", 14, doc.internal.pageSize.height - 15);
+            doc.setTextColor(0); // Reset color
+
+            // Save the PDF
+            doc.save("Typhoid_Disease_Prediction_Report.pdf");
+        });
+    </script>
+</body>
+
+</html>
