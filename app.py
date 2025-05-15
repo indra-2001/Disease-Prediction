@@ -75,6 +75,7 @@ scaler = model_package['scaler']
 selected_features = model_package['features']
 
 
+
 # Email & Password Validation
 def validate_email(email):
     return re.match(r"^[a-zA-Z0-9._%+-]+@gmail\.com$", email)
@@ -960,6 +961,72 @@ def update_profile():
 
     return jsonify({"success": True, "message": "Profile updated successfully!"})
 
+
+# Load the model and features for typhoid
+try:
+    model_path = os.path.join(os.path.dirname(__file__), 'typhoid_model_best8.sav')
+    features_path = os.path.join(os.path.dirname(__file__), 'typhoid_top8_features.sav')
+
+    Typhoid_model = joblib.load(model_path)
+    top_features = joblib.load(features_path)
+
+except Exception as e:
+    print(f"Error loading model or features: {e}")
+    exit(1)
+
+# Ensure top_features is a list of feature names
+if not isinstance(top_features, list):
+    print("Error: 'top_features' should be a list of feature names.")
+    exit(1)
+
+@app.route('/typhoid', methods=['GET', 'POST'])
+def typhoid():
+    if request.method == 'POST':
+        try:
+            if not request.form:
+                return jsonify({"success": False, "error": "No form data received."}), 400
+
+            input_data = []
+            for feature in top_features:
+                try:
+                    value = request.form.get(feature)
+                    if value is None:
+                        return jsonify({"success": False, "error": f"Missing data for feature: {feature}"}), 400
+                    input_data.append(float(value))
+                except ValueError:
+                    return jsonify({"success": False, "error": f"Invalid data type for {feature}. Must be a number."}), 400
+
+            input_array = np.array(input_data).reshape(1, -1)
+
+            try:
+                prediction = Typhoid_model.predict(input_array)[0]
+                probabilities = Typhoid_model.predict_proba(input_array)[0]
+            except Exception as model_err:
+                return jsonify({"success": False, "error": f"Error during prediction: {model_err}"}), 500
+
+            result_text = "The patient is predicted to NOT have Typhoid." if prediction == 0 else "The patient is predicted to have Typhoid."
+
+            response_data = {
+                "success": True,
+                "prediction": result_text,
+                "result": int(prediction),
+                "probability_no_typhoid": probabilities[0],
+                "probability_typhoid": probabilities[1]
+            }
+            return jsonify(response_data)
+
+        except Exception as e:
+            error_message = f"An unexpected error occurred: {str(e)}"
+            print(error_message)
+            return jsonify({"success": False, "error": error_message}), 500
+
+    # This part handles GET requests to /typhoid, if you want it to show the form as well
+    # Otherwise, you can remove the `return render_template` line from this block
+    return render_template('typhoid.html', features=top_features)
+
+@app.route("/stress")
+def stress():
+    return render_template("stress.html")
 
 
 if __name__ == '__main__':
