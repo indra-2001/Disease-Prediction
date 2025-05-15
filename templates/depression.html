@@ -5,100 +5,154 @@
     <meta charset="UTF-8">
     <title>PHQ-9 Depression Screening</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
     <style>
         body {
-            background-color: #f1f5f9;
-            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #e3f2fd, #ffffff);
+            font-family: 'Segoe UI', sans-serif;
+
+            margin: 0;
+            padding: 0;
+            background-image: url('../static/images/dep2.avif');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .container {
-            margin-top: 40px;
+            margin-top: 60px;
+            max-width: 900px;
         }
 
         .card {
-            border-radius: 1rem;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 1.5rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            border: none;
+            background-color: #ffffff;
+            padding: 2rem;
         }
 
         h2 {
             font-weight: bold;
+            color: #0d6efd;
+        }
+
+        label.form-label {
+            font-weight: 500;
         }
 
         .btn-primary {
-            background-color: #007bff;
+            background-color: #0d6efd;
             border: none;
+            transition: 0.3s;
         }
 
         .btn-primary:hover {
-            background-color: #0069d9;
+            background-color: #0b5ed7;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+            transition: 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5c636a;
         }
 
         .form-select {
-            margin-bottom: 15px;
+            border-radius: 0.5rem;
         }
 
         .result {
-            background-color: #e6ffed;
-            border-left: 5px solid #28a745;
-            padding: 15px;
-            margin-top: 20px;
-            border-radius: 5px;
+            background: #e6ffed;
+            border-left: 6px solid #28a745;
+            padding: 18px;
+            margin-top: 25px;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1rem;
+            color: #155724;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
         }
+
+        .btn i {
+            margin-right: 8px;
+        }
+
+        .modal-content {
+            border: 6px solid #dbfd18;
+            border-radius: 10px;
+        }
+
+        /* @media (max-width: 768px) {
+            .card {
+                padding: 1.5rem;
+            }
+        } */
     </style>
 </head>
 
 <body>
     <div class="container">
-        <div class="card p-4">
-            <h2 class="mb-4 text-center">PHQ-9 Depression Screening</h2>
-            <form id="phq9Form" onsubmit="evaluateMentalHealth(); return false;">
+        <div class="card">
+            <h2 class="mb-4 text-center"><i class="fas fa-brain me-2"></i>Depression Screening</h2>
+            <form id="phq9Form">
                 <div class="row">
-                    <!-- Left column -->
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="q1" class="form-label">1. Little interest or pleasure in doing things?</label>
-                            <select id="q1" class="form-select" required>
+                            <select id="q1" name="q1" class="form-select" required>
+                                <option value="" disabled selected>Select</option>
                                 <option value="0">Not at all</option>
                                 <option value="1">Several days</option>
                                 <option value="2">More than half the days</option>
                                 <option value="3">Nearly every day</option>
                             </select>
                         </div>
-
                         <div class="mb-3">
                             <label for="q2" class="form-label">2. Feeling down, depressed, or hopeless?</label>
-                            <select id="q2" class="form-select" required>
+                            <select id="q2" name="q2" class="form-select" required>
+                                <option value="" disabled selected>Select</option>
                                 <option value="0">Not at all</option>
                                 <option value="1">Several days</option>
                                 <option value="2">More than half the days</option>
                                 <option value="3">Nearly every day</option>
                             </select>
                         </div>
-
                         <div class="mb-3">
                             <label for="q3" class="form-label">3. Trouble falling or staying asleep, or sleeping too
                                 much?</label>
-                            <select id="q3" class="form-select" required>
+                            <select id="q3" name="q3" class="form-select" required>
+                                <option value="" disabled selected>Select</option>
                                 <option value="0">Not at all</option>
                                 <option value="1">Several days</option>
                                 <option value="2">More than half the days</option>
                                 <option value="3">Nearly every day</option>
                             </select>
                         </div>
-
                         <div class="mb-3">
                             <label for="q4" class="form-label">4. Feeling tired or having little energy?</label>
-                            <select id="q4" class="form-select" required>
+                            <select id="q4" name="q4" class="form-select" required>
+                                <option value="" disabled selected>Select</option>
                                 <option value="0">Not at all</option>
                                 <option value="1">Several days</option>
                                 <option value="2">More than half the days</option>
                                 <option value="3">Nearly every day</option>
                             </select>
                         </div>
-
                         <div class="mb-3">
                             <label for="q5" class="form-label">5. Poor appetite or overeating?</label>
-                            <select id="q5" class="form-select" required>
+                            <select id="q5" name="q5" class="form-select" required>
+                                <option value="" disabled selected>Select</option>
                                 <option value="0">Not at all</option>
                                 <option value="1">Several days</option>
                                 <option value="2">More than half the days</option>
@@ -107,45 +161,45 @@
                         </div>
                     </div>
 
-                    <!-- Right column -->
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="q6" class="form-label">6. Feeling bad about yourself—or that you are a failure
                                 or have let yourself or your family down?</label>
-                            <select id="q6" class="form-select" required>
+                            <select id="q6" name="q6" class="form-select" required>
+                                <option value="" disabled selected>Select</option>
                                 <option value="0">Not at all</option>
                                 <option value="1">Several days</option>
                                 <option value="2">More than half the days</option>
                                 <option value="3">Nearly every day</option>
                             </select>
                         </div>
-
                         <div class="mb-3">
                             <label for="q7" class="form-label">7. Trouble concentrating on things, such as reading the
                                 newspaper or watching television?</label>
-                            <select id="q7" class="form-select" required>
+                            <select id="q7" name="q7" class="form-select" required>
+                                <option value="" disabled selected>Select</option>
                                 <option value="0">Not at all</option>
                                 <option value="1">Several days</option>
                                 <option value="2">More than half the days</option>
                                 <option value="3">Nearly every day</option>
                             </select>
                         </div>
-
                         <div class="mb-3">
                             <label for="q8" class="form-label">8. Moving or speaking so slowly that other people could
                                 have noticed? Or being fidgety or restless?</label>
-                            <select id="q8" class="form-select" required>
+                            <select id="q8" name="q8" class="form-select" required>
+                                <option value="" disabled selected>Select</option>
                                 <option value="0">Not at all</option>
                                 <option value="1">Several days</option>
                                 <option value="2">More than half the days</option>
                                 <option value="3">Nearly every day</option>
                             </select>
                         </div>
-
                         <div class="mb-3">
                             <label for="q9" class="form-label">9. Thoughts that you would be better off dead, or of
                                 hurting yourself in some way?</label>
-                            <select id="q9" class="form-select" required>
+                            <select id="q9" name="q9" class="form-select" required>
+                                <option value="" disabled selected>Select</option>
                                 <option value="0">Not at all</option>
                                 <option value="1">Several days</option>
                                 <option value="2">More than half the days</option>
@@ -155,38 +209,229 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100 mt-3">Submit</button>
+                <button type="submit" class="btn btn-primary w-100 mt-3"><i class="fas fa-check-circle"></i> Submit
+                    Screening</button>
+                <a href="/dashboard" class="btn btn-secondary w-100 mt-3"><i class="fas fa-arrow-left"></i> Back to
+                    Dashboard</a>
             </form>
 
-
-            <div id="mentalHealthResult" class="result mt-3"></div>
+            <div id="depResult" class="result mt-3" style="display: none;"></div>
+            <button type="button" id="adviceBtn" class="btn btn-success mt-3" data-bs-toggle="modal"
+                data-bs-target="#staticBackdrop" style="display: none;">
+                <i class="fas fa-notes-medical me-2"></i>Get Advices
+            </button>
         </div>
     </div>
 
+    <!-- modal start-->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel"></h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="adviceContent">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" onclick="downloadAdvicePDF()"><i
+                            class="fas fa-download me-2"></i>Download report and advises</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- modal End-->
+
     <script>
-        function evaluateMentalHealth() {
-            const scores = [];
-            for (let i = 1; i <= 9; i++) {
-                scores.push(parseInt(document.getElementById("q" + i).value));
-            }
-            const total = scores.reduce((a, b) => a + b, 0);
+        document.getElementById("phq9Form").addEventListener("submit", function (event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            fetch("/depression", {
+                method: "POST",
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const resultBox = document.getElementById("depResult");
+                    resultBox.style.display = "block";
+                    if (data.error) {
+                        resultBox.innerHTML = "❌ Error: " + data.error;
+                        resultBox.classList.remove("bg-success");
+                        resultBox.classList.add("bg-danger", "text-white");
+                    } else {
+                        resultBox.classList.remove("bg-danger", "text-white");
+                        resultBox.innerText = data.message;
+                        document.getElementById("adviceBtn").style.display = "block";
 
-            let message = "";
-            if (total <= 4) {
-                message = "😊 Your depression score is low. You are likely experiencing minimal or no depression symptoms. Keep taking care of your mental health!";
-            } else if (total <= 9) {
-                message = "😐 You are showing some mild depressive symptoms. Consider trying mindfulness, regular activity, or talking to someone you trust.";
-            } else if (total <= 14) {
-                message = "⚠️ Your score suggests moderate depression. Speaking to a mental health professional would be beneficial.";
-            } else if (total <= 19) {
-                message = "⚠️ You may be experiencing moderately severe depression. Please consult a healthcare provider soon.";
-            } else {
-                message = "🚨 Your score indicates severe depression. Immediate professional help is strongly recommended.";
-            }
+                        document.getElementById("staticBackdropLabel").innerHTML = data.message;
+                        document.getElementById("adviceContent").innerHTML = getAdvice(parseInt(data.score));
+                    }
+                });
+        });
 
-            document.getElementById("mentalHealthResult").innerText = message;
+
+        function downloadAdvicePDF() {
+            const adviceTitle = document.getElementById("staticBackdropLabel").innerText;
+            const adviceBody = document.getElementById("adviceContent").innerHTML;
+
+            const pdfContainer = document.createElement("div");
+            pdfContainer.innerHTML = `
+            <div style="text-align: center; font-family: 'Segoe UI', sans-serif; margin-bottom: 20px; padding-bottom: 5px;">
+                <h1 style="color: #1e88e5; font-size: 31px; margin-bottom: 0;">📝 Your Depression Screening Report</h1>
+                <p style="color: #555; font-size: 16px; margin-top: 5px; border-bottom: 2px solid #2196f3;">Based on the PHQ-9 Assessment</p>
+            </div>
+            <div style="color: #2196f3; font-size: 25px;  padding-bottom: 10px;"><strong>${adviceTitle}</strong></div>
+            <div style="font-family: Arial, sans-serif; font-size: 20px; padding-top: 10px">${adviceBody}</div>
+            `;
+
+            html2pdf()
+                .from(pdfContainer)
+                .set({
+                    margin: 10,
+                    filename: 'Depression_Screening_Report.pdf',
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                })
+                .save();
         }
+
+
+        function getAdvice(score) {
+            let advice = "";
+
+            if (score <= 4) {
+                // Minimal Depression
+                advice = `<div class="p-3 rounded" style="background-color: #F5FFFA; color: #155724;">
+            <h6><i class="fas fa-smile"></i> 🟢 Minimal Depression (Score: ${score})</h6>
+            <strong>✅ Status:</strong> You are showing minimal or no symptoms of depression. That’s a positive sign!<br><br>
+
+            <strong>🧠 Mental Wellness Tips:</strong>
+            <ul>
+                <li>Keep a regular sleep and meal schedule.</li>
+                <li>Stay socially active and engage with supportive people.</li>
+                <li>Try gratitude journaling or mindfulness apps for emotional balance.</li>
+                <li>Exercise 3–5 times a week — even light walking helps.</li>
+            </ul>
+
+            <strong>📌 Preventive Care:</strong>
+            <ul>
+                <li>Check in with yourself regularly — emotional shifts can be gradual.</li>
+                <li>If you feel persistently low, don’t hesitate to talk to someone.</li>
+            </ul>
+        </div>`;
+            } else if (score <= 9) {
+                // Mild Depression
+                advice = `<div class="p-3 rounded" style="background-color: #FFFFE0; color: #856404;">
+            <h6><i class="fas fa-meh"></i> 🟡 Mild Depression (Score: ${score})</h6>
+            <strong>🔍 Interpretation:</strong> You may be experiencing mild depressive symptoms. Early action can prevent escalation.<br><br>
+
+            <strong>🧘 Self-Care Strategies:</strong>
+            <ul>
+                <li>Establish a consistent routine with sleep, meals, and exercise.</li>
+                <li>Limit social media and news exposure — try digital detox days.</li>
+                <li>Practice deep breathing or short meditations daily (5–10 mins).</li>
+                <li>Spend time in nature or get 15–30 mins of sunlight daily.</li>
+            </ul>
+
+            <strong>💬 Emotional Expression:</strong>
+            <ul>
+                <li>Talk to a trusted friend or family member about how you’re feeling.</li>
+                <li>Journaling can help identify thought patterns and reduce mental clutter.</li>
+            </ul>
+
+            <strong>📌 Follow-Up:</strong>
+            <ul>
+                <li>If symptoms persist beyond 2 weeks, consult a mental health professional.</li>
+                <li>Early therapeutic interventions like CBT or group counseling are helpful.</li>
+            </ul>
+        </div>`;
+            } else if (score <= 14) {
+                // Moderate Depression
+                advice = `<div class="p-3 rounded" style="background-color: #FFDEAD; color: #664d03;">
+            <h6><i class="fas fa-frown"></i> 🟠 Moderate Depression (Score: ${score})</h6>
+            <strong>⚠️ Interpretation:</strong> Your symptoms are moderate and could affect your daily life. This is the right time to seek support.<br><br>
+
+            <strong>👨‍⚕️ Professional Support:</strong>
+            <ul>
+                <li>Make an appointment with a therapist or counselor — CBT and talk therapy are effective.</li>
+                <li>Ask your doctor about available treatment options.</li>
+            </ul>
+
+            <strong>🧠 Healthy Habits:</strong>
+            <ul>
+                <li>Track mood changes using a daily journal or app.</li>
+                <li>Avoid alcohol, smoking, and recreational drugs — they worsen symptoms.</li>
+                <li>Try structured activities (e.g., painting, puzzles, gentle workouts).</li>
+            </ul>
+
+            <strong>📌 Tips for Recovery:</strong>
+            <ul>
+                <li>Stick to a sleep schedule — avoid oversleeping or sleep deprivation.</li>
+                <li>Reach out to support groups (online or local) for connection and advice.</li>
+            </ul>
+        </div>`;
+            } else if (score <= 19) {
+                // Moderately Severe Depression
+                advice = `<div class="p-3 rounded" style="background-color: #FBCEB1; color: #721c24;">
+            <h6><i class="fas fa-sad-tear"></i> 🔴 Moderately Severe Depression (Score: ${score})</h6>
+            <strong>🚨 Attention Needed:</strong> You are showing significant symptoms of depression that likely impact daily life.<br><br>
+
+            <strong>👨‍⚕️ Immediate Steps:</strong>
+            <ul>
+                <li>Schedule an evaluation with a licensed mental health professional.</li>
+                <li>Therapy is strongly recommended — CBT, DBT, or medication options may help.</li>
+            </ul>
+
+            <strong>🧠 Stabilizing Actions:</strong>
+            <ul>
+                <li>Create a safety plan if you experience intrusive thoughts — inform a loved one.</li>
+                <li>Keep a mood log — share it with your therapist to track progress.</li>
+                <li>Prioritize small, manageable tasks daily to avoid overwhelm.</li>
+            </ul>
+
+            <strong>📌 Crisis Support:</strong>
+            <ul>
+                <li>If you feel unsafe or hopeless, contact emergency mental health services.</li>
+                <li>Many countries offer 24/7 mental health helplines — please reach out.</li>
+            </ul>
+        </div>`;
+            } else {
+                // Severe Depression
+                advice = `<div class="p-3 rounded" style="background-color: #FBCEB1; color: #721c24;">
+            <h6><i class="fas fa-exclamation-triangle"></i> 🔴 Severe Depression (Score: ${score})</h6>
+            <strong>❗ Critical Concern:</strong> You are experiencing severe depressive symptoms. This condition requires immediate professional care.<br><br>
+
+            <strong>🆘 Emergency Measures:</strong>
+            <ul>
+                <li>Do not delay — contact a mental health professional immediately.</li>
+                <li>Visit the nearest hospital or emergency service if you're feeling unsafe.</li>
+                <li>Talk to a trusted family member or friend and let them assist you.</li>
+            </ul>
+
+            <strong>🧠 What Can Help:</strong>
+            <ul>
+                <li>Structured therapy + medications are often necessary at this stage.</li>
+                <li>Joining a support group can reduce isolation and promote healing.</li>
+                <li>Even short daily walks or light activities can help interrupt negative thought patterns.</li>
+            </ul>
+
+            <strong>📌 Important Reminder:</strong>
+            <ul>
+                <li>You are not alone. There is hope. Depression is treatable — recovery is possible.</li>
+                <li>Please reach out today. Your life matters.</li>
+            </ul>
+        </div>`;
+            }
+
+            return advice;
+        }
+
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </body>
 
 </html>

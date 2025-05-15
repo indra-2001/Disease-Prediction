@@ -833,6 +833,61 @@ def bmi():
 def bmr():
     return render_template("BMR.html")
 
+@app.route('/depression', methods=['GET', 'POST'])
+def depression():
+    if request.method == 'POST':
+        try:
+            scores = []
+            for i in range(1, 10):
+                val = request.form.get(f'q{i}')
+                scores.append(int(val) if val else 0)
+
+            total_score = sum(scores)
+
+            # Generate message based on PHQ-9 scoring scale
+            if total_score <= 4:
+                message = "😊 Your depression score is low. You are likely experiencing minimal or no depression symptoms. Keep taking care of your mental health!"
+            elif total_score <= 9:
+                message = "😐 You are showing some mild depressive symptoms. Consider trying mindfulness, regular activity, or talking to someone you trust."
+            elif total_score <= 14:
+                message = "⚠️ Your score suggests moderate depression. Speaking to a mental health professional would be beneficial."
+            elif total_score <= 19:
+                message = "⚠️ You may be experiencing moderately severe depression. Please consult a healthcare provider soon."
+            else:
+                message = "🚨 Your score indicates severe depression. Immediate professional help is strongly recommended."
+
+            
+            return jsonify({"score": total_score, "message": message})
+        except Exception as e:
+            return jsonify({"error": str(e)})
+    
+    return render_template("depression.html")
+
+
+
+@app.route('/anxiety', methods=['GET', 'POST'])
+def anxiety():
+    if request.method == 'POST':
+        try:
+            scores = [int(request.form.get(f'q{i}', 0)) for i in range(1, 8)]
+            total_score = sum(scores)
+
+            if total_score <= 4:
+                message = "😊 Minimal anxiety. You're likely doing well, but keep maintaining your mental wellness habits."
+            elif total_score <= 9:
+                message = "😐 Mild anxiety symptoms. Practicing relaxation techniques may help. Monitor your feelings."
+            elif total_score <= 14:
+                message = "⚠️ Moderate anxiety. Consider seeking support from a counselor or therapist."
+            else:
+                message = "🚨 Severe anxiety. Please consult a mental health professional as soon as possible."
+
+            return jsonify({"score": total_score, "message": message})
+        except Exception as e:
+            return jsonify({"error": str(e)})
+    
+    return render_template("anxiety.html")
+
+
 
 @app.route('/profile')
 def profile():
