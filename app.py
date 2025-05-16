@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, flash,session,url_for,jsonify
+from flask import Flask, render_template, request, redirect, flash,session,url_for,jsonify,send_from_directory
 from flask_mysqldb import MySQL
 import re
 import os
@@ -17,6 +17,10 @@ from itsdangerous import URLSafeTimedSerializer
 import dotenv
 from fpdf import FPDF
 from datetime import datetime
+os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing.image import load_img, img_to_array
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -44,7 +48,6 @@ app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''  # Change to your MySQL password
 app.config['MYSQL_DB'] = 'healthcheck'
-#app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 mysql = MySQL(app)
 
@@ -67,6 +70,12 @@ model_package = joblib.load('parkinsons_model_package.sav')
 model = model_package['model']
 scaler = model_package['scaler']
 selected_features = model_package['features']
+
+# Load brain tumor classification model
+tumor_model = load_model("model.h5")
+
+# Define class labels in same order as during training
+tumor_class_labels = ['glioma', 'meningioma', 'notumor', 'pituitary']
 
 with open("disease_predictor.pkl", "rb") as f:
     model = pickle.load(f)
@@ -312,6 +321,11 @@ def predict_disease():
 def about():
     return render_template('about.html')
 
+# About Route
+@app.route('/aboutD')
+def aboutD():
+    return render_template('aboutD.html')
+
 # Dashboard (Protected Route)
 @app.route('/dashboard')
 def dashboard():
@@ -352,23 +366,98 @@ def heart_prediction():
             # Result message
             result_text = "Heart Disease Detected (Positive)" if prediction == 1 else "No Heart Disease (Negative)"
 
-            # Medicine advice if prediction is positive
+            # advices according to condition
             if prediction == 1:
-                advice = (
-                    "Suggested actions:\n"
-                    "- Aspirin (blood thinner)\n"
-                    "- Beta-blockers (e.g., Metoprolol)\n"
-                    "- Statins (e.g., Atorvastatin for cholesterol)\n"
-                    "- ACE inhibitors (e.g., Ramipril)\n"
-                    "- Lifestyle: quit smoking, reduce salt intake, exercise regularly"
-                )
+                decission = "🔴 Heart Disease Detected (Positive)";
+                advice = """
+<p>Your test suggests signs of heart disease. Early intervention through medication, lifestyle changes, and regular monitoring is essential to reduce risk and improve quality of life.</p>
+
+<h5 class="mt-4 fw-bold text-danger"><i class="bi bi-activity text-primary fs-3 me-2"></i>Advices to Manage Your Condition ----</h5>
+
+<h6 class="mt-3" style="color:#d63384;"><i class="bi bi-capsule-pill me-2"></i>Medications:</h6>
+<ul class="ms-3">
+    <li>Do not stop medications without consulting your doctor.</li>
+    <li>Take prescribed medicines on time (e.g., beta-blockers, statins, aspirin, ACE inhibitors).</li>
+    <li>Avoid over-the-counter NSAIDs like ibuprofen unless approved by your cardiologist.</li>
+    <li>Inform your doctor about all supplements or herbal products you're using.</li>
+</ul>
+
+<h6 class="mt-3" style="color:#20c997;"><i class="bi bi-egg-fried me-2"></i>Diet & Nutrition:</h6>
+<ul class="ms-3">
+    <li>Eat more fruits, vegetables, whole grains, and lean proteins.</li>
+    <li>Reduce salt intake to lower blood pressure.</li>
+    <li>Avoid saturated fats and trans fats — limit red meat, butter, and fried foods.</li>
+    <li>Cut back on sugar and processed foods to manage weight and blood sugar.</li>
+</ul>
+
+<h6 class="mt-3" style="color:#fd7e14;"><i class="bi bi-person-walking me-2"></i>Lifestyle:</h6>
+<ul class="ms-3">
+    <li>Quit smoking — it significantly worsens heart and blood vessel health.</li>
+    <li>Exercise regularly (e.g., brisk walking 30 minutes a day, 5 days a week).</li>
+    <li>Maintain a healthy weight and BMI.</li>
+    <li>Limit alcohol — excess drinking raises blood pressure and heart risk.</li>
+    <li>Sleep 7–8 hours daily and manage stress with relaxation techniques like yoga or meditation.</li>
+</ul>
+
+<h6 class="mt-3" style="color:#0d6efd;"><i class="bi bi-heart-pulse me-2"></i>Monitor Your Health:</h6>
+<ul class="ms-3">
+    <li>Check blood pressure and cholesterol levels regularly.</li>
+    <li>Monitor heart rate and report irregular beats or chest discomfort.</li>
+    <li>Keep diabetes under control if present.</li>
+    <li>Attend regular follow-ups and screenings (e.g., ECG, echocardiogram if advised).</li>
+</ul>
+
+<h6 class="mt-3" style="color:#dc3545;"><i class="bi bi-exclamation-triangle-fill me-2"></i>Seek Medical Help If:</h6>
+<ul class="ms-3">
+    <li>You feel chest pain, tightness, or pressure.</li>
+    <li>You experience sudden fatigue, breathlessness, or dizziness.</li>
+    <li>You notice swelling in legs, ankles, or sudden weight gain.</li>
+    <li>Your symptoms worsen or new ones appear.</li>
+</ul>
+
+<p class="mt-3"><strong>Note:</strong> Always follow up with your cardiologist for a tailored treatment plan.</p>
+            """
+
             else:
-                advice = "Keep maintaining a healthy lifestyle — regular exercise, healthy diet, avoid smoking."
+                decission = "🟢 No Heart Disease Detected (Negative)";        
+                advice = """
+<p>Great news! Your test results do not show signs of heart disease. But staying heart-healthy is a lifelong effort.</p>
+
+<h5 class="mt-4 fw-bold text-success"><i class="bi bi-heart-pulse text-primary fs-4 me-2 align-middle"></i>Continue with These Practices to Maintain Your Heart Health ----</h5>
+
+<h6 class="mt-3" style="color:#20c997;"><i class="bi bi-egg-fried me-2"></i>Diet & Nutrition:</h6>
+<ul class="ms-3">
+    <li>Follow a Mediterranean-style diet: rich in vegetables, fruits, whole grains, and lean proteins.</li>
+    <li>Avoid processed, sugary, and fatty foods.</li>
+    <li>Use healthy fats like olive oil instead of butter or margarine.</li>
+    <li>Reduce salt to help keep blood pressure in check.</li>
+</ul>
+
+<h6 class="mt-3" style="color:#fd7e14;"><i class="bi bi-person-walking me-2"></i>Lifestyle:</h6>
+<ul class="ms-3">
+    <li>Be physically active at least 150 minutes a week (e.g., brisk walking, cycling).</li>
+    <li>Avoid tobacco in all forms — it damages your heart and blood vessels.</li>
+    <li>Limit alcohol consumption.</li>
+    <li>Maintain a healthy weight and sleep 7–8 hours nightly.</li>
+    <li>Practice stress reduction techniques such as yoga, meditation, or deep breathing.</li>
+</ul>
+
+<h6 class="mt-3" style="color:#0d6efd;"><i class="bi bi-clipboard-pulse me-2"></i>Monitor Regularly:</h6>
+<ul class="ms-3">
+    <li>Get your blood pressure, cholesterol, and glucose levels checked routinely.</li>
+    <li>If you have a family history of heart disease, keep up with screenings.</li>
+</ul>
+
+<p class="mt-3 fw-semibold">Keep in touch with your healthcare provider for periodic evaluations.</p>
+<p><strong>A healthy lifestyle today means a healthier heart tomorrow!</strong></p>
+            """
+
 
             return jsonify({
                 "success": True,
                 "prediction": result_text,
-                "advice": advice
+                "advice": advice,
+                "decission": decission
             })
 
         except Exception as e:
@@ -455,8 +544,97 @@ def diabetes():
 
             # Determine result
             result_text = "Diabetes Detected (Positive)" if prediction == 1 else "No Diabetes (Negative)"
+            
+            # advices according to condition
+            if prediction == 1:
+                decission = "🔴 Diabetes Detected (Positive)";
+                advice = """
+<p>Your test indicates signs of Diabetes. Managing blood sugar levels through diet, exercise, medication, and monitoring is crucial to prevent complications and maintain a healthy life.</p>
 
-            return jsonify({"success": True, "prediction": result_text})
+<h5 class="mt-4 fw-bold text-danger"><i class="bi bi-graph-up-arrow text-primary fs-3 me-2"></i>Advices to Manage Your Condition ----</h5>
+
+<h6 style="color: #1E90FF; margin-top: 20px;"><i class="bi bi-capsule me-2"></i>Medications</h6>
+<ul>
+  <li>Take your diabetes medications exactly as prescribed.</li>
+  <li>Do not skip doses and never change dosages without consulting your doctor.</li>
+  <li>If using insulin, store it properly and learn correct injection techniques.</li>
+  <li>Discuss all supplements or herbal remedies with your healthcare provider before using them.</li>
+</ul>
+
+<h6 style="color: #d35400; margin-top: 20px;"><i class="bi bi-egg-fried me-2"></i>Diet & Nutrition</h6>
+<ul>
+  <li>Focus on whole grains, fresh vegetables, lean proteins, and healthy fats.</li>
+  <li>Limit sugary foods, sweetened drinks, and processed snacks.</li>
+  <li>Watch carbohydrate intake and follow a consistent meal plan.</li>
+  <li>Reduce sodium to help control blood pressure.</li>
+</ul>
+
+<h6 style="color: #27ae60; margin-top: 20px;"><i class="bi bi-heart-pulse me-2"></i>Lifestyle</h6>
+<ul>
+  <li>Engage in at least 30 minutes of physical activity most days of the week.</li>
+  <li>Quit smoking — it raises your risk of complications.</li>
+  <li>Limit alcohol intake; it can affect blood sugar levels.</li>
+  <li>Maintain a healthy weight and aim for steady, gradual weight loss if overweight.</li>
+  <li>Get enough restful sleep and manage stress effectively.</li>
+</ul>
+
+<h6 style="color: #8e44ad; margin-top: 20px;"><i class="bi bi-clipboard2-pulse me-2"></i>Monitor Your Health</h6>
+<ul>
+  <li>Check your blood sugar regularly and track results.</li>
+  <li>Monitor blood pressure and cholesterol levels.</li>
+  <li>Keep an eye on your feet for cuts, blisters, or infections.</li>
+  <li>Get regular eye exams and kidney function tests.</li>
+</ul>
+
+<h6 style="color: #c0392b; margin-top: 20px;"><i class="bi bi-exclamation-triangle me-2"></i>Seek Medical Help If</h6>
+<ul>
+  <li>You experience frequent urination, extreme thirst, or fatigue.</li>
+  <li>You notice blurred vision or slow-healing wounds.</li>
+  <li>You feel tingling, numbness, or pain in hands and feet.</li>
+  <li>You have sudden changes in blood sugar readings.</li>
+</ul>
+
+<p style="margin-top: 15px;"><strong>Note:</strong> Diabetes is manageable with the right care plan. Stay in regular contact with your healthcare team and attend all follow-up appointments.</p>
+        """
+
+            else:
+                decission = "🟢 No Diabetes Detected (Negative)";        
+                advice = """
+<p>Great news! Your test results do not show signs of diabetes. However, maintaining healthy habits is essential to prevent the onset of diabetes in the future.</p>
+
+<h5 class="mt-4 fw-bold text-primary"><i class="bi bi-shield-check fs-3 me-2 text-success"></i>Continue with These Practices to Manage and Prevent Diabetes ----</h5>
+
+<h6 style="color: #2c3e50; margin-top: 20px;"><i class="bi bi-nutrition me-2"></i>Diet & Nutrition</h6>
+<ul>
+  <li>Eat a balanced diet rich in whole grains, vegetables, fruits, and lean proteins.</li>
+  <li>Limit consumption of sugary foods, sweetened beverages, and processed snacks.</li>
+  <li>Control portion sizes to maintain a healthy weight and prevent blood sugar spikes.</li>
+  <li>Choose fiber-rich foods like oats, legumes, and brown rice to improve insulin sensitivity.</li>
+</ul>
+
+<h6 style="color: #27ae60; margin-top: 20px;"><i class="bi bi-bicycle me-2"></i>Lifestyle</h6>
+<ul>
+  <li>Engage in regular physical activity — at least 150 minutes per week (e.g., walking, cycling, swimming).</li>
+  <li>Avoid tobacco use — it increases the risk of type 2 diabetes and other health issues.</li>
+  <li>Limit alcohol intake to moderate levels (if consumed at all).</li>
+  <li>Maintain a healthy body weight and body mass index (BMI).</li>
+  <li>Get adequate sleep and manage stress through mindfulness or relaxation techniques.</li>
+</ul>
+
+<h6 style="color: #8e44ad; margin-top: 20px;"><i class="bi bi-activity me-2"></i>Monitor Your Health</h6>
+<ul>
+  <li>Get blood sugar levels tested annually, especially if you have a family history of diabetes.</li>
+  <li>Check blood pressure and cholesterol regularly as part of routine health checks.</li>
+  <li>Watch for early signs of insulin resistance like fatigue, weight gain, or increased thirst.</li>
+</ul>
+
+<p style="margin-top: 15px;"><strong>Keep up the good work!</strong> A healthy lifestyle helps you stay diabetes-free and supports your overall well-being.</p>
+                """
+
+            return jsonify({"success": True,
+                            "prediction": result_text,
+                            "advice": advice,
+                            "decission": decission})
 
         except Exception as e:
             return jsonify({"success": False, "error": str(e)})
@@ -465,53 +643,74 @@ def diabetes():
 
 
 
+# @app.route('/parkinson', methods=['POST','GET'])
+# def predict():
+#     if request.method == 'POST':
+#         try:
+#             # Get form values
+#             features = [
+#                 float(request.form['fo']),
+#                 float(request.form['fhi']),
+#                 float(request.form['flo']),
+#                 float(request.form['Jitter_percent']),
+#                 float(request.form['Jitter_Abs']),
+#                 float(request.form['RAP']),
+#                 float(request.form['PPQ']),
+#                 float(request.form['DFA']),
+#                 float(request.form['Shimmer']),
+#                 float(request.form['Shimmer_dB']),
+#                 float(request.form['APQ3']),
+#                 float(request.form['APQ5']),
+#                 float(request.form['APQ']),
+#                 float(request.form['DDA']),
+#                 float(request.form['NHR']),
+#                 float(request.form['HNR']),
+#                 float(request.form['RPDE']),
+#                 float(request.form['D2']),
+#                 float(request.form['spread1']),
+#                 float(request.form['spread2']),
+#                 float(request.form['PPE'])
+#             ]
+
+#             input_data = np.array([features])
+#             prediction = parkinson.predict(input_data)
+
+#             result = "Parkinson's Detected" if prediction[0] == 1 else "Healthy - No Parkinson's Detected"
+#             return jsonify({"success": True, "prediction": result})
+        
+#         except Exception as e:
+#             return jsonify({"success": False, "error": str(e)})
+#     return render_template('parkinson.html')
 @app.route('/parkinson', methods=['GET', 'POST'])
-def parkinson():
-    result = None
-    suggestion = None
+def predict_parkinson():
     if request.method == 'POST':
         try:
-            # Get input values from the form
-            input_values = [float(request.form[feature]) for feature in selected_features]
+            # Extract float values from form for selected features
+            input_data = [float(request.form.get(feat, 0)) for feat in selected_features]
 
-
-            # Create DataFrame
-            input_df = pd.DataFrame([input_values], columns=selected_features)
+            # Prepare DataFrame
+            input_df = pd.DataFrame([input_data], columns=selected_features)
 
             # Scale and predict
             input_scaled = scaler.transform(input_df)
             prediction = model.predict(input_scaled)[0]
 
-            # Generate result and suggestion
             if prediction == 1:
-                result = "Parkinson's Detected 😔"
-                suggestion = (
-                    "Please consult a neurologist for a detailed diagnosis. "
-                    "Engaging in physical therapy, voice exercises, a healthy diet, and regular follow-ups "
-                    "can help manage symptoms effectively. Joining a support group is also highly beneficial."
-                )
+                result = "Parkinson's Detected"
             else:
-                result = "Healthy 🙂"
+                result = "Healthy"
+
+            return jsonify({
+                "prediction": result,
+                "result": int(prediction)
+            })
 
         except Exception as e:
-            result = f"Error occurred: {e}"
-    return render_template('parkinson.html', features=selected_features, result=result)
-          # Create DataFrame
-          #input_df = pd.DataFrame([input_values], columns=selected_features)
-
-            # Scale and predict
-            #input_scaled = scaler.transform(input_df)
-            #prediction = model.predict(input_scaled)[0]
-
-            # Generate result
-            #result = "Parkinson's Detected 😔" if prediction == 1 else "Healthy 🙂"
-
-        #except Exception as e:
-            #result = f"Error occurred: {e}"
-
-    #return render_template('parkinson.html', features=selected_features, result=result)
-    return render_template('parkinson.html', features=selected_features, result=result, suggestion=suggestion)
-
+            return jsonify({
+                "prediction": f"Error: {str(e)}",
+                "result": -1
+            })
+    return render_template('parkinson.html', features=selected_features)
 
 @app.route('/Breast_cancer', methods=['GET', 'POST'])
 def Breast_cancer():
@@ -535,7 +734,7 @@ def Breast_cancer():
             # Determine result
             result_text = "The Breast Cancer is Benign" if prediction == 0 else "The Breast cancer is Malignant"
 
-            return jsonify({"success": True, "prediction": result_text})
+            return jsonify({"success": True, "prediction": result_text, "result": int(prediction)})
 
         except Exception as e:
             return jsonify({"success": False, "error": str(e)})
@@ -568,7 +767,8 @@ def liver():
             # Determine result
             result_text = "The prediction indicates a positive case of liver disease." if prediction == 1 else "You are predicted safe from liver disease (Negative)"
 
-            return jsonify({"success": True, "prediction": result_text})
+             # return jsonify({"success": True, "prediction": result_text})
+            return jsonify({"success": True, "prediction": result_text, "result": int(prediction)})
 
         except Exception as e:
             return jsonify({"success": False, "error": str(e)})
@@ -748,9 +948,67 @@ def health_activity():
     # Render the template with the fetched activities
     return render_template('bmi_bmr_activity.html', activities=activities)
 
+def predict_brain_tumor(image_path):
+    img_size = 224
+    img = load_img(image_path, target_size=(img_size, img_size))
+    img_array = img_to_array(img) / 255.0
+    img_array = np.expand_dims(img_array, axis=0)
+
+    predictions = tumor_model.predict(img_array)
+    pred_index = np.argmax(predictions)
+    confidence = np.max(predictions)
+
+    predicted_label = tumor_class_labels[pred_index]
+    if predicted_label == 'notumor':
+        return "No Tumor Detected", confidence
+    else:
+        return f"Tumor Detected: {predicted_label.title()}", confidence
+from werkzeug.utils import secure_filename
+from datetime import datetime
+
+@app.route('/tumor', methods=['GET', 'POST'])
+def tumor_detection():
+    if request.method == 'POST':
+        file = request.files['file']
+        if file:
+            original_filename = secure_filename(file.filename)
+
+            # Generate a timestamp string (e.g., 20250515_153045)
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            filename = f"{timestamp}_{original_filename}"
+
+            # TEMP: Save file first to a generic location
+            temp_path = os.path.join("static/tumor", filename)
+            file.save(temp_path)
+
+            # Predict from saved file
+            result_text, confidence = predict_brain_tumor(temp_path)
+
+            # Determine class label folder name
+            predicted_label = result_text.split(":")[-1].strip().lower().replace(" ", "") if "Tumor" in result_text else "notumor"
+
+            # Create class-specific subfolder (e.g., static/tumor/glioma)
+            save_folder = os.path.join("static/tumor", predicted_label)
+            os.makedirs(save_folder, exist_ok=True)
+
+            # Final file path
+            final_path = os.path.join(save_folder, filename)
+
+            # Move file to final subfolder
+            os.rename(temp_path, final_path)
+
+            return render_template('brain_tumor.html',
+                                   result=result_text,
+                                   confidence=f"{confidence * 100:.2f}%",
+                                   file_path=f"/{final_path.replace(os.sep, '/')}")
+    return render_template('brain_tumor.html', result=None)
+
+
+# @app.route('/uploads/<filename>')
+# def uploaded_file(filename):
+#     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
 
 if __name__ == '__main__':
     app.secret_key = "group10"
     app.run(debug=True)
-
-

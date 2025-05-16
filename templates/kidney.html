@@ -7,6 +7,8 @@
   <title>CKD Prediction</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
   <style>
     body {
@@ -69,6 +71,11 @@
       margin-right: 8px;
       color: #146C94;
     }
+
+    .modal-content {
+      border: 6px solid #1fe0b0;
+      border-radius: 10px;
+    }
   </style>
 </head>
 
@@ -81,20 +88,20 @@
         <div class="col-md-6">
           <div class="mb-3">
             <label class="form-label">Age</label>
-            <input type="number" class="form-control" name="Age" required />
+            <input type="number" class="form-control" name="Age" min="1" max="120" required />
           </div>
           <div class="mb-3">
-            <label class="form-label">Blood Pressure</label>
-            <input type="number" step="0.01" class="form-control" name="Blood Pressure" required />
+            <label class="form-label">Blood Pressure (systolic)</label>
+            <input type="number" step="0.01" class="form-control" name="Blood Pressure" min="50" max="200" required />
           </div>
           <div class="mb-3">
             <label class="form-label">Specific Gravity (Urine Concentration)</label>
             <input type="number" step="0.001" class="form-control" name="Specific gravity (Urine cocentration)"
-              required />
+              min="1.000" max="1.035" required />
           </div>
           <div class="mb-3">
             <label class="form-label">Albumin</label>
-            <select name="Albumin" class="form-select">
+            <select name="Albumin" class="form-select" required>
               <option value="">Select</option>
               <option value="0">No albumin</option>
               <option value="1">Small amount</option>
@@ -118,7 +125,7 @@
           </div> -->
           <div class="mb-3">
             <label class="form-label">Red Blood Cells in Urine</label>
-            <select name="Red Blood cells in Urine" class="form-select">
+            <select name="Red Blood cells in Urine" class="form-select" required>
               <option value="">Select</option>
               <option value="1">No RBCs</option>
               <option value="0">RBCs present</option>
@@ -154,7 +161,7 @@
           </div> -->
           <div class="mb-3">
             <label class="form-label">Blood Urea (mg/dL)</label>
-            <input type="number" step="0.01" class="form-control" name="Blood Urea(mg/dL)" required />
+            <input type="number" step="0.01" class="form-control" name="Blood Urea(mg/dL)" min="0" max="200" required />
           </div>
           <!-- <div class="mb-3">
             <label class="form-label">Serum Creatinine (mg/dL)</label>
@@ -166,7 +173,8 @@
         <div class="col-md-6">
           <div class="mb-3">
             <label class="form-label">Serum Creatinine (mg/dL)</label>
-            <input type="number" step="0.01" class="form-control" name="Serum Creatinine(mg/dL)" required />
+            <input type="number" step="0.01" class="form-control" name="Serum Creatinine(mg/dL)" min="0" max="10"
+              required />
           </div>
           <!-- <div class="mb-3">
             <label class="form-label">Sodium (mEq/L)</label>
@@ -178,11 +186,12 @@
           </div> -->
           <div class="mb-3">
             <label class="form-label">Hemoglobin (g/dL)</label>
-            <input type="number" step="0.1" class="form-control" name="Hemoglobin(g/dl)" required />
+            <input type="number" step="0.1" class="form-control" name="Hemoglobin(g/dl)" min="5" max="20" required />
           </div>
           <div class="mb-3">
             <label class="form-label">Packed Cell Volume (%)</label>
-            <input type="number" step="1" class="form-control" name="Packed Cell Volume(%)" />
+            <input type="number" step="1" class="form-control" name="Packed Cell Volume(%)" min="0" max="100"
+              required />
           </div>
           <!-- <div class="mb-3">
             <label class="form-label">WBC Count (/cmm)</label>
@@ -194,7 +203,7 @@
           </div> -->
           <div class="mb-3">
             <label class="form-label">Hypertension</label>
-            <select name="Hypertension" class="form-select">
+            <select name="Hypertension" class="form-select" required>
               <option value="">Select</option>
               <option value="1">Yes</option>
               <option value="0">No</option>
@@ -202,7 +211,7 @@
           </div>
           <div class="mb-3">
             <label class="form-label">Diabetes Mellitus</label>
-            <select name="Diabetes" class="form-select">
+            <select name="Diabetes" class="form-select" required>
               <option value="">Select</option>
               <option value="1">Yes</option>
               <option value="0">No</option>
@@ -241,7 +250,9 @@
             </select>
           </div> -->
         </div>
+              
       </div>
+
 
       <button type="submit" class="btn btn-primary btn-custom"><i class="fas fa-microscope me-2"></i>Predict</button>
       <a href="/dashboard" class="btn btn-secondary btn-custom mt-3"><i class="fas fa-arrow-left me-2"></i>Back</a>
@@ -258,13 +269,49 @@
         </thead>
         <tbody id="resultBody"></tbody>
       </table>
-      <button id="downloadPdf" class="btn btn-success btn-custom mt-2"><i class="fas fa-download me-2"></i>Download Report</button>
+      <button id="downloadPdf" class="btn btn-success btn-custom mt-2"><i class="fas fa-download me-2"></i>Download
+        Report</button>
+      <br>
+      <div class="d-flex justify-content-center">
+        <button type="button" id="adviceBtn" class="btn btn-success mt-3" data-bs-toggle="modal"
+          data-bs-target="#staticBackdrop" style="display: inline-block;">
+          <i class="fas fa-notes-medical me-2"></i>See Advices
+        </button>
+      </div>
     </div>
   </div>
 
+
+  <!-- modal for advises start-->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel"></h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="adviceContent">
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- modal for advises End-->
+
+
+
   <script>
-    //For report PDF generation
+    // For report PDF generation
     document.getElementById("downloadPdf").addEventListener("click", function () {
+      if (!globalFormData) {
+        alert("Please submit the form first to generate prediction.");
+        return;
+      }
+
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
 
@@ -272,9 +319,13 @@
       doc.setFontSize(18);
       doc.text("Kidney Disease Prediction Report", 14, 22);
 
+      const timestamp = new Date().toLocaleString();
+      doc.setFontSize(10);
+      doc.text("Generated on: " + timestamp, 14, 28);
+
       // User Input Data
       doc.setFontSize(12);
-      doc.text("User Input Data:", 14, 32);
+      doc.text("User Input Data:", 14, 36);
 
       const inputData = [];
       document.querySelectorAll("#resultBody tr").forEach(row => {
@@ -283,118 +334,63 @@
       });
 
       doc.autoTable({
-        startY: 36,
+        startY: 40,
         head: [['Parameter', 'Value']],
         body: inputData,
         theme: 'grid',
-        styles: { fontSize: 10 }
+        styles: { fontSize: 12 }
       });
 
-      //Adding advise:---->
-
-      // Gather form data for sending again
-      const formData = new FormData(document.getElementById("kidneyForm"));
+      let y = doc.lastAutoTable.finalY + 10;
+      doc.setFontSize(14);
+      if (window.lastResult == 0) {
+        doc.text("Prediction Result:  Positive (Chronic Kidney Disease Detected)", 14, y);
+      } else {
+        doc.text("Prediction Result:  Negative (Safe from Chronic Kidney Disease)", 14, y);
+      }
 
       fetch("/kidney", {
         method: "POST",
-        body: new URLSearchParams(formData)
+        body: new URLSearchParams(globalFormData)
       })
         .then(response => response.json())
         .then(data => {
-          // Add advice only if prediction is positive
-          if (data.result == 0) {
-            let y = doc.lastAutoTable.finalY + 15;
-            doc.setFontSize(18);
-            doc.setFont("helvetica", "bold");
-            // doc.text("Trusted Advices for You", 14, doc.lastAutoTable.finalY + 10);
-            doc.text("Trusted Advices for You", 14, y);
-            y+=15
+          const adviceHtml = getAdvice(parseInt(data.result));
 
-            doc.setFontSize(11);
-            doc.setFont("helvetica", "bold");
-            doc.text("Diet & Nutrition", 14, y);
-            doc.setFontSize(9);
-            doc.setFont("helvetica", "normal");
-            y += 4;
-            doc.text("- Limit salt intake to control blood pressure.", 14, y);
-            y += 4;
-            doc.text("- Reduce protein (meat, eggs, dairy) to ease kidney workload.", 14, y);
-            y += 4;
-            doc.text("- Limit potassium (bananas, oranges, potatoes).", 14, y);
-            y += 4;
-            doc.text("- Avoid phosphorus-rich foods (nuts, cheese, colas).", 14, y);
-            y += 4;
-            doc.text("- Drink adequate water; adjust if fluid retention occurs.", 14, y);
-            y += 4;
-            doc.text("- Avoid processed foods; choose fresh fruits and vegetables.", 14, y);
+          // Replace icons and remove tags
+          const adviceText = adviceHtml
+            .replace(/<li>/g, '• ')
+            .replace(/<h6[^>]*>/g, '# ')
+            .replace(/<[^>]+>/g, '');
 
-            y += 12;
-            doc.setFontSize(11);
-            doc.setFont("helvetica", "bold");
-            doc.text("Medication", 14, y);
-            doc.setFontSize(9);
-            doc.setFont("helvetica", "normal");
-            y += 4;
-            doc.text("- Take all prescribed medicines regularly.", 14, y);
-            y += 4;
-            doc.text("- Avoid NSAIDs like ibuprofen (can damage kidneys).", 14, y);
-            y += 4;
-            doc.text("- Discuss supplements and OTC drugs with your doctor.", 14, y);
+          const wrappedAdvice = doc.splitTextToSize(adviceText, 180);
+          const lineHeight = 4.5;
+          const requiredHeight = wrappedAdvice.length * lineHeight;
+          y = y + 10;
 
-            y += 12;
-            doc.setFontSize(11);
-            doc.setFont("helvetica", "bold");
-            doc.text("Monitor Health", 14, y);
-            doc.setFontSize(9);
-            doc.setFont("helvetica", "normal");
-            y += 4;
-            doc.text("- Check blood pressure regularly and keep it under control.", 14, y);
-            y += 4;
-            doc.text("- Get regular blood and urine tests.", 14, y);
-            y += 4;
-            doc.text("- Monitor blood sugar levels if diabetic.", 14, y);
-
-            y += 12;
-            doc.setFontSize(11);
-            doc.setFont("helvetica", "bold");
-            doc.text("Lifestyle", 14, y);
-            doc.setFontSize(9);
-            doc.setFont("helvetica", "normal");
-            y += 4;
-            doc.text("- Quit smoking – it worsens kidney damage.", 14, y);
-            y += 4;
-            doc.text("- Limit alcohol – it can raise blood pressure.", 14, y);
-            y += 4;
-            doc.text("- Exercise moderately (e.g., walk 30 minutes daily).", 14, y);
-            y += 4;
-            doc.text("- Maintain a healthy weight.", 14, y);
-
-            y += 12;
-            doc.setFontSize(11);
-            doc.setFont("helvetica", "bold");
-            doc.text("Seek Immediate Medical Attention If", 14, y);
-            doc.setFontSize(9);
-            doc.setFont("helvetica", "normal");
-            y += 4;
-            doc.text("- You notice swelling, fatigue, breathlessness, or urine changes.", 14, y);
-            y += 4;
-            doc.text("- You develop itchiness, nausea, or confusion (could indicate worsening CKD).", 14, y);
+          if (y + requiredHeight > doc.internal.pageSize.height - 10) {
+            doc.addPage();
+            y = 20;
           }
 
-          // Save the PDF after advice is added
-          doc.save("Chronic_Kidney_Disease_Prediction_Report.pdf");
-        });
+          doc.setFontSize(16);
+          doc.text("Trusted Advices For You :", 14, y);
 
-      // Save the PDF
-      // doc.save("Chronic Kidney Disease Prediction Report.pdf");
+          doc.setFontSize(10);
+          doc.text(wrappedAdvice, 14, y + 6);
+
+          doc.save("Chronic Kidney Disease Prediction Report.pdf");
+        });
     });
 
 
-
     // Displaying result table
+    let globalFormData = null;
+
     document.getElementById("kidneyForm").addEventListener("submit", function (event) {
       event.preventDefault();
       const formData = new FormData(this);
+      globalFormData = formData;
       fetch("/kidney", {
         method: "POST",
         body: new URLSearchParams(formData)
@@ -416,52 +412,180 @@
           }
           resultBody.innerHTML += `<tr><td><strong>Prediction</strong></td><td><strong>${data.prediction}</strong></td></tr>`;
           resultTable.style.display = "block";
-      // ✅ Generate PDF and send to server immediately after prediction
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
 
-      doc.setFontSize(18);
-      doc.text("Kidney Prediction Report", 14, 22);
 
-      doc.setFontSize(12);
-      doc.text("User Input Data:", 14, 32);
+          if (parseInt(data.result) == 0) {
+            document.getElementById("staticBackdropLabel").innerHTML = `<strong style="font-size: 1.3rem;">🔴 Chronic Kidney Disease Detected</strong>`;
+          } else {
+            document.getElementById("staticBackdropLabel").innerHTML = `<strong style="font-size: 1.3rem;">🟢 No Chronic Kidney Disease Detected</strong>`;
+          }
 
-      const inputData = [];
-      let predictionResult = data.prediction;
+          document.getElementById("adviceContent").innerHTML = getAdvice(parseInt(data.result));
 
-      for (let [key, value] of formData.entries()) {
-        inputData.push([key, value]);
-      }
+          // Save prediction globally if needed later
+          window.lastPrediction = data.result;
 
-      doc.autoTable({
-        startY: 36,
-        head: [['Parameter', 'Value']],
-        body: inputData,
-        theme: 'grid',
-        styles: { fontSize: 10 }
-      });
+          // ✅ Generate PDF and send to server immediately after prediction
+          const { jsPDF } = window.jspdf;
+          const doc = new jsPDF();
 
-      let finalY = doc.lastAutoTable.finalY + 10;
-      doc.setFontSize(12);
-      doc.text("Prediction Result: " + predictionResult, 14, finalY);
+          doc.setFontSize(18);
+          doc.text("Kidney Prediction Report", 14, 22);
 
-      const pdfBlob = doc.output("blob");
+          const timestamp = new Date().toLocaleString();
+          doc.setFontSize(10);
+          doc.text("Generated on: " + timestamp, 14, 28);
 
-      const pdfFormData = new FormData();
-      pdfFormData.append("pdf", pdfBlob, "Kidey_Report.pdf");
-      pdfFormData.append("prediction_result", predictionResult);
-      pdfFormData.append("disease_name", "Kidney");
+          doc.setFontSize(12);
+          doc.text("User Input Data:", 14, 32);
 
-      fetch("/save_pdf", {
-        method: "POST",
-        body: pdfFormData
-      });
+          const inputData = [];
+          let predictionResult = data.prediction;
+
+          for (let [key, value] of formData.entries()) {
+            inputData.push([key, value]);
+          }
+
+          doc.autoTable({
+            startY: 36,
+            head: [['Parameter', 'Value']],
+            body: inputData,
+            theme: 'grid',
+            styles: { fontSize: 10 }
+          });
+
+          let finalY = doc.lastAutoTable.finalY + 10;
+          doc.setFontSize(12);
+          doc.text("Prediction Result: " + predictionResult, 14, finalY);
+
+          // 🔁 Include advice text like the download logic
+          const adviceHtml = getAdvice(parseInt(data.result));
+          const adviceText = adviceHtml.replace(/<li>/g, '• ').replace(/<[^>]+>/g, '');
+          const wrappedAdvice = doc.splitTextToSize(adviceText, 180);
+          const lineHeight = 4.5;
+          const requiredHeight = wrappedAdvice.length * lineHeight;
+
+          // Start new page if needed
+          if (finalY + requiredHeight > doc.internal.pageSize.height - 10) {
+            doc.addPage();
+            finalY = 20;
+          } else {
+            finalY += 10;
+          }
+
+          doc.setFontSize(16);
+          doc.text("Trusted Advices For You:", 14, finalY);
+          doc.setFontSize(10);
+          doc.text(wrappedAdvice, 14, finalY + 6);
+
+
+          const pdfBlob = doc.output("blob");
+
+          const pdfFormData = new FormData();
+          pdfFormData.append("pdf", pdfBlob, "Kidey_Report.pdf");
+          pdfFormData.append("prediction_result", predictionResult);
+          pdfFormData.append("disease_name", "Kidney");
+
+          fetch("/save_pdf", {
+            method: "POST",
+            body: pdfFormData
+          });
+
+
+
+        });
     });
-});
-       
+    function getAdvice(category) {
+      if (category == 0) {
+        return `
+Your test indicates signs of CKD. It's important to adopt lifestyle and dietary changes, and follow medical advice to manage the condition.<br><br><br>
+
+<h5 class="text-danger"><i class="bi bi-check-circle-fill"></i>Advices to manage your condition ----</h5>
+
+<h6 class="mt-3 text-success"><i class="bi bi-basket-fill"></i>Diet & Nutrition :</h6>
+<ul class="text-start">
+  <li>Limit salt intake to control blood pressure.</li>
+  <li>Reduce protein (meat, eggs, dairy) to ease kidney workload.</li>
+  <li>Limit potassium (bananas, oranges, potatoes).</li>
+  <li>Avoid phosphorus-rich foods (nuts, cheese, colas).</li>
+  <li>Drink adequate water; adjust if fluid retention occurs.</li>
+  <li>Avoid processed foods; choose fresh fruits and vegetables.</li>
+</ul>
+
+<h6 class="mt-3 text-warning"><i class="bi bi-capsule-pill"></i> Medication :</h6>
+<ul class="text-start">
+  <li>Take all prescribed medicines regularly.</li>
+  <li>Avoid NSAIDs like ibuprofen (can damage kidneys).</li>
+  <li>Discuss supplements and OTC drugs with your doctor.</li>
+</ul>
+
+<h6 class="mt-3 text-primary"><i class="bi bi-heart-pulse-fill"></i> Monitor Health :</h6>
+<ul class="text-start">
+  <li>Check blood pressure regularly and keep it under control.</li>
+  <li>Get regular blood and urine tests.</li>
+  <li>Monitor blood sugar levels if diabetic.</li>
+</ul>
+
+<h6 class="mt-3 text-info"><i class="bi bi-activity"></i> Lifestyle :</h6>
+<ul class="text-start">
+  <li>Quit smoking – it worsens kidney damage.</li>
+  <li>Limit alcohol – it can raise blood pressure.</li>
+  <li>Exercise moderately (e.g., walk 30 minutes daily).</li>
+  <li>Maintain a healthy weight.</li>
+</ul>
+
+<h6 class="mt-3 text-danger"><i class="bi bi-exclamation-diamond-fill"></i> Seek Medical Help If :</h6>
+<ul class="text-start">
+  <li>You notice swelling in ankles, face, or hands.</li>
+  <li>You experience shortness of breath or fatigue.</li>
+  <li>Your urine output drops significantly.</li>
+  <li>You have persistent nausea or confusion.</li>
+</ul>
+
+<p class="mt-3 text-muted"><em>Note: Always consult a nephrologist for personalized care.</em></p>
+      `;
+      } else if (category == 1) {
+        return `
+Your test results show no signs of CKD. However, it's important to maintain healthy habits to keep your kidneys functioning well.<br><br><br>
+
+<h5 class="text-success"><i class="bi bi-check-circle-fill"></i> Preventive Advice for Healthy Kidneys ----</h5>
+
+<h6 class="mt-3 text-success"><i class="bi bi-basket-fill"></i> Diet & Hydration :</h6>
+<ul class="text-start">
+  <li>Eat a balanced diet rich in fruits, vegetables, and whole grains.</li>
+  <li>Limit sodium, processed foods, and high-protein diets.</li>
+  <li>Stay hydrated – drink plenty of water throughout the day.</li>
+</ul>
+
+<h6 class="mt-3 text-primary"><i class="bi bi-shield-plus"></i> Monitor & Protect :</h6>
+<ul class="text-start">
+  <li>Keep blood pressure and blood sugar in check.</li>
+  <li>Get regular kidney function tests if you have risk factors.</li>
+  <li>Avoid overuse of painkillers and other harmful drugs.</li>
+</ul>
+
+<h6 class="mt-3 text-info"><i class="bi bi-activity"></i> Lifestyle :</h6>
+<ul class="text-start">
+  <li>Exercise regularly and maintain a healthy weight.</li>
+  <li>Quit smoking and limit alcohol intake.</li>
+  <li>Manage stress effectively.</li>
+</ul>
+
+<h6 class="mt-3 text-warning"><i class="bi bi-search"></i> Be Aware of Symptoms :</h6>
+<ul class="text-start">
+  <li>If you experience fatigue, swelling, or frequent urination, consult a doctor.</li>
+</ul>
+      `;
+      } else {
+        return `<p>No advice available for this category.</p>`;
+      }
+    }
+
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </body>
 
 </html>
