@@ -1,144 +1,289 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Disease Predictor</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <script>
-        let symptomList = [];
-        let selectedSymptoms = [];
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Disease Predictor</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
-        async function fetchSymptoms() {
-            try {
-                const response = await fetch('/get_symptoms');
-                const data = await response.json();
-                symptomList = data.symptoms;
-            } catch (error) {
-                console.error('Failed to load symptoms:', error);
-            }
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(-45deg, #dff9fb, #c7ecee, #f6e58d, #ffbe76);
+      background-size: 400% 400%;
+      animation: gradient 15s ease infinite;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    @keyframes gradient {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
+    .header-section {
+      text-align: center;
+      padding: 50px 20px 30px;
+    }
+
+    .header-section img {
+      width: 120px;
+      margin-bottom: 15px;
+      animation: popIn 1s ease-in-out;
+    }
+
+    .header-section h2 {
+      font-weight: 700;
+      font-size: 2.5rem;
+      color: #34495e;
+    }
+
+    .header-section p {
+      font-size: 1.1rem;
+      color: #2d3436;
+    }
+
+    @keyframes popIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.6);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .card-glass {
+      backdrop-filter: blur(20px);
+      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+      border-radius: 20px;
+      padding: 30px;
+      transition: transform 0.3s;
+    }
+
+    .card-glass:hover {
+      transform: scale(1.02);
+    }
+
+    .btn-modern {
+      padding: 12px 24px;
+      font-weight: 600;
+      border-radius: 30px;
+      border: none;
+      box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .btn-modern:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0, 123, 255, 0.5);
+    }
+
+    .symptom-wrapper {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,.05);
+      padding: 10px 15px;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: fadeInUp 0.6s ease;
+    }
+
+    .symptom-wrapper:hover {
+      background-color: #f8f9fa;
+    }
+
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    select.form-select {
+      border-radius: 10px;
+    }
+
+    .alert-beauty {
+      background: #e8f0fe;
+      border-left: 5px solid #4a90e2;
+      color: #2c3e50;
+      font-weight: 500;
+      border-radius: 10px;
+      padding: 20px;
+      font-size: 1.1rem;
+    }
+
+    footer {
+      padding: 30px 0;
+      text-align: center;
+      background: rgba(255,255,255,0.4);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255,255,255,0.2);
+      border-radius: 30px 30px 0 0;
+      margin-top: 50px;
+    }
+
+    .btn-danger {
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      padding: 0;
+    }
+
+    @media (max-width: 600px) {
+      .btn-modern {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+    }
+  </style>
+
+  <script>
+    let symptomList = [];
+    let selectedSymptoms = [];
+
+    async function fetchSymptoms() {
+      try {
+        const response = await fetch('/get_symptoms');
+        const data = await response.json();
+        symptomList = data.symptoms;
+      } catch (error) {
+        console.error('Failed to load symptoms:', error);
+      }
+    }
+
+    function addDropdown() {
+      if (symptomList.length === 0) {
+        alert('Symptom list is not loaded yet.');
+        return;
+      }
+
+      const container = document.getElementById('symptom-container');
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'symptom-wrapper';
+
+      const icon = document.createElement('i');
+      icon.className = 'fas fa-stethoscope text-primary';
+
+      const select = document.createElement('select');
+      select.className = 'form-select flex-fill';
+      select.name = 'symptom';
+      select.onchange = updateSelectedSymptoms;
+
+      const defaultOption = document.createElement('option');
+      defaultOption.value = '';
+      defaultOption.innerText = 'Select Symptom';
+      select.appendChild(defaultOption);
+
+      symptomList.forEach(symptom => {
+        const option = document.createElement('option');
+        option.value = symptom;
+        option.innerText = symptom.replace(/_/g, ' ');
+        select.appendChild(option);
+      });
+
+      const removeButton = document.createElement('button');
+      removeButton.className = 'btn btn-danger';
+      removeButton.innerHTML = '&times;';
+      removeButton.onclick = () => removeDropdown(wrapper, select);
+
+      wrapper.appendChild(icon);
+      wrapper.appendChild(select);
+      wrapper.appendChild(removeButton);
+      container.appendChild(wrapper);
+      updateSelectedSymptoms();
+    }
+
+    function removeDropdown(wrapper, selectElement) {
+      document.getElementById('symptom-container').removeChild(wrapper);
+      selectedSymptoms = selectedSymptoms.filter(symptom => symptom !== selectElement.value);
+      updateSelectedSymptoms();
+    }
+
+    function updateSelectedSymptoms() {
+      const selects = document.getElementsByName('symptom');
+      selectedSymptoms = [];
+
+      selects.forEach(select => {
+        if (select.value) {
+          selectedSymptoms.push(select.value);
         }
+      });
 
-        function addDropdown() {
-            if (symptomList.length === 0) {
-                alert('Symptom list is not loaded yet.');
-                return;
-            }
+      document.getElementById('predict-button').disabled = selectedSymptoms.length < 2;
+    }
 
-            const container = document.getElementById('symptom-container');
-            
-            // Create a wrapper div for the dropdown and the cross button
-            const wrapper = document.createElement('div');
-            wrapper.className = 'd-flex align-items-center mb-2';
+    async function predictDisease() {
+      const response = await fetch('/predict_disease_symptoms', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ symptoms: selectedSymptoms })
+      });
 
-            // Create the dropdown label
-            const label = document.createElement('label');
-            label.innerText = `Symptom ${container.getElementsByTagName('select').length + 1}`;
-            label.className = 'form-label';
+      const result = await response.json();
+      let output = `<strong>Disease Prediction:</strong><br/>`;
+      if (result.results && result.results.length > 0) {
+        result.results.forEach(r => {
+          output += `<p class="mb-1">${r.disease} (<strong class="text-primary">${r.probability}%</strong>)</p>`;
+        });
+      } else {
+        output += `<p>No prediction available with the selected symptoms.</p>`;
+      }
+      document.getElementById('result').innerHTML = output;
+    }
 
-            // Create the dropdown
-            const select = document.createElement('select');
-            select.className = 'form-select me-2';
-            select.name = 'symptom';
-            select.onchange = updateSelectedSymptoms;
-
-            const defaultOption = document.createElement('option');
-            defaultOption.value = '';
-            defaultOption.innerText = 'Select Symptom';
-            select.appendChild(defaultOption);
-
-            symptomList.forEach(symptom => {
-                const option = document.createElement('option');
-                option.value = symptom;
-                option.innerText = symptom.replace(/_/g, ' ');
-                select.appendChild(option);
-            });
-
-            // Create the cross (remove) button
-            const removeButton = document.createElement('button');
-            removeButton.className = 'btn btn-danger btn-sm ms-2';
-            removeButton.innerText = '×';
-            removeButton.onclick = () => removeDropdown(wrapper, select, label);
-
-            // Append the elements to the wrapper
-            wrapper.appendChild(label);
-            wrapper.appendChild(select);
-            wrapper.appendChild(removeButton);
-
-            // Append the wrapper to the container
-            container.appendChild(wrapper);
-        }
-
-        function removeDropdown(wrapper, selectElement, labelElement) {
-            const container = document.getElementById('symptom-container');
-            container.removeChild(wrapper); // Remove the entire wrapper with the dropdown and cross button
-
-            // Remove the corresponding symptom from selectedSymptoms
-            selectedSymptoms = selectedSymptoms.filter(symptom => symptom !== selectElement.value);
-
-            // Recalculate the selected symptoms and update the "Predict Disease" button state
-            updateSelectedSymptoms();
-        }
-
-        function updateSelectedSymptoms() {
-            const selects = document.getElementsByName('symptom');
-            selectedSymptoms = [];
-
-            selects.forEach(select => {
-                if (select.value) {
-                    selectedSymptoms.push(select.value);
-                }
-            });
-
-            // Enable or disable the "Predict Disease" button based on selected symptoms count
-            const predictButton = document.getElementById('predict-button');
-            predictButton.disabled = selectedSymptoms.length < 2;
-        }
-
-        async function predictDisease() {
-            const response = await fetch('/predict_disease_symptoms', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ symptoms: selectedSymptoms })
-            });
-
-            const result = await response.json();
-            let output = `<strong>Disease Prediction:</strong><br/>`;
-            result.results.forEach(r => {
-                output += `${r.disease} (${r.probability}%)<br/>`;
-            });
-            document.getElementById('result').innerHTML = output;
-        }
-
-        window.onload = fetchSymptoms;
-    </script>
+    window.onload = fetchSymptoms;
+  </script>
 </head>
-<body class="container mt-5">
-    <!-- Header with Logo -->
-    <header class="text-center mb-4">
-        <img src="logo.png" alt="Logo" class="mb-3" style="width: 150px;">
-        <h2 class="mb-3">Disease Predictor</h2>
-    </header>
 
-    <!-- Back Button -->
-    <div class="mb-4">
-        <a href="/dashboard" class="btn btn-secondary">Back to Home</a>
+<body>
+  <div class="container py-4">
+    <div class="header-section">
+      <img src="../static/images/icon.png" alt="Icon">
+      <h2>Disease Predictor</h2>
+      <p>Get early health insights with symptom-based prediction.</p>
     </div>
 
-    <!-- Symptom Selection -->
-    <div id="symptom-container" class="mb-4"></div>
-    <button class="btn btn-secondary mt-2" onclick="addDropdown()">Add Symptom</button>
-    
-    <!-- Disease Prediction Button (Initially Disabled) -->
-    <button class="btn btn-primary mt-2" id="predict-button" onclick="predictDisease()" disabled>Predict Disease</button>
-    
-    <!-- Results Display -->
-    <div id="result" class="alert alert-info mt-4"></div>
+    <div class="text-start mb-3">
+      <a href="/dashboard" class="btn btn-outline-secondary btn-sm">
+        <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
+      </a>
+    </div>
 
-    <!-- Footer -->
-    <footer class="text-center mt-5">
-        <p>© 2025 Disease Prediction System. All Rights Reserved.</p>
+    <div class="card-glass">
+      <h4 class="text-primary mb-4">Select Symptoms</h4>
+      <div id="symptom-container" class="mb-4"></div>
+      <div class="d-flex flex-wrap gap-2">
+        <button class="btn btn-modern btn-success" onclick="addDropdown()">
+          <i class="fas fa-plus-circle me-1"></i> Add Symptom
+        </button>
+        <button class="btn btn-modern btn-primary" id="predict-button" onclick="predictDisease()" disabled>
+          <i class="fas fa-microscope me-1"></i> Predict Disease
+        </button>
+      </div>
+    </div>
+
+    <div class="card-glass mt-4">
+      <h5 class="mb-3 text-primary">Prediction Results</h5>
+      <div id="result" class="alert-beauty">
+        Select at least two symptoms to enable disease prediction.
+      </div>
+    </div>
+
+    <footer class="mt-5">
+      <p class="text-muted mb-1">&copy; 2025 Disease Predictor</p>
+      <small class="text-muted">This tool is for educational purposes and not a medical substitute.</small>
     </footer>
+  </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
