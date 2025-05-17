@@ -66,6 +66,8 @@ kidney_model =  pickle.load(open('kidney_disease(short).sav', 'rb'))
 Breast_Cancer_model = pickle.load(open('Breast_Cancer.sav', 'rb'))
 Liver_model = pickle.load(open('liver_model.sav', 'rb'))
 Liver_scaler_model = pickle.load(open('liver_scaler.sav', 'rb'))
+Fatty_Liver_model = pickle.load(open('fatty_liver_model.sav', 'rb'))
+Fatty_Liver_scaler_model = pickle.load(open('fatty_liver_scaler.sav', 'rb'))
 model_package = joblib.load('parkinsons_model_package.sav')
 model = model_package['model']
 scaler = model_package['scaler']
@@ -775,6 +777,43 @@ def liver():
             return jsonify({"success": False, "error": str(e)})
 
     return render_template('liver.html')
+
+
+@app.route('/fatty_liver', methods=['GET', 'POST'])
+def fatty_liver():
+    if request.method == 'POST':
+        try:
+            # Extract form values and convert them into float
+            input_data = [float(request.form[key]) for key in [
+                                                                    "Age",
+                                                                    "Gender",
+                                                                    "Body_Mass_Index",
+                                                                    "ALT",
+                                                                    "AST",
+                                                                    "GGT",
+                                                                    "Triglycerides",
+                                                                    "Glucose",
+                                                                    "Total_Cholesterol",
+                                                                    "HDL",
+                                                                    "LDL"
+                                                                ]]
+            #input_array = np.array(input_data).reshape(1, -1)
+            input_scaled = Fatty_Liver_scaler_model.transform([input_data])
+
+            # Predict using model
+            prediction = Fatty_Liver_model.predict(input_scaled)
+
+            # Determine result
+            result_text = "The prediction indicates a Severe illness." if prediction == 0 else "The prediction indicates a mild illness."
+
+             # return jsonify({"success": True, "prediction": result_text})
+            return jsonify({"success": True, "prediction": result_text, "result": int(prediction)})
+
+        except Exception as e:
+            return jsonify({"success": False, "error": str(e)})
+
+    return render_template('fatty_liver.html')
+
 
 
 
