@@ -853,6 +853,78 @@ def depression():
     return render_template("depression.html")
 
 
+'''@app.route('/stress_screening', methods=['GET', 'POST'])
+def stress_screening():
+    if request.method == 'POST':
+        try:
+            answers = {1: 4, 2: 4, 3: 4, 4: 0, 5: 0, 6: 4, 7: 0, 8: 0, 9: 4, 10: 4}
+            total_score = 0
+            positive_questions = {4, 5, 7, 8}
+            for i in range(1, 11):
+                score = answers[i]
+                if i in positive_questions:
+                    score = 4 - score  # Reverse scoring
+                    print(f"Q{i}: adjusted score = {score}")
+                    total_score += score
+
+            # Interpret PSS-10 score
+            if total_score <= 13:
+                message = "😊 Low stress. You're managing things well—keep it up!"
+            elif total_score <= 26:
+                message = "😐 Moderate stress. Consider stress-reducing activities like mindfulness, sleep, or exercise."
+            else:
+                message = "🚨 High stress. Prioritize self-care and consider speaking to a mental health professional."
+
+            print(f"Total score: {total_score}, Message: {message}")
+            return jsonify({"score": total_score, "message": message})
+
+        except Exception as e:
+            return jsonify({"error": f"Server error: {str(e)}"}), 500
+
+    return render_template("Stress_question_answer.html")
+'''
+
+@app.route('/stress_screening', methods=['GET', 'POST'])
+def stress_question_answer():
+    if request.method == 'POST':
+        try:
+            #print("Form data:",request.form)
+            scores = []
+            #reverse_scored_items = [4, 5, 7, 8]  # PSS-10 reverse scoring (1-indexed)
+
+            for i in range(1, 11):
+                val = request.form.get(f'q{i}', None)
+                if val is None or not val.isdigit():
+                    return jsonify({"error": f"Invalid or missing answer for question {i}"})
+
+                score = int(val)
+
+                # Apply reverse scoring
+                #if i in reverse_scored_items:
+                    #score = 4 - score  # Reverse the score (assuming scale 0 to 4)
+
+                scores.append(score)
+
+            total_score = sum(scores)
+
+            # Interpret stress levels (based on general PSS-10 interpretation)
+            if total_score <= 13:
+                message = "😊 Low stress. You seem to be managing things well."
+            elif total_score <= 26:
+                message = "😐 Moderate stress. Some stress is normal, but try relaxation techniques or mindfulness."
+            else:
+                message = "⚠️ High stress. Consider speaking with a counselor or therapist to find support strategies."
+
+
+            return jsonify({"score": total_score, "message": message})
+
+        except Exception as e:
+            return jsonify({"error": str(e)})
+
+    return render_template("Stress_question_answer.html")
+
+
+
 
 @app.route('/anxiety', methods=['GET', 'POST'])
 def anxiety():
