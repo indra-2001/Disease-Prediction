@@ -1,0 +1,624 @@
+%PDF-1.3
+%ºß¬à
+3 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 4 0 R
+>>
+endobj
+4 0 obj
+<<
+/Length 4964
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F1 18 Tf
+20.6999999999999993 TL
+0 g
+39.6850393700787407 779.5277952755905062 Td
+(Breast Cancer Classification Report) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+39.6850393700787407 762.5199212598424765 Td
+(Generated on: 5/14/2025, 1:05:39 PM) Tj
+ET
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0 g
+39.6850393700787407 739.8427559055118081 Td
+(User Input Data:) Tj
+ET
+0.1 0.74 0.61 rg
+0.78 G
+0. w
+0.1 0.74 0.61 rg
+40. 728.5041732283464171 393.6259249676584204 -21.4999999999999964 re
+f
+BT
+/F2 10 Tf
+11.5 TL
+1. g
+45. 715.0041732283464171 Td
+(Parameter) Tj
+ET
+0.1 0.74 0.61 rg
+0.78 G
+0. w
+0.1 0.74 0.61 rg
+433.6259249676584204 728.5041732283464171 121.6540750323414954 -21.4999999999999964 re
+f
+BT
+/F2 10 Tf
+11.5 TL
+1. g
+438.6259249676584204 715.0041732283464171 Td
+(Value) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 707.0041732283464171 393.6259249676584204 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 693.5041732283464171 Td
+(radius_mean) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+433.6259249676584204 707.0041732283464171 121.6540750323414954 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+438.6259249676584204 693.5041732283464171 Td
+(15) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 685.5041732283465308 393.6259249676584204 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 672.0041732283464171 Td
+(texture_mean) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+433.6259249676584204 685.5041732283465308 121.6540750323414954 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+438.6259249676584204 672.0041732283464171 Td
+(16) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 664.0041732283464171 393.6259249676584204 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 650.5041732283464171 Td
+(perimeter_mean) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+433.6259249676584204 664.0041732283464171 121.6540750323414954 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+438.6259249676584204 650.5041732283464171 Td
+(17) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 642.5041732283464171 393.6259249676584204 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 629.0041732283464171 Td
+(area_mean) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+433.6259249676584204 642.5041732283464171 121.6540750323414954 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+438.6259249676584204 629.0041732283464171 Td
+(18) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 621.0041732283465308 393.6259249676584204 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 607.5041732283464171 Td
+(smoothness_mean) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+433.6259249676584204 621.0041732283465308 121.6540750323414954 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+438.6259249676584204 607.5041732283464171 Td
+(19) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 599.5041732283464171 393.6259249676584204 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 586.0041732283464171 Td
+(compactness_mean) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+433.6259249676584204 599.5041732283464171 121.6540750323414954 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+438.6259249676584204 586.0041732283464171 Td
+(20) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 578.0041732283464171 393.6259249676584204 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 564.5041732283464171 Td
+(concavity_mean) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+433.6259249676584204 578.0041732283464171 121.6540750323414954 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+438.6259249676584204 564.5041732283464171 Td
+(21) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 556.5041732283464171 393.6259249676584204 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 543.0041732283464171 Td
+(concave points_mean) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+433.6259249676584204 556.5041732283464171 121.6540750323414954 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+438.6259249676584204 543.0041732283464171 Td
+(22) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 535.0041732283464171 393.6259249676584204 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 521.5041732283464171 Td
+(symmetry_mean) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+433.6259249676584204 535.0041732283464171 121.6540750323414954 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+438.6259249676584204 521.5041732283464171 Td
+(23) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 513.5041732283464171 393.6259249676584204 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 500.0041732283463602 Td
+(fractal_dimension_mean) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+433.6259249676584204 513.5041732283464171 121.6540750323414954 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+438.6259249676584204 500.0041732283463602 Td
+(24) Tj
+ET
+0.78 G
+0. w
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0. g
+39.6850393700787407 463.6577165354329395 Td
+(Prediction Result: The Breast cancer is Malignant) Tj
+ET
+endstream
+endobj
+5 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 6 0 R
+>>
+endobj
+6 0 obj
+<<
+/Length 2003
+>>
+stream
+0.5670000000000001 w
+0.78 G
+BT
+/F1 16 Tf
+18.3999999999999986 TL
+0. g
+39.6850393700787407 785.1970866141732586 Td
+(Trusted Advices For You:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0. g
+39.6850393700787407 768.1892125984252289 Td
+() Tj
+T* (Your pathology report indicates malignant breast cancer. It’s important to work closely with your) Tj
+T* (oncology team to plan treatment and support.) Tj
+T* () Tj
+T* ( Advice for Malignant Breast Cancer ----) Tj
+T* () Tj
+T* (Treatment Planning :) Tj
+T* () Tj
+T* (  • Discuss surgery options \(lumpectomy vs. mastectomy\) with your surgeon.) Tj
+T* (  • Ask about sentinel lymph node biopsy or axillary dissection.) Tj
+T* (  • Explore adjuvant therapies: chemotherapy, radiation, hormone therapy, or targeted therapy.) Tj
+T* () Tj
+T* () Tj
+T* ( Medication & Follow-up :) Tj
+T* () Tj
+T* (  • Adhere strictly to prescribed chemo or hormone medications.) Tj
+T* (  • Report any side effects \(nausea, hair loss, fatigue\) to your care team.) Tj
+T* (  • Schedule regular follow-up visits and imaging \(mammogram, MRI\).) Tj
+T* () Tj
+T* () Tj
+T* ( Lifestyle & Support :) Tj
+T* () Tj
+T* (  • Maintain a balanced diet rich in lean protein, fruits, and vegetables.) Tj
+T* (  • Engage in gentle exercise \(walking, yoga\) as tolerated.) Tj
+T* (  • Join a support group or counseling to help cope emotionally.) Tj
+T* () Tj
+T* () Tj
+T* ( Self-Care Tips :) Tj
+T* () Tj
+T* (  • Practice relaxation techniques \(meditation, breathing exercises\).) Tj
+T* (  • Keep a symptom diary to track pain, swelling, or mood changes.) Tj
+T* (  • Stay hydrated and rest whenever you feel fatigued.) Tj
+T* () Tj
+T* () Tj
+T* ( Seek Immediate Help If :) Tj
+T* () Tj
+T* (  • You develop sudden chest pain, fever, or signs of infection.) Tj
+T* (  • You notice rapid swelling or redness around the surgery site.) Tj
+T* (  • You experience shortness of breath or severe fatigue.) Tj
+T* () Tj
+T* () Tj
+T* (Note: Always follow up with your oncologist or breast surgeon for personalized guidance.) Tj
+T* (    ) Tj
+ET
+endstream
+endobj
+1 0 obj
+<</Type /Pages
+/Kids [3 0 R 5 0 R ]
+/Count 2
+>>
+endobj
+7 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+8 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+9 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+10 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+11 0 obj
+<<
+/Type /Font
+/BaseFont /Courier
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+12 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+13 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+14 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+15 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Roman
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+16 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+17 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Italic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+18 0 obj
+<<
+/Type /Font
+/BaseFont /Times-BoldItalic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+19 0 obj
+<<
+/Type /Font
+/BaseFont /ZapfDingbats
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+20 0 obj
+<<
+/Type /Font
+/BaseFont /Symbol
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+2 0 obj
+<<
+/ProcSet [/PDF /Text /ImageB /ImageC /ImageI]
+/Font <<
+/F1 7 0 R
+/F2 8 0 R
+/F3 9 0 R
+/F4 10 0 R
+/F5 11 0 R
+/F6 12 0 R
+/F7 13 0 R
+/F8 14 0 R
+/F9 15 0 R
+/F10 16 0 R
+/F11 17 0 R
+/F12 18 0 R
+/F13 19 0 R
+/F14 20 0 R
+>>
+/XObject <<
+>>
+>>
+endobj
+21 0 obj
+<<
+/Producer (jsPDF 2.4.0)
+/CreationDate (D:20250514130539+05'30')
+>>
+endobj
+22 0 obj
+<<
+/Type /Catalog
+/Pages 1 0 R
+/OpenAction [3 0 R /FitH null]
+/PageLayout /OneColumn
+>>
+endobj
+xref
+0 23
+0000000000 65535 f 
+0000007360 00000 n 
+0000009185 00000 n 
+0000000015 00000 n 
+0000000152 00000 n 
+0000005168 00000 n 
+0000005305 00000 n 
+0000007423 00000 n 
+0000007548 00000 n 
+0000007678 00000 n 
+0000007811 00000 n 
+0000007949 00000 n 
+0000008073 00000 n 
+0000008202 00000 n 
+0000008334 00000 n 
+0000008470 00000 n 
+0000008598 00000 n 
+0000008725 00000 n 
+0000008854 00000 n 
+0000008987 00000 n 
+0000009089 00000 n 
+0000009435 00000 n 
+0000009521 00000 n 
+trailer
+<<
+/Size 23
+/Root 22 0 R
+/Info 21 0 R
+/ID [ <1B55886128171782878A08F6A4E0F5E8> <1B55886128171782878A08F6A4E0F5E8> ]
+>>
+startxref
+9625
+%%EOF

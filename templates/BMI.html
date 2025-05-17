@@ -113,32 +113,118 @@
 
 
   <script>
-    document.getElementById("bmiForm").addEventListener("submit", function (e) {
-      e.preventDefault();
+     document.getElementById("bmiForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
 
-      const heightCm = parseFloat(document.getElementById("height").value);
-      const weightKg = parseFloat(document.getElementById("weight").value);
+    const heightCm = parseFloat(document.getElementById("height").value);
+    const weightKg = parseFloat(document.getElementById("weight").value);
 
-      if (heightCm > 0 && weightKg > 0) {
-        const heightM = heightCm / 100;
-        const bmi = weightKg / (heightM * heightM);
-        const roundedBmi = bmi.toFixed(1);
+    if (heightCm > 0 && weightKg > 0) {
+      const heightM = heightCm / 100;
+      const bmi = weightKg / (heightM * heightM);
+      const roundedBmi = bmi.toFixed(1);
 
-        let category = "";
-        if (bmi < 18.5) category = "Underweight";
-        else if (bmi < 24.9) category = "Normal weight";
-        else if (bmi < 29.9) category = "Overweight";
-        else category = "Obesity";
+      let category = "";
+      if (bmi < 18.5) category = "Underweight";
+      else if (bmi < 24.9) category = "Normal weight";
+      else if (bmi < 29.9) category = "Overweight";
+      else category = "Obesity";
 
-        document.getElementById("bmiValue").innerText = roundedBmi;
-        document.getElementById("bmiCategory").innerText = `Category: ${category}`;
-        document.getElementById("bmiResultBox").style.display = "block";
-        document.getElementById("staticBackdropLabel").innerText = `Your BMI : ${roundedBmi} -- ${category}`;
+      document.getElementById("bmiValue").innerText = roundedBmi;
+      document.getElementById("bmiCategory").innerText = `Category: ${category}`;
+      document.getElementById("bmiResultBox").style.display = "block";
+      document.getElementById("staticBackdropLabel").innerText = `Your BMI : ${roundedBmi} -- ${category}`;
 
-        document.getElementById("adviceBtn").style.display = "inline-block";
-        document.querySelector(".modal-body").innerHTML = getAdvice(category);
-      }
+      const adviceHtml = getAdvice(category);
+      document.getElementById("adviceBtn").style.display = "inline-block";
+      document.getElementById("adviceContent").innerHTML = adviceHtml;
 
+      // Create PDF content
+      const pdfContent = document.createElement('div');
+
+      const heading = document.createElement('h1');
+      heading.style.textAlign = "center";
+      heading.style.color = "#007bff";
+      heading.style.borderBottom = "5px solid #2196f3";
+      heading.style.marginBottom = "50px";
+      heading.innerText = `Your BMI : ${roundedBmi} -- ${category}`;
+
+      const clonedAdvice = document.createElement('div');
+      clonedAdvice.innerHTML = adviceHtml;
+      clonedAdvice.style.fontSize = "16px";
+      clonedAdvice.style.lineHeight = "1.7";
+      clonedAdvice.style.fontFamily = "Arial, sans-serif";
+
+      pdfContent.appendChild(heading);
+      pdfContent.appendChild(clonedAdvice);
+
+      const opt = {
+        margin: 0.5,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+
+      // Create Blob from HTML content
+      const pdfBlob = await html2pdf().set(opt).from(pdfContent).output('blob');
+
+     const formData = new FormData();
+      formData.append("height", heightCm);
+      formData.append("weight", weightKg);
+      formData.append("category", "BMI");
+      formData.append("result_value", roundedBmi);
+      formData.append("pdf", pdfBlob, "bmi_report.pdf");
+
+      fetch("/save_health_result", {
+        method: "POST",
+        body: formData
+      })
+      .then(response => {
+        if (response.ok) {
+          alert("✅ BMI data and report saved to database.");
+        } else {
+          alert("❌ Failed to save data.");
+        }
+      })
+      .catch(err => {
+        console.error("Error:", err);
+        alert("❌ Error sending data to server.");
+      });
+    }
+  });
+
+  function downloadAdvicePDF() {
+    const adviceHtml = document.getElementById("adviceContent").innerHTML;
+    const modalTitle = document.getElementById("staticBackdropLabel").innerText;
+
+    const pdfContent = document.createElement('div');
+
+    const heading = document.createElement('h1');
+    heading.style.textAlign = "center";
+    heading.style.color = "#007bff";
+    heading.style.borderBottom = "5px solid #2196f3";
+    heading.style.marginBottom = "50px";
+    heading.innerText = modalTitle;
+
+    const clonedAdvice = document.createElement('div');
+    clonedAdvice.innerHTML = adviceHtml;
+    clonedAdvice.style.fontSize = "16px";
+    clonedAdvice.style.lineHeight = "1.7";
+    clonedAdvice.style.fontFamily = "Arial, sans-serif";
+
+    pdfContent.appendChild(heading);
+    pdfContent.appendChild(clonedAdvice);
+
+    const opt = {
+      margin: 0.5,
+      filename: `BMI_Advice_Report.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(pdfContent).save();
+  }
       function getAdvice(category) {
         switch (category) {
           case "Underweight":
@@ -257,44 +343,7 @@
           default:
             return `<p>No advice available for this category.</p>`;
         }
-      }
-
-
-    });
-
-    function downloadAdvicePDF() {
-      const adviceElement = document.getElementById("adviceContent");
-
-      const modalTitle = document.getElementById("staticBackdropLabel").innerText;
-
-      // Creating a wrapper div for the content of the PDF
-      const pdfContent = document.createElement('div');
-
-      const heading = document.createElement('h1');
-      heading.style.textAlign = "center";
-      heading.style.color = "#007bff";
-      heading.style.borderBottom = "5px solid #2196f3";
-      heading.style.marginBottom = "50px";
-      heading.innerText = modalTitle;
-
-      const clonedAdvice = adviceElement.cloneNode(true);
-      clonedAdvice.style.fontSize = "16px";
-      clonedAdvice.style.lineHeight = "1.7";
-      clonedAdvice.style.fontFamily = "Arial, sans-serif";
-
-      pdfContent.appendChild(heading);
-      pdfContent.appendChild(clonedAdvice);
-
-      const opt = {
-        margin: 0.5,
-        filename: `BMI_Advice_Report.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-      };
-
-      html2pdf().set(opt).from(pdfContent).save();
-    }
+      }   
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>

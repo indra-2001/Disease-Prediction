@@ -49,6 +49,7 @@
       <div class="row">
         <!-- Left Column -->
         <div class="col-md-6">
+          <!-- Input fields with placeholders fixed -->
           <div class="mb-3">
             <label class="form-label">Age:</label>
             <input type="number" class="form-control" name="age" required>
@@ -56,7 +57,7 @@
           <div class="mb-3">
             <label class="form-label">Sex:</label>
             <select class="form-select" name="sex" required>
-              <option value="" disabled selected></option>
+              <option value="" disabled selected>Select an option</option>
               <option value="1">Male</option>
               <option value="0">Female</option>
             </select>
@@ -64,7 +65,7 @@
           <div class="mb-3">
             <label class="form-label">Chest Pain Type:</label>
             <select class="form-select" name="cp" required>
-              <option value="" disabled selected></option>
+              <option value="" disabled selected>Select an option</option>
               <option value="0">Typical Angina</option>
               <option value="1">Atypical Angina</option>
               <option value="2">Non-anginal Pain</option>
@@ -82,7 +83,7 @@
           <div class="mb-3">
             <label class="form-label">Fasting Blood Sugar > 120 mg/dl:</label>
             <select class="form-select" name="fbs" required>
-              <option value="" disabled selected></option>
+              <option value="" disabled selected>Select an option</option>
               <option value="1">True</option>
               <option value="0">False</option>
             </select>
@@ -90,7 +91,7 @@
           <div class="mb-3">
             <label class="form-label">Resting ECG Results:</label>
             <select class="form-select" name="restecg" required>
-              <option value="" disabled selected></option>
+              <option value="" disabled selected>Select an option</option>
               <option value="0">Normal</option>
               <option value="1">ST-T Wave Abnormality</option>
               <option value="2">Left Ventricular Hypertrophy</option>
@@ -107,7 +108,7 @@
           <div class="mb-3">
             <label class="form-label">Exercise Induced Angina:</label>
             <select class="form-select" name="exang" required>
-              <option value="" disabled selected></option>
+              <option value="" disabled selected>Select an option</option>
               <option value="1">Yes</option>
               <option value="0">No</option>
             </select>
@@ -119,34 +120,31 @@
           <div class="mb-3">
             <label class="form-label">Slope of Peak Exercise ST Segment:</label>
             <select class="form-select" name="slope" required>
-              <option value="" disabled selected></option>
+              <option value="" disabled selected>Select an option</option>
               <option value="0">Upsloping</option>
               <option value="1">Flat</option>
               <option value="2">Downsloping</option>
             </select>
           </div>
-
           <div class="mb-3">
             <label class="form-label">Number of Major Vessels Colored by Fluoroscopy:</label>
             <select class="form-select" name="ca" required>
-              <option value="" disabled selected></option>
+              <option value="" disabled selected>Select an option</option>
               <option value="0">0</option>
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
             </select>
           </div>
-
           <div class="mb-3">
             <label class="form-label">Thalassemia:</label>
             <select class="form-select" name="thal" required>
-              <option value="" disabled selected></option>
+              <option value="" disabled selected>Select an option</option>
               <option value="1">Normal</option>
               <option value="2">Fixed Defect</option>
               <option value="3">Reversible Defect</option>
             </select>
           </div>
-
         </div>
       </div>
 
@@ -201,44 +199,30 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
-    // When the Predict form is submitted:
     const labelMappings = {
       sex: { "1": "Male", "0": "Female" },
-      cp: {
-        "0": "Typical Angina",
-        "1": "Atypical Angina",
-        "2": "Non-anginal Pain",
-        "3": "Asymptomatic"
-      },
+      cp: { "0": "Typical Angina", "1": "Atypical Angina", "2": "Non-anginal Pain", "3": "Asymptomatic" },
       fbs: { "1": "True", "0": "False" },
-      restecg: {
-        "0": "Normal",
-        "1": "ST-T Wave Abnormality",
-        "2": "Left Ventricular Hypertrophy"
-      },
+      restecg: { "0": "Normal", "1": "ST-T Wave Abnormality", "2": "Left Ventricular Hypertrophy" },
       exang: { "1": "Yes", "0": "No" },
-      slope: {
-        "0": "Upsloping",
-        "1": "Flat",
-        "2": "Downsloping"
-      },
-      ca: {
-        "0": "0", "1": "1", "2": "2", "3": "3"
-      },
-      thal: {
-        "1": "Normal",
-        "2": "Fixed Defect",
-        "3": "Reversible Defect"
-      }
+      slope: { "0": "Upsloping", "1": "Flat", "2": "Downsloping" },
+      ca: { "0": "0", "1": "1", "2": "2", "3": "3" },
+      thal: { "1": "Normal", "2": "Fixed Defect", "3": "Reversible Defect" }
     };
 
-
     let globalFormData = null;
+    let globalPrediction = "";
+    let globalAdvice = "";
+
+    function getCurrentTimestamp() {
+      const now = new Date();
+      return now.toLocaleString(); // Example: "5/13/2025, 3:42:10 PM"
+    }
 
     document.getElementById("heartForm").addEventListener("submit", function (event) {
       event.preventDefault();
-      let formData = new FormData(this);
-      globalFormData = formData
+      const formData = new FormData(this);
+      globalFormData = formData;
 
       fetch("/heart_prediction", {
         method: "POST",
@@ -246,153 +230,109 @@
       })
         .then(response => response.json())
         .then(data => {
-          let resultTable = document.querySelector(".result-table");
-          let resultBody = document.getElementById("resultBody");
+          const resultTable = document.querySelector(".result-table");
+          const resultBody = document.getElementById("resultBody");
           resultBody.innerHTML = "";
 
-          // Display all submitted parameters
-          // for (let [key, value] of formData.entries()) {
-          //     resultBody.innerHTML += <tr><td>${key}</td><td>${value}</td></tr>;
-          // }
+          const inputData = [];
+
           for (let [key, value] of formData.entries()) {
-            resultBody.innerHTML += `<tr><td>${key}</td><td>${value}</td></tr>`;
+            const displayValue = labelMappings[key]?.[value] || value;
+            inputData.push([key, displayValue]);
+            resultBody.innerHTML += `<tr><td>${key}</td><td>${displayValue}</td></tr>`;
           }
 
-          // Display the prediction and advice
           resultBody.innerHTML += `<tr><td><strong>Prediction</strong></td><td><strong>${data.prediction}</strong></td></tr>`;
-          // resultBody.innerHTML += `<tr><td><strong>Advice</strong></td><td>${data.advice.replace(/\n/g, '<br>')}</td></tr>`;
-
           resultTable.style.display = "block";
 
-          //integrating modal data
-          document.getElementById('staticBackdropLabel').innerText = data.decission; 
-          document.getElementById('adviceContent').innerHTML = data.advice; 
+          globalPrediction = data.prediction;
+          globalAdvice = data.advice;
 
-          // Automatically generate and save the PDF to server without triggering a download.
-          generateAndSavePDF(formData, data.prediction, data.advice);
+          document.getElementById('staticBackdropLabel').innerText = data.decission;
+          document.getElementById('adviceContent').innerHTML = data.advice;
+
+          const doc = createPredictionPDF(inputData, data.prediction, data.advice);
+
+          const pdfBlob = doc.output("blob");
+          const uploadFormData = new FormData();
+          uploadFormData.append("pdf", pdfBlob, "heart_report.pdf");
+          uploadFormData.append("prediction_result", data.prediction);
+          uploadFormData.append("disease_name", "Heart Disease");
+
+          fetch("/save_pdf", {
+            method: "POST",
+            body: uploadFormData
+          }).then(res => {
+            if (res.ok) console.log("PDF saved successfully.");
+            else console.error("Failed to save PDF.");
+          }).catch(err => console.error("Error uploading PDF:", err));
         });
     });
 
-    // Function to generate PDF and send it to the server
-    function generateAndSavePDF(formData, predictionResult, adviceText) {
+    function createPredictionPDF(inputData, prediction, advice) {
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
 
-      // Title and header for the PDF
+      const timestamp = getCurrentTimestamp();
+
+      // First page - title, input data, and prediction
       doc.setFontSize(18);
       doc.text("Heart Disease Prediction Report", 14, 22);
+
+      doc.setFontSize(10);
+      doc.text("Generated on: " + timestamp, 14, 28);
+
       doc.setFontSize(12);
       doc.text("User Input Data:", 14, 32);
 
+      doc.autoTable({
+        startY: 36,
+        head: [['Parameter', 'Value']],
+        body: inputData,
+        theme: 'grid',
+        styles: { fontSize: 10 }
+      });
+
+      let finalY = doc.lastAutoTable.finalY + 10;
+      doc.setFontSize(12);
+      doc.text("Prediction Result: " + prediction, 14, finalY);
+
+      // Second page - advice section
+      if (advice) {
+        doc.addPage();
+        doc.setFontSize(16);
+        doc.text("Trusted Advice For You", 14, 22);
+
+        doc.setFontSize(10);
+        const adviceText = advice
+          .replace(/<li>/g, '• ')
+          .replace(/<h6[^>]*>/g, '# ')
+          .replace(/<[^>]+>/g, '');
+        const splitAdvice = doc.splitTextToSize(adviceText, 180);
+        doc.text(splitAdvice, 14, 32);
+      }
+
+      return doc;
+    }
+
+
+    document.getElementById("downloadPdf").addEventListener("click", function () {
+      if (!globalFormData || !globalPrediction || !globalAdvice) {
+        alert("Please submit the form first to generate the report.");
+        return;
+      }
+
       const inputData = [];
-      // for (let [key, value] of formData.entries()) {
-      //     inputData.push([key, value]);
-      // }
-      for (let [key, value] of formData.entries()) {
-        let displayValue = labelMappings[key]?.[value] || value;
+      for (let [key, value] of globalFormData.entries()) {
+        const displayValue = labelMappings[key]?.[value] || value;
         inputData.push([key, displayValue]);
       }
 
-
-      // Create table with user data
-      doc.autoTable({
-        startY: 36,
-        head: [['Parameter', 'Value']],
-        body: inputData,
-        theme: 'grid',
-        styles: { fontSize: 10 }
-      });
-
-      let finalY = doc.lastAutoTable.finalY + 10;
-      doc.setFontSize(12);
-      doc.text("Prediction Result: " + predictionResult, 14, finalY);
-
-      if (adviceText) {
-        finalY += 10;
-        doc.text("Advice:", 14, finalY);
-        const splitAdvice = doc.splitTextToSize(adviceText, 180);
-        doc.text(splitAdvice, 14, finalY + 6);
-      }
-
-      // Convert PDF to Blob and prepare for upload
-      const pdfBlob = doc.output("blob");
-      const uploadFormData = new FormData();
-      uploadFormData.append("pdf", pdfBlob, "heart_report.pdf");
-      uploadFormData.append("prediction_result", predictionResult);
-      uploadFormData.append("disease_name", "Heart Disease");
-
-      fetch("/save_pdf", {
-        method: "POST",
-        body: uploadFormData
-      });
-    }
-
-    // Manual download remains a separate option via the Download Report button
-    document.getElementById("downloadPdf").addEventListener("click", function () {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-
-      doc.setFontSize(18);
-      doc.text("Heart Disease Prediction Report", 14, 22);
-      doc.setFontSize(12);
-      doc.text("User Input Data:", 14, 32);
-      const inputData = [];
-      document.querySelectorAll("#resultBody tr").forEach(row => {
-        const cols = row.querySelectorAll("td");
-        inputData.push([cols[0].innerText, cols[1].innerText]);
-      });
-
-      doc.autoTable({
-        startY: 36,
-        head: [['Parameter', 'Value']],
-        body: inputData,
-        theme: 'grid',
-        styles: { fontSize: 10 }
-      });
-      let finalY = doc.lastAutoTable.finalY + 10;
-      doc.setFontSize(12);
-      let predictionText = "";
-      document.querySelectorAll("#resultBody tr").forEach(row => {
-        const cols = row.querySelectorAll("td");
-        if (cols[0].innerText.toLowerCase().includes("prediction")) {
-          predictionText = cols[1].innerText;
-        }
-      });
-      doc.text("Prediction Result: " + predictionText, 14, finalY);
-
-      // adding the advices to thr pdf:
-      fetch("heart_prediction", {
-        method: "POST",
-        body: new URLSearchParams(globalFormData)
-      })
-        .then(response => response.json())
-        .then(data => {
-          const adviceHtml = data.advice;
-          const adviceText = adviceHtml
-          .replace(/<li>/g, '• ')
-          .replace(/<h6[^>]*>/g, '# ') 
-          .replace(/<[^>]+>/g, '');
-
-          const wrappedAdvice = doc.splitTextToSize(adviceText, 180);
-          const lineHeight = 4.5;
-          const requiredHeight = wrappedAdvice.length * lineHeight;
-          let y = finalY + 10;
-
-          if (y + requiredHeight > doc.internal.pageSize.height - 10) {
-            doc.addPage();
-            y = 20;
-          }
-
-          doc.setFontSize(16);
-          doc.text("Trusted Advices For You :", 14, y);
-
-          doc.setFontSize(10);
-          doc.text(wrappedAdvice, 14, y + 6);
-
-          doc.save("Heart Disease Prediction Report.pdf");
-        });
+      const doc = createPredictionPDF(inputData, globalPrediction, globalAdvice);
+      doc.save("Heart Disease Prediction Report.pdf");
     });
   </script>
+
 </body>
 
 </html>

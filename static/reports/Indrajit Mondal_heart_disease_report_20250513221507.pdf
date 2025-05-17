@@ -1,0 +1,671 @@
+%PDF-1.3
+%ºß¬à
+3 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 4 0 R
+>>
+endobj
+4 0 obj
+<<
+/Length 8180
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F1 18 Tf
+20.6999999999999993 TL
+0 g
+39.6850393700787407 779.5277952755905062 Td
+(Heart Disease Prediction Report) Tj
+ET
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0 g
+39.6850393700787407 751.1813385826771992 Td
+(User Input Data:) Tj
+ET
+0.1 0.74 0.61 rg
+0.78 G
+0. w
+0.1 0.74 0.61 rg
+40. 739.8427559055118081 174.8431268094962263 -21.4999999999999964 re
+f
+BT
+/F2 10 Tf
+11.5 TL
+1. g
+45. 726.3427559055118081 Td
+(Parameter) Tj
+ET
+0.1 0.74 0.61 rg
+0.78 G
+0. w
+0.1 0.74 0.61 rg
+214.8431268094962263 739.8427559055118081 340.436873190503718 -21.4999999999999964 re
+f
+BT
+/F2 10 Tf
+11.5 TL
+1. g
+219.8431268094962263 726.3427559055118081 Td
+(Value) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 718.3427559055118081 174.8431268094962263 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 704.8427559055118081 Td
+(age) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+214.8431268094962263 718.3427559055118081 340.436873190503718 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+219.8431268094962263 704.8427559055118081 Td
+(63) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 696.8427559055118081 174.8431268094962263 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 683.3427559055118081 Td
+(sex) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+214.8431268094962263 696.8427559055118081 340.436873190503718 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+219.8431268094962263 683.3427559055118081 Td
+(Male) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 675.3427559055118081 174.8431268094962263 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 661.8427559055118081 Td
+(cp) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+214.8431268094962263 675.3427559055118081 340.436873190503718 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+219.8431268094962263 661.8427559055118081 Td
+(Asymptomatic) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 653.8427559055118081 174.8431268094962263 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 640.3427559055118081 Td
+(trestbps) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+214.8431268094962263 653.8427559055118081 340.436873190503718 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+219.8431268094962263 640.3427559055118081 Td
+(135) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 632.3427559055118081 174.8431268094962263 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 618.8427559055118081 Td
+(chol) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+214.8431268094962263 632.3427559055118081 340.436873190503718 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+219.8431268094962263 618.8427559055118081 Td
+(200) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 610.8427559055118081 174.8431268094962263 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 597.3427559055118081 Td
+(fbs) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+214.8431268094962263 610.8427559055118081 340.436873190503718 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+219.8431268094962263 597.3427559055118081 Td
+(True) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 589.3427559055116944 174.8431268094962263 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 575.8427559055116944 Td
+(restecg) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+214.8431268094962263 589.3427559055116944 340.436873190503718 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+219.8431268094962263 575.8427559055116944 Td
+(ST-T Wave Abnormality) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 567.8427559055118081 174.8431268094962263 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 554.3427559055116944 Td
+(thalach) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+214.8431268094962263 567.8427559055118081 340.436873190503718 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+219.8431268094962263 554.3427559055116944 Td
+(63) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 546.3427559055118081 174.8431268094962263 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 532.8427559055116944 Td
+(exang) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+214.8431268094962263 546.3427559055118081 340.436873190503718 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+219.8431268094962263 532.8427559055116944 Td
+(Yes) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 524.8427559055116944 174.8431268094962263 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 511.3427559055117513 Td
+(oldpeak) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+214.8431268094962263 524.8427559055116944 340.436873190503718 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+219.8431268094962263 511.3427559055117513 Td
+(6.4) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 503.3427559055116944 174.8431268094962263 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 489.8427559055117513 Td
+(slope) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+214.8431268094962263 503.3427559055116944 340.436873190503718 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+219.8431268094962263 489.8427559055117513 Td
+(Flat) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 481.8427559055116944 174.8431268094962263 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 468.3427559055117513 Td
+(ca) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+214.8431268094962263 481.8427559055116944 340.436873190503718 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+219.8431268094962263 468.3427559055117513 Td
+(0) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 460.3427559055117513 174.8431268094962263 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 446.8427559055118081 Td
+(thal) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+214.8431268094962263 460.3427559055117513 340.436873190503718 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+219.8431268094962263 446.8427559055118081 Td
+(Normal) Tj
+ET
+0.78 G
+0. w
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0. g
+39.6850393700787407 410.4962992125983874 Td
+(Prediction Result: No Heart Disease \(Negative\)) Tj
+ET
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0. g
+39.6850393700787407 382.1498425196850235 Td
+(Advice:) Tj
+ET
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0. g
+39.6850393700787407 365.1419685039369938 Td
+() Tj
+T* (<p>Great news! Your test results do not show signs of heart disease. But staying heart-healthy) Tj
+T* (is a lifelong effort.</p>) Tj
+T* () Tj
+T* (<h5 class="mt-4 fw-bold text-success"><i class="bi bi-heart-pulse text-primary fs-4 me-2) Tj
+T* (align-middle"></i>Continue with These Practices to Maintain Your Heart Health ----</h5>) Tj
+T* () Tj
+T* (<h6 class="mt-3" style="color:#20c997;"><i class="bi bi-egg-fried me-2"></i>Diet &) Tj
+T* (Nutrition:</h6>) Tj
+T* (<ul class="ms-3">) Tj
+T* (    <li>Follow a Mediterranean-style diet: rich in vegetables, fruits, whole grains, and lean) Tj
+T* (proteins.</li>) Tj
+T* (    <li>Avoid processed, sugary, and fatty foods.</li>) Tj
+T* (    <li>Use healthy fats like olive oil instead of butter or margarine.</li>) Tj
+T* (    <li>Reduce salt to help keep blood pressure in check.</li>) Tj
+T* (</ul>) Tj
+T* () Tj
+T* (<h6 class="mt-3" style="color:#fd7e14;"><i class="bi bi-person-walking) Tj
+T* (me-2"></i>Lifestyle:</h6>) Tj
+T* (<ul class="ms-3">) Tj
+T* (    <li>Be physically active at least 150 minutes a week \(e.g., brisk walking, cycling\).</li>) Tj
+T* (    <li>Avoid tobacco in all forms — it damages your heart and blood vessels.</li>) Tj
+T* (    <li>Limit alcohol consumption.</li>) Tj
+T* (    <li>Maintain a healthy weight and sleep 7–8 hours nightly.</li>) Tj
+T* (    <li>Practice stress reduction techniques such as yoga, meditation, or deep breathing.</li>) Tj
+T* (</ul>) Tj
+T* () Tj
+T* (<h6 class="mt-3" style="color:#0d6efd;"><i class="bi bi-clipboard-pulse me-2"></i>Monitor) Tj
+T* (Regularly:</h6>) Tj
+T* (<ul class="ms-3">) Tj
+T* (    <li>Get your blood pressure, cholesterol, and glucose levels checked routinely.</li>) Tj
+T* (    <li>If you have a family history of heart disease, keep up with screenings.</li>) Tj
+T* (</ul>) Tj
+T* () Tj
+T* (<p class="mt-3 fw-semibold">Keep in touch with your healthcare provider for periodic) Tj
+T* (evaluations.</p>) Tj
+T* (<p><strong>A healthy lifestyle today means a healthier heart tomorrow!</strong></p>) Tj
+T* (            ) Tj
+ET
+endstream
+endobj
+1 0 obj
+<</Type /Pages
+/Kids [3 0 R ]
+/Count 1
+>>
+endobj
+5 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+6 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+7 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+8 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+9 0 obj
+<<
+/Type /Font
+/BaseFont /Courier
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+10 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+11 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+12 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+13 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Roman
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+14 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+15 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Italic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+16 0 obj
+<<
+/Type /Font
+/BaseFont /Times-BoldItalic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+17 0 obj
+<<
+/Type /Font
+/BaseFont /ZapfDingbats
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+18 0 obj
+<<
+/Type /Font
+/BaseFont /Symbol
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+2 0 obj
+<<
+/ProcSet [/PDF /Text /ImageB /ImageC /ImageI]
+/Font <<
+/F1 5 0 R
+/F2 6 0 R
+/F3 7 0 R
+/F4 8 0 R
+/F5 9 0 R
+/F6 10 0 R
+/F7 11 0 R
+/F8 12 0 R
+/F9 13 0 R
+/F10 14 0 R
+/F11 15 0 R
+/F12 16 0 R
+/F13 17 0 R
+/F14 18 0 R
+>>
+/XObject <<
+>>
+>>
+endobj
+19 0 obj
+<<
+/Producer (jsPDF 2.4.0)
+/CreationDate (D:20250513221507+05'30')
+>>
+endobj
+20 0 obj
+<<
+/Type /Catalog
+/Pages 1 0 R
+/OpenAction [3 0 R /FitH null]
+/PageLayout /OneColumn
+>>
+endobj
+xref
+0 21
+0000000000 65535 f 
+0000008384 00000 n 
+0000010201 00000 n 
+0000000015 00000 n 
+0000000152 00000 n 
+0000008441 00000 n 
+0000008566 00000 n 
+0000008696 00000 n 
+0000008829 00000 n 
+0000008966 00000 n 
+0000009089 00000 n 
+0000009218 00000 n 
+0000009350 00000 n 
+0000009486 00000 n 
+0000009614 00000 n 
+0000009741 00000 n 
+0000009870 00000 n 
+0000010003 00000 n 
+0000010105 00000 n 
+0000010449 00000 n 
+0000010535 00000 n 
+trailer
+<<
+/Size 21
+/Root 20 0 R
+/Info 19 0 R
+/ID [ <FCC51B5F266D9B34734C4EF697E8DBC4> <FCC51B5F266D9B34734C4EF697E8DBC4> ]
+>>
+startxref
+10639
+%%EOF

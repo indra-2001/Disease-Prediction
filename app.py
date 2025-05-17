@@ -1,8 +1,10 @@
-from flask import Flask, render_template, request, redirect, flash,session,url_for,jsonify
+from flask import Flask, render_template, request, redirect, flash,session,url_for,jsonify,send_from_directory
 from flask_mysqldb import MySQL
 import re
 import os
 import joblib
+import io
+from reportlab.pdfgen import canvas
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
@@ -13,17 +15,12 @@ from datetime import timedelta
 from flask_mail import Mail, Message
 from itsdangerous import URLSafeTimedSerializer
 import dotenv
-
 from fpdf import FPDF
 from datetime import datetime
-
-import joblib
-# import pandas as pd
-from datetime import timedelta
-from flask_mail import Mail, Message
-from itsdangerous import URLSafeTimedSerializer
-import dotenv
-
+os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+# from tensorflow.keras.models import load_model
+# from tensorflow.keras.preprocessing.image import load_img, img_to_array
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -32,7 +29,7 @@ dotenv.load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = "group10"
-app.permanent_session_lifetime = timedelta(minutes=5)
+app.permanent_session_lifetime = timedelta(minutes=50)
 
 # Email configuration
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
@@ -74,6 +71,20 @@ model = model_package['model']
 scaler = model_package['scaler']
 selected_features = model_package['features']
 
+# Load brain tumor classification model
+# tumor_model = load_model("model.h5")
+
+# Define class labels in same order as during training
+tumor_class_labels = ['glioma', 'meningioma', 'notumor', 'pituitary']
+
+with open("disease_predictor.pkl", "rb") as f:
+    model = pickle.load(f)
+
+with open("symptom_list.pkl", "rb") as f:
+    symptom_list = pickle.load(f)
+
+with open("disease_names.pkl", "rb") as f:
+    disease_mapping = pickle.load(f)
 
 
 # Email & Password Validation
@@ -82,6 +93,14 @@ def validate_email(email):
 
 def validate_password(password):
     return re.match(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$", password)
+
+# Phone Number Validation
+def validate_phone(phone):
+    return re.match(r"^[6-9]\d{9}$", phone)  # Starts with 6-9 and has exactly 10 digits
+
+# Username Validation
+def validate_username(username):
+    return re.match(r"^[A-Za-z][A-Za-z0-9_]{2,19}$", username)
 
 #Home Route
 @app.route('/')
@@ -98,6 +117,10 @@ def signup():
         gender = request.form['gender']
         password = request.form['password']
 
+        if not validate_username(username):
+            flash("Username must start with a letter, be 3–20 characters long, and contain only letters, numbers, or underscores.", "danger")
+            return redirect('/signup')
+
         if not validate_email(email):
             flash("Email must be a valid Gmail address (example@gmail.com)", "danger")
             return redirect('/signup')
@@ -105,10 +128,28 @@ def signup():
         if not validate_password(password):
             flash("Password must be at least 8 characters long, containing at least one uppercase letter, one lowercase letter, one number, and one special character.", "danger")
             return redirect('/signup')
+        
+        if not validate_phone(phone):
+            flash("Phone number must be 10 digits and start with 6, 7, 8, or 9.", "danger")
+            return redirect('/signup')
 
         hashed_password = generate_password_hash(password)
+        cur = mysql.connection.cursor()
+         # Check for duplicate username
+        cur.execute("SELECT * FROM users WHERE username = %s", (username,))
+        if cur.fetchone():
+            flash("Username already taken. Please choose a different one.", "danger")
+            cur.close()
+            return redirect('/signup')
 
-         # Handle Profile Picture Upload
+        # Check for duplicate password
+        cur.execute("SELECT * FROM users WHERE password = %s", (password,))
+        if cur.fetchone():
+            flash("This password is already in use. Please choose a different one for better security.", "danger")
+            cur.close()
+            return redirect('/signup')
+        
+        # Handle Profile Picture Upload
         file = request.files["profile_pic"]
         filename = "default.png"
         if file and allowed_file(file.filename):
@@ -116,12 +157,12 @@ def signup():
             filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
             file.save(filepath)
 
-        cur = mysql.connection.cursor()
+        
         try:
             cur.execute("INSERT INTO users (username,email, phone, gender, password,profile_pic) VALUES (%s, %s, %s, %s,%s,%s)", 
                         (username,email, phone, gender, hashed_password,filename))
             mysql.connection.commit()
-            flash("Signup successful! Please login.", "success")
+            flash("Account created successfully! Please log in.", "success")
             return redirect('/login')
         except:
             flash("Email already exists. Please use a different email.", "danger")
@@ -136,16 +177,17 @@ def signup():
 def login():
     if request.method == 'POST':
         email = request.form['email']
-        print(email)
         password = request.form['password']
         remember = request.form.get('remember')
-
         cur = mysql.connection.cursor()
         cur.execute("SELECT * FROM users WHERE email = %s", (email,))
         user = cur.fetchone()
+        print(user)
         cur.close()
 
         if user and check_password_hash(user[5], password):  # user[5] is the password column
+        #if user and check_password_hash(user['password'], password):
+
             session['logged_in'] = True
             #session['email'] = user[2]
             session['id'] = user[0]
@@ -165,6 +207,7 @@ def login():
 
             flash("Login successful!", "success")
             return render_template('dashboard.html')
+
         else:
             flash("Invalid email or password. Please try again.", "danger")
             return redirect('/login')
@@ -241,12 +284,48 @@ def reset_password_token(token):
 
     return render_template('reset_password_form.html', token=token)
 
+#Symptoms Route
+@app.route('/get_symptoms')
+def get_symptoms():
+    return jsonify({'symptoms': symptom_list})
+
+@app.route('/predict_disease_symptoms', methods=['GET', 'POST'])
+def predict_disease():
+    if request.method == 'GET':
+        return render_template('disease_prediction.html')
+
+    data = request.get_json()
+    selected_symptoms = data.get('symptoms', [])
+
+    if not selected_symptoms:
+        return jsonify({'error': 'No symptoms selected'}), 400
+
+    # Create a binary vector of symptoms
+    input_vector = [1 if symptom in selected_symptoms else 0 for symptom in symptom_list]
+
+    # Predict probabilities
+    probabilities = model.predict_proba([input_vector])[0]
+    top_indices = sorted(range(len(probabilities)), key=lambda i: probabilities[i], reverse=True)[:3]
+
+    results = []
+    for idx in top_indices:
+        disease = disease_mapping[idx]
+        probability = round(probabilities[idx] * 100, 2)
+        results.append({'disease': disease, 'probability': probability})
+
+    return jsonify({'results': results})
+
 
 
 # About Route
 @app.route('/about')
 def about():
     return render_template('about.html')
+
+# About Route
+@app.route('/aboutD')
+def aboutD():
+    return render_template('aboutD.html')
 
 # Dashboard (Protected Route)
 @app.route('/dashboard')
@@ -449,97 +528,6 @@ def user_activity():
 
     # Render the template with the fetched activities
     return render_template('activity.html', activities=activities)
-# @app.route('/heart_prediction', methods=['GET', 'POST'])
-# def heart_prediction():
-#     if request.method == 'POST':
-#         try:
-#             # if 'user_id' not in session or 'username' not in session:
-#             #     return jsonify({"success": False, "error": "User not logged in"})
-
-#             # Extract input values
-#             input_data = [
-#                 float(request.form.get('age', 0)),
-#                 float(request.form.get('sex', 0)),
-#                 float(request.form.get('cp', 0)),
-#                 float(request.form.get('trestbps', 0)),
-#                 float(request.form.get('chol', 0)),
-#                 float(request.form.get('fbs', 0)),
-#                 float(request.form.get('restecg', 0)),
-#                 float(request.form.get('thalach', 0)),
-#                 float(request.form.get('exang', 0)),
-#                 float(request.form.get('oldpeak', 0)),
-#                 float(request.form.get('slope', 0)),
-#                 float(request.form.get('ca', 0)),
-#                 float(request.form.get('thal', 0))
-#             ]
-
-#             input_array = np.array(input_data).reshape(1, -1)
-#             prediction = heart_model.predict(input_array)[0]
-#             result_text = "Heart Disease Detected (Positive)" if prediction == 1 else "No Heart Disease (Negative)"
-
-#             if prediction == 1:
-#                 advice = (
-#                     "Suggested actions:\n"
-#                     "- Aspirin (blood thinner)\n"
-#                     "- Beta-blockers (e.g., Metoprolol)\n"
-#                     "- Statins (e.g., Atorvastatin)\n"
-#                     "- ACE inhibitors (e.g., Ramipril)\n"
-#                     "- Lifestyle: quit smoking, reduce salt intake, exercise regularly"
-#                 )
-#             else:
-#                 advice = "Keep maintaining a healthy lifestyle — regular exercise, healthy diet, avoid smoking."
-
-#             # PDF generation
-#             if 'email' in session:
-#                 print("email is:", session['email'])  
-#             else:
-#                 print("No email found in session")
-#             username = session['username']
-#             print(username)
-#             timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-#             filename = f"{username}_heart_report_{timestamp}.pdf"
-#             pdf_path = os.path.join("static/reports", filename)
-
-#             pdf = FPDF()
-#             pdf.add_page()
-#             pdf.set_font("Arial", size=12)
-#             pdf.cell(200, 10, txt="Heart Disease Prediction Report", ln=True, align="C")
-#             pdf.ln(10)
-#             pdf.cell(200, 10, txt=f"Username: {username}", ln=True)
-#             pdf.cell(200, 10, txt=f"Disease: Heart Disease", ln=True)
-#             pdf.cell(200, 10, txt=f"Prediction: {result_text}", ln=True)
-#             pdf.ln(10)
-#             pdf.multi_cell(0, 10, txt=f"Advice:\n{advice}")
-
-#             os.makedirs("static/reports", exist_ok=True)
-#             pdf.output(pdf_path)
-#             print(pdf_path)
-
-#             # Save activity to DB
-#             cursor = mysql.connection.cursor()
-#             cursor.execute("""
-#                 INSERT INTO user_activity (username, disease_name, prediction_result, pdf_report)
-#                 VALUES (%s, %s, %s, %s)
-#             """, (
-#                 username,
-#                 "Heart Disease",
-#                 result_text,
-#                 pdf_path
-#             ))
-#             mysql.connection.commit()
-#             cursor.close()
-
-#             return jsonify({
-#                 "success": True,
-#                 "prediction": result_text,
-#                 "advice": advice,
-#                 "pdf_report_url": "/" + pdf_path
-#             })
-
-#         except Exception as e:
-#             return jsonify({"success": False, "error": str(e)})
-
-#     return render_template('heart_prediction.html')
 
 @app.route('/diabetes', methods=['GET', 'POST'])
 def diabetes():
@@ -655,6 +643,7 @@ def diabetes():
     return render_template('diabetes.html')
 
 
+
 # @app.route('/parkinson', methods=['POST','GET'])
 # def predict():
 #     if request.method == 'POST':
@@ -723,7 +712,6 @@ def predict_parkinson():
                 "result": -1
             })
     return render_template('parkinson.html', features=selected_features)
-
 
 @app.route('/Breast_cancer', methods=['GET', 'POST'])
 def Breast_cancer():
@@ -936,7 +924,7 @@ def update_profile():
     username = request.form['username']
     #email = request.form['email']
     phone = request.form['phone']
-    gender = request.form['gender']
+    #gender = request.form['gender']
 
     profile_pic = None
     if 'profile_pic' in request.files:
@@ -945,22 +933,136 @@ def update_profile():
             filename = secure_filename(file.filename)
             filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(filepath)
-            profile_pic = f"/static/profile_pics/{filename}"
+            profile_pic = filename
 
     cur = mysql.connection.cursor()
 
     if profile_pic:
-        cur.execute("UPDATE users SET username=%s,phone=%s, gender=%s, profile_pic=%s WHERE email=%s",
-                    (username, phone, gender, profile_pic, session['email']))
+        cur.execute("UPDATE users SET username=%s,phone=%s,profile_pic=%s WHERE email=%s",
+                    (username, phone,profile_pic, session['email']))
     else:
-        cur.execute("UPDATE users SET username=%s, phone=%s, gender=%s WHERE email=%s",
-                    (username, phone, gender, session['email']))
+        cur.execute("UPDATE users SET username=%s, phone=%s WHERE email=%s",
+                    (username, phone,session['email']))
 
     mysql.connection.commit()
     cur.close()
 
     return jsonify({"success": True, "message": "Profile updated successfully!"})
 
+@app.route("/save_health_result", methods=["POST"])
+def save_health_result():
+    if 'username' not in session:
+        flash("You must be logged in to save your result.", "danger")
+        return redirect(url_for('login'))
+
+    username = session['username']
+    height = request.form.get("height")
+    weight = request.form.get("weight")
+    result_type = request.form.get("category")  # Either 'BMI' or 'BMR'
+    result_value = request.form.get("result_value")  # BMI/BMR number
+    pdf_file = request.files.get("pdf")
+
+    if not all([height, weight, result_type, result_value, pdf_file]):
+        return "Missing form data", 400
+
+    # Save PDF file securely
+    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+    filename = secure_filename(f"{username}_{result_type}_{timestamp}.pdf")
+    pdf_path = os.path.join("static/pdfs", filename)
+
+    # Save PDF to directory
+    os.makedirs("static/pdfs", exist_ok=True)
+    pdf_file.save(pdf_path)
+    
+
+    # Save to database
+    cur = mysql.connection.cursor()
+    cur.execute(
+        "INSERT INTO health_reports (username, height, weight, category, result_value, pdf_path, created_at) VALUES (%s, %s, %s, %s, %s, %s, NOW())",
+        (username, height, weight, result_type, result_value, pdf_path)
+    )
+    mysql.connection.commit()
+    cur.close()
+
+    return "✅ Report saved successfully", 200
+
+@app.route('/healthactivity')
+def health_activity():
+    # Get the user ID from session (assuming it's stored in session)
+    username = session.get('username')
+    
+    if username is None:
+        # Handle if the user is not logged in
+        return redirect(url_for('login'))
+
+    # Query the user_activity table
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT * FROM health_reports WHERE username = %s ORDER BY created_at DESC", (username,))
+    activities = cursor.fetchall()
+    cursor.close()
+
+    # Render the template with the fetched activities
+    return render_template('bmi_bmr_activity.html', activities=activities)
+
+# def predict_brain_tumor(image_path):
+#     img_size = 224
+#     img = load_img(image_path, target_size=(img_size, img_size))
+#     img_array = img_to_array(img) / 255.0
+#     img_array = np.expand_dims(img_array, axis=0)
+
+#     predictions = tumor_model.predict(img_array)
+#     pred_index = np.argmax(predictions)
+#     confidence = np.max(predictions)
+
+#     predicted_label = tumor_class_labels[pred_index]
+#     if predicted_label == 'notumor':
+#         return "No Tumor Detected", confidence
+#     else:
+#         return f"Tumor Detected: {predicted_label.title()}", confidence
+# from werkzeug.utils import secure_filename
+# from datetime import datetime
+
+# @app.route('/tumor', methods=['GET', 'POST'])
+# def tumor_detection():
+#     if request.method == 'POST':
+#         file = request.files['file']
+#         if file:
+#             original_filename = secure_filename(file.filename)
+
+#             # Generate a timestamp string (e.g., 20250515_153045)
+#             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+#             filename = f"{timestamp}_{original_filename}"
+
+#             # TEMP: Save file first to a generic location
+#             temp_path = os.path.join("static/tumor", filename)
+#             file.save(temp_path)
+
+#             # Predict from saved file
+#             result_text, confidence = predict_brain_tumor(temp_path)
+
+#             # Determine class label folder name
+#             predicted_label = result_text.split(":")[-1].strip().lower().replace(" ", "") if "Tumor" in result_text else "notumor"
+
+#             # Create class-specific subfolder (e.g., static/tumor/glioma)
+#             save_folder = os.path.join("static/tumor", predicted_label)
+#             os.makedirs(save_folder, exist_ok=True)
+
+#             # Final file path
+#             final_path = os.path.join(save_folder, filename)
+
+#             # Move file to final subfolder
+#             os.rename(temp_path, final_path)
+
+#             return render_template('brain_tumor.html',
+#                                    result=result_text,
+#                                    confidence=f"{confidence * 100:.2f}%",
+#                                    file_path=f"/{final_path.replace(os.sep, '/')}")
+#     return render_template('brain_tumor.html', result=None)
+
+
+# @app.route('/uploads/<filename>')
+# def uploaded_file(filename):
+#     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 # Load the model and features for typhoid
 try:

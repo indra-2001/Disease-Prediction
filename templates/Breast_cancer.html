@@ -87,23 +87,23 @@
         <div class="col-md-6">
           <div class="mb-3">
             <label class="form-label">radius_mean</label>
-            <input type="number" step="0.01" min="6.0" max="30.0" class="form-control" name="radius_mean" required />
+            <input type="number" step="0.001" min="0" class="form-control" name="radius_mean" required />
           </div>
           <div class="mb-3">
             <label class="form-label">texture_mean</label>
-            <input type="number" step="0.01" min="9.0" max="40.0" class="form-control" name="texture_mean" required />
+            <input type="number" step="0.01" min="0" class="form-control" name="texture_mean" required />
           </div>
           <div class="mb-3">
             <label class="form-label">perimeter_mean</label>
-            <input type="number" step="0.01" min="40.0" max="200.0" class="form-control" name="perimeter_mean" required />
+            <input type="number" step="0.01" min="0" class="form-control" name="perimeter_mean" required />
           </div>
           <div class="mb-3">
             <label class="form-label">area_mean</label>
-            <input type="number" step="1" min="100.0" max="2600.0" class="form-control" name="area_mean" required />
+            <input type="number" step="0.1" min="0" class="form-control" name="area_mean" required />
           </div>
           <div class="mb-3">
             <label class="form-label">smoothness_mean</label>
-            <input type="number" step="0.001" min="0.05" max="0.20" class="form-control" name="smoothness_mean" required />
+            <input type="number" step="0.00001" min="0" class="form-control" name="smoothness_mean" required />
           </div>
         </div>
 
@@ -111,23 +111,23 @@
         <div class="col-md-6">
           <div class="mb-3">
             <label class="form-label">compactness_mean</label>
-            <input type="number" step="0.001" min="0.01" max="0.40" class="form-control" name="compactness_mean" required />
+            <input type="number" step="0.00001" min="0" class="form-control" name="compactness_mean" required />
           </div>
           <div class="mb-3">
             <label class="form-label">concavity_mean</label>
-            <input type="number" step="0.001" min="0.0" max="0.45" class="form-control" name="concavity_mean" required />
+            <input type="number" step="0.00001" min="0" class="form-control" name="concavity_mean" required />
           </div>
           <div class="mb-3">
             <label class="form-label">concave points_mean</label>
-            <input type="number" step="0.001" min="0.0" max="0.25" class="form-control" name="concave points_mean" required />
+            <input type="number" step="0.000001" min="0" class="form-control" name="concave points_mean" required />
           </div>
           <div class="mb-3">
             <label class="form-label">symmetry_mean</label>
-            <input type="number" step="0.001" min="0.1" max="0.35" class="form-control" name="symmetry_mean" required />
+            <input type="number" step="0.0001" min="0" class="form-control" name="symmetry_mean" required />
           </div>
           <div class="mb-3">
             <label class="form-label">fractal_dimension_mean</label>
-            <input type="number" step="0.001" min="0.05" max="0.10" class="form-control" name="fractal_dimension_mean" required />
+            <input type="number" step="0.00001" min="0" class="form-control" name="fractal_dimension_mean" required />
           </div>
         </div>
 
@@ -192,9 +192,13 @@
       doc.setFontSize(18);
       doc.text("Breast Cancer Classification Report", 14, 22);
 
+      const timestamp = new Date().toLocaleString();
+      doc.setFontSize(10);
+      doc.text("Generated on: " + timestamp, 14, 28);
+
       // User Input Data
       doc.setFontSize(12);
-      doc.text("User Input Data:", 14, 32);
+      doc.text("User Input Data:", 14, 36);
 
       const inputData = [];
       document.querySelectorAll("#resultBody tr").forEach(row => {
@@ -203,7 +207,7 @@
       });
 
       doc.autoTable({
-        startY: 36,
+        startY: 40,
         head: [['Parameter', 'Value']],
         body: inputData,
         theme: 'grid',
@@ -212,10 +216,10 @@
 
       let y = doc.lastAutoTable.finalY + 10;
       doc.setFontSize(14);
-      if (window.lastResult == 1) {
-        doc.text("Prediction Result:  Malignant Breast Cancer", 14, y);
+      if (window.lastResult == 0) {
+        doc.text("Prediction Result:  Negative (The Breast Cancer is Benign)", 14, y);
       } else {
-        doc.text("Prediction Result:  Benign Breast Lesion", 14, y);
+        doc.text("Prediction Result:  Positive (The Breast cancer is Malignant)", 14, y);
       }
 
       fetch("/Breast_cancer", {
@@ -235,7 +239,7 @@
           const wrappedAdvice = doc.splitTextToSize(adviceText, 180);
           const lineHeight = 4.5;
           const requiredHeight = wrappedAdvice.length * lineHeight;
-          y=y+10;
+          y = y + 10;
 
           if (y + requiredHeight > doc.internal.pageSize.height - 10) {
             doc.addPage();
@@ -283,7 +287,6 @@
           resultBody.innerHTML += `<tr><td><strong>Prediction</strong></td><td><strong>${data.prediction}</strong></td></tr>`;
           resultTable.style.display = "block";
 
-
           if (parseInt(data.result) == 0) {
             document.getElementById("staticBackdropLabel").innerHTML = `<strong style="font-size: 1.3rem;">🟢 The Breast Cancer is Benign</strong>`;
           } else {
@@ -293,7 +296,76 @@
           document.getElementById("adviceContent").innerHTML = getAdvice(parseInt(data.result));
 
           // Save prediction globally if needed later
-          window.lastResult = data.result;
+          window.lastPrediction = data.result;
+
+          // ✅ Generate PDF and send to server immediately after prediction
+          const { jsPDF } = window.jspdf;
+          const doc = new jsPDF();
+
+          doc.setFontSize(18);
+          doc.text("Breast Cancer Classification Report", 14, 22);
+
+          const timestamp = new Date().toLocaleString();
+          doc.setFontSize(10);
+          doc.text("Generated on: " + timestamp, 14, 28);
+
+          doc.setFontSize(12);
+          doc.text("User Input Data:", 14, 36);
+
+          const inputData = [];
+          let predictionResult = data.prediction;
+
+          for (let [key, value] of formData.entries()) {
+            inputData.push([key, value]);
+          }
+
+          doc.autoTable({
+            startY: 40,
+            head: [['Parameter', 'Value']],
+            body: inputData,
+            theme: 'grid',
+            styles: { fontSize: 10 }
+          });
+
+          let finalY = doc.lastAutoTable.finalY + 10;
+          doc.setFontSize(12);
+          doc.text("Prediction Result: " + predictionResult, 14, finalY);
+
+          // 🔁 Include advice text like the download logic
+          const adviceHtml = getAdvice(parseInt(data.result));
+          const adviceText = adviceHtml.replace(/<li>/g, '• ').replace(/<[^>]+>/g, '');
+          const wrappedAdvice = doc.splitTextToSize(adviceText, 180);
+          const lineHeight = 4.5;
+          const requiredHeight = wrappedAdvice.length * lineHeight;
+
+          // Start new page if needed
+          if (finalY + requiredHeight > doc.internal.pageSize.height - 10) {
+            doc.addPage();
+            finalY = 20;
+          } else {
+            finalY += 10;
+          }
+
+          doc.setFontSize(16);
+          doc.text("Trusted Advices For You:", 14, finalY);
+          doc.setFontSize(10);
+          doc.text(wrappedAdvice, 14, finalY + 6);
+
+          // Send to server
+          const pdfBlob = doc.output("blob");
+          const pdfFormData = new FormData();
+          pdfFormData.append("pdf", pdfBlob, "Breast_Cancer_Report.pdf");
+          pdfFormData.append("prediction_result", predictionResult);
+          pdfFormData.append("disease_name", "Breast Cancer");
+
+          fetch("/save_pdf", {
+            method: "POST",
+            body: pdfFormData
+          });
+
+
+
+
         });
     });
 

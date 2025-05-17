@@ -87,7 +87,7 @@
         <div class="col-md-6">
           <div class="mb-3">
             <label class="form-label">Age</label>
-            <input type="number" class="form-control" name="Age" min="4" max="90" required />
+            <input type="number" class="form-control" name="Age" min="0" required />
           </div>
           <div class="mb-3">
             <label class="form-label">Gender</label>
@@ -99,15 +99,15 @@
           </div>
           <div class="mb-3">
             <label class="form-label">Total_Bilirubin (mg/dL)</label>
-            <input type="number" step="0.1" class="form-control" name="Total_Bilirubin" min="0.1" max="75.0" required />
+            <input type="number" step="0.1" class="form-control" name="Total_Bilirubin" min="0" required />
           </div>
           <div class="mb-3">
             <label class="form-label">Direct_Bilirubin (mg/dL)</label>
-            <input type="number" step="0.1" class="form-control" name="Direct_Bilirubin" min="0" max="20.0" required />
+            <input type="number" step="0.1" class="form-control" name="Direct_Bilirubin" min="0" required />
           </div>
           <div class="mb-3">
             <label class="form-label">Alkaline_Phosphotase (IU/L)</label>
-            <input type="number" class="form-control" name="Alkaline_Phosphotase" min="63" max="2110" required />
+            <input type="number" class="form-control" name="Alkaline_Phosphotase" min="0" required />
           </div>
         </div>
 
@@ -115,23 +115,23 @@
         <div class="col-md-6">
           <div class="mb-3">
             <label class="form-label">Alamine_Aminotransferase (IU/L)</label>
-            <input type="number" class="form-control" name="Alamine_Aminotransferase" min="10" max="2000" required />
+            <input type="number" class="form-control" name="Alamine_Aminotransferase" min="0" required />
           </div>
           <div class="mb-3">
             <label class="form-label">Aspartate_Aminotransferase (IU/L)</label>
-            <input type="number" class="form-control" name="Aspartate_Aminotransferase" min="10" max="5000" required />
+            <input type="number" class="form-control" name="Aspartate_Aminotransferase" min="0" required />
           </div>
           <div class="mb-3">
             <label class="form-label">Total_Protiens (g/dL)</label>
-            <input type="number" step="0.1" class="form-control" name="Total_Protiens" min="2.0" max="10.0" required />
+            <input type="number" step="0.1" class="form-control" name="Total_Protiens" min="0" required />
           </div>
           <div class="mb-3">
             <label class="form-label">Albumin (g/dL)</label>
-            <input type="number" step="0.1" class="form-control" name="Albumin" min="0.9" max="6.5" required />
+            <input type="number" step="0.1" class="form-control" name="Albumin" min="0" required />
           </div>
           <div class="mb-3">
             <label class="form-label">Albumin_and_Globulin_Ratio</label>
-            <input type="number" step="0.1" class="form-control" name="Albumin_and_Globulin_Ratio" min="0.1" max="3.0" required />
+            <input type="number" step="0.01" class="form-control" name="Albumin_and_Globulin_Ratio" min="0" required />
           </div>
         </div>
 
@@ -197,9 +197,13 @@
       doc.setFontSize(18);
       doc.text("Liver Disease Prediction Report", 14, 22);
 
+      const timestamp = new Date().toLocaleString();
+      doc.setFontSize(10);
+      doc.text("Generated on: " + timestamp, 14, 28);
+
       // User Input Data
       doc.setFontSize(12);
-      doc.text("User Input Data:", 14, 32);
+      doc.text("User Input Data:", 14, 36);
 
       const inputData = [];
       document.querySelectorAll("#resultBody tr").forEach(row => {
@@ -208,7 +212,7 @@
       });
 
       doc.autoTable({
-        startY: 36,
+        startY: 40,
         head: [['Parameter', 'Value']],
         body: inputData,
         theme: 'grid',
@@ -217,10 +221,10 @@
 
       let y = doc.lastAutoTable.finalY + 10;
       doc.setFontSize(14);
-      if (window.lastResult == 1) {
-        doc.text("Prediction Result:  Positive (Liver Disease Detected)", 14, y);
+      if (window.lastResult == 0) {
+        doc.text("Prediction Result:  Negative (Safe from Liver Disease)", 14, y);
       } else {
-        doc.text("Prediction Result:  Negetive (Safe from liver Disease)", 14, y);
+        doc.text("Prediction Result:  Positive (Liver Disease Detected)", 14, y);
       }
 
       fetch("/liver", {
@@ -234,13 +238,13 @@
           // Replace icons and remove tags
           const adviceText = adviceHtml
             .replace(/<li>/g, '• ')
-            .replace(/<h6[^>]*>/g, '# ')
+            .replace(/<h6[^>]*>/g, '# ')
             .replace(/<[^>]+>/g, '');
 
           const wrappedAdvice = doc.splitTextToSize(adviceText, 180);
           const lineHeight = 4.5;
           const requiredHeight = wrappedAdvice.length * lineHeight;
-          y = y+10;
+          y = y + 10;
 
           if (y + requiredHeight > doc.internal.pageSize.height - 10) {
             doc.addPage();
@@ -288,6 +292,71 @@
           resultBody.innerHTML += `<tr><td><strong>Prediction</strong></td><td><strong>${data.prediction}</strong></td></tr>`;
           resultTable.style.display = "block";
 
+          // ✅ Generate PDF and send to server immediately after prediction
+          const { jsPDF } = window.jspdf;
+          const doc = new jsPDF();
+
+          doc.setFontSize(18);
+          doc.text("Liver Prediction Report", 14, 22);
+
+          const timestamp = new Date().toLocaleString();
+          doc.setFontSize(10);
+          doc.text("Generated on: " + timestamp, 14, 28);
+
+          doc.setFontSize(12);
+          doc.text("User Input Data:", 14, 36);
+
+          const inputData = [];
+          let predictionResult = data.prediction;
+
+          for (let [key, value] of formData.entries()) {
+            inputData.push([key, value]);
+          }
+
+          doc.autoTable({
+            startY: 36,
+            head: [['Parameter', 'Value']],
+            body: inputData,
+            theme: 'grid',
+            styles: { fontSize: 10 }
+          });
+
+          let finalY = doc.lastAutoTable.finalY + 10;
+          doc.setFontSize(12);
+          doc.text("Prediction Result: " + predictionResult, 14, finalY);
+
+          // 🔁 Include advice text like the download logic
+          const adviceHtml = getAdvice(parseInt(data.result));
+          const adviceText = adviceHtml.replace(/<li>/g, '• ').replace(/<[^>]+>/g, '');
+          const wrappedAdvice = doc.splitTextToSize(adviceText, 180);
+          const lineHeight = 4.5;
+          const requiredHeight = wrappedAdvice.length * lineHeight;
+
+          // Start new page if needed
+          if (finalY + requiredHeight > doc.internal.pageSize.height - 10) {
+            doc.addPage();
+            finalY = 20;
+          } else {
+            finalY += 10;
+          }
+
+          doc.setFontSize(16);
+          doc.text("Trusted Advices For You:", 14, finalY);
+          doc.setFontSize(10);
+          doc.text(wrappedAdvice, 14, finalY + 6);
+
+          const pdfBlob = doc.output("blob");
+
+          const pdfFormData = new FormData();
+          pdfFormData.append("pdf", pdfBlob, "Liver_Report.pdf");
+          pdfFormData.append("prediction_result", predictionResult);
+          pdfFormData.append("disease_name", "Liver");
+
+          fetch("/save_pdf", {
+            method: "POST",
+            body: pdfFormData
+          });
+
           if (parseInt(data.result) == 1) {
             document.getElementById("staticBackdropLabel").innerHTML = `<strong style="font-size: 1.3rem;">🔴 Liver Disease Detected</strong>`;
           } else {
@@ -297,7 +366,7 @@
           document.getElementById("adviceContent").innerHTML = getAdvice(parseInt(data.result));
 
           // Save prediction globally if needed later
-          window.lastResult = data.result;
+          window.lastPrediction = data.result;
         });
     });
 
