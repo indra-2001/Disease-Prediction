@@ -4,7 +4,6 @@ import re
 import os
 import joblib
 import io
-from reportlab.pdfgen import canvas
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
@@ -12,15 +11,14 @@ import pickle
 import numpy as np
 import pandas as pd
 from datetime import timedelta
-from flask_mail import Mail, Message
+from flask_mail import Mail, Message # type: ignore
 from itsdangerous import URLSafeTimedSerializer
-import dotenv
-from fpdf import FPDF
+import dotenv # type: ignore
 from datetime import datetime
 os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing.image import load_img, img_to_array
+from tensorflow.keras.models import load_model # type: ignore
+from tensorflow.keras.preprocessing.image import load_img, img_to_array # type: ignore
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -60,7 +58,18 @@ def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # Load the trained model
-heart_model = pickle.load(open('heart_disease_model.sav', 'rb'))
+#heart_model = pickle.load(open('heart_disease_model.sav', 'rb'))
+# with open("heart_disease_model.pkl", "rb") as f:
+#     heart_model = pickle.load(f)
+
+# Load model
+with open("heart_model.pkl", "rb") as f:
+    heart_model = pickle.load(f)
+
+# Load scaler
+with open("scaler.pkl", "rb") as f:
+    scalerH = pickle.load(f)
+
 diabetes_model = pickle.load(open('diabetes_model.sav', 'rb')) 
 kidney_model =  pickle.load(open('kidney_disease(short).sav', 'rb'))
 Breast_Cancer_model = pickle.load(open('Breast_Cancer.sav', 'rb'))
@@ -360,8 +369,11 @@ def heart_prediction():
             # Convert into numpy array for model prediction
             input_array = np.array(input_data).reshape(1, -1)
 
+            # Scale the input using the loaded scaler
+            scaled_input = scalerH.transform(input_array)
+
             # Predict using the model
-            prediction = heart_model.predict(input_array)[0]
+            prediction = heart_model.predict(scaled_input)[0]
 
             # Result message
             result_text = "Heart Disease Detected (Positive)" if prediction == 1 else "No Heart Disease (Negative)"
@@ -963,8 +975,7 @@ def predict_brain_tumor(image_path):
         return "No Tumor Detected", confidence
     else:
         return f"Tumor Detected: {predicted_label.title()}", confidence
-from werkzeug.utils import secure_filename
-from datetime import datetime
+
 
 @app.route('/tumor', methods=['GET', 'POST'])
 def tumor_detection():

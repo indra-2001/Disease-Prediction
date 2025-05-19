@@ -51,40 +51,62 @@
     <form id="diabetesForm">
       <div class="row">
         <div class="col-md-6">
+          <!-- Pregnancies -->
           <div class="mb-3">
-            <label class="form-label">Pregnancies:</label>
-            <input type="number" class="form-control" name="pregnancies" required />
+            <label for="pregnancies" class="form-label">Pregnancies (times):</label>
+            <input type="number" class="form-control" name="pregnancies" id="pregnancies" min="0" max="20"
+              title="Number of times the patient was pregnant (0–20)" required>
           </div>
+
+          <!-- Glucose -->
           <div class="mb-3">
-            <label class="form-label">Glucose Level:</label>
-            <input type="number" class="form-control" name="glucose" required />
+            <label for="glucose" class="form-label">Glucose Level (mg/dL):</label>
+            <input type="number" class="form-control" name="glucose" id="glucose" min="50" max="300"
+              title="Fasting blood glucose level (50–300 mg/dL)" required>
           </div>
+
+          <!-- Blood Pressure -->
           <div class="mb-3">
-            <label class="form-label">Blood Pressure:</label>
-            <input type="number" class="form-control" name="bloodPressure" required />
+            <label for="bloodPressure" class="form-label">Blood Pressure (mm Hg):</label>
+            <input type="number" class="form-control" name="bloodPressure" id="bloodPressure" min="40" max="180"
+              title="Diastolic blood pressure (40–180 mm Hg)" required>
           </div>
+
+          <!-- Skin Thickness -->
           <div class="mb-3">
-            <label class="form-label">Skin Thickness:</label>
-            <input type="number" class="form-control" name="skinThickness" required />
+            <label for="skinThickness" class="form-label">Skin Thickness (mm):</label>
+            <input type="number" class="form-control" name="skinThickness" id="skinThickness" min="5" max="80"
+              title="Triceps skin fold thickness (5–80 mm)" required>
           </div>
         </div>
 
         <div class="col-md-6">
+          <!-- Insulin -->
           <div class="mb-3">
-            <label class="form-label">Insulin:</label>
-            <input type="number" class="form-control" name="insulin" required />
+            <label for="insulin" class="form-label">Insulin (μU/mL):</label>
+            <input type="number" class="form-control" name="insulin" id="insulin" min="10" max="300"
+              title="2-hour postprandial serum insulin (10–300 μU/mL)" required>
           </div>
+
+          <!-- BMI -->
           <div class="mb-3">
-            <label class="form-label">BMI:</label>
-            <input type="number" step="0.1" class="form-control" name="bmi" required />
+            <label for="bmi" class="form-label">BMI (kg/m²):</label>
+            <input type="number" step="0.1" class="form-control" name="bmi" id="bmi" min="10" max="60"
+              title="Body Mass Index (10–60 kg/m²)" required>
           </div>
+
+          <!-- Diabetes Pedigree Function -->
           <div class="mb-3">
-            <label class="form-label">Diabetes Pedigree Function:</label>
-            <input type="number" step="0.01" class="form-control" name="diabetesPedigree" required />
+            <label for="diabetesPedigree" class="form-label">Diabetes Pedigree Function:</label>
+            <input type="number" step="0.001" class="form-control" name="diabetesPedigree" id="diabetesPedigree"
+              min="0.1" max="2.5" title="Relative genetic likelihood (0.1–2.5)" required>
           </div>
+
+          <!-- Age -->
           <div class="mb-3">
-            <label class="form-label">Age:</label>
-            <input type="number" class="form-control" name="age" required />
+            <label for="age" class="form-label">Age (years):</label>
+            <input type="number" class="form-control" name="age" id="age" min="10" max="100"
+              title="Age of the patient (10–100 years)" required>
           </div>
         </div>
       </div>
@@ -92,8 +114,11 @@
       <button type="submit" class="btn btn-primary btn-custom">
         <i class="fas fa-microscope me-2"></i>Predict
       </button>
-      <a href="/dashboard" class="btn btn-secondary btn-custom mt-3"><i class="fas fa-arrow-left me-2"></i>Back</a>
+      <a href="/dashboard" class="btn btn-secondary btn-custom mt-3">
+        <i class="fas fa-arrow-left me-2"></i>Back
+      </a>
     </form>
+
 
     <div class="result-table">
       <h4 class="text-center mt-4">Prediction Result</h4>

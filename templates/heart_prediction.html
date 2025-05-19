@@ -49,11 +49,13 @@
       <div class="row">
         <!-- Left Column -->
         <div class="col-md-6">
-          <!-- Input fields with placeholders fixed -->
           <div class="mb-3">
             <label class="form-label">Age:</label>
-            <input type="number" class="form-control" name="age" required>
+            <input type="number" class="form-control" name="age" required min="1" max="120"
+              oninvalid="this.setCustomValidity('Please enter a valid age between 1 and 120.')"
+              oninput="this.setCustomValidity('')" title="Enter an age between 1 and 120">
           </div>
+
           <div class="mb-3">
             <label class="form-label">Sex:</label>
             <select class="form-select" name="sex" required>
@@ -62,6 +64,7 @@
               <option value="0">Female</option>
             </select>
           </div>
+
           <div class="mb-3">
             <label class="form-label">Chest Pain Type:</label>
             <select class="form-select" name="cp" required>
@@ -72,14 +75,21 @@
               <option value="3">Asymptomatic</option>
             </select>
           </div>
+
           <div class="mb-3">
             <label class="form-label">Resting Blood Pressure:</label>
-            <input type="number" class="form-control" name="trestbps" required>
+            <input type="number" class="form-control" name="trestbps" required min="80" max="200"
+              oninvalid="this.setCustomValidity('Enter blood pressure between 80 and 200 mm Hg.')"
+              oninput="this.setCustomValidity('')" title="Typical resting BP is between 80–200 mm Hg">
           </div>
+
           <div class="mb-3">
             <label class="form-label">Cholesterol:</label>
-            <input type="number" class="form-control" name="chol" required>
+            <input type="number" class="form-control" name="chol" required min="100" max="600"
+              oninvalid="this.setCustomValidity('Enter cholesterol between 100 and 600 mg/dL.')"
+              oninput="this.setCustomValidity('')" title="Normal cholesterol is typically between 100–600 mg/dL">
           </div>
+
           <div class="mb-3">
             <label class="form-label">Fasting Blood Sugar > 120 mg/dl:</label>
             <select class="form-select" name="fbs" required>
@@ -88,6 +98,7 @@
               <option value="0">False</option>
             </select>
           </div>
+
           <div class="mb-3">
             <label class="form-label">Resting ECG Results:</label>
             <select class="form-select" name="restecg" required>
@@ -103,8 +114,11 @@
         <div class="col-md-6">
           <div class="mb-3">
             <label class="form-label">Max Heart Rate Achieved:</label>
-            <input type="number" class="form-control" name="thalach" required>
+            <input type="number" class="form-control" name="thalach" required min="60" max="220"
+              oninvalid="this.setCustomValidity('Enter heart rate between 60 and 220 bpm.')"
+              oninput="this.setCustomValidity('')" title="Max heart rate usually ranges from 60–220 bpm">
           </div>
+
           <div class="mb-3">
             <label class="form-label">Exercise Induced Angina:</label>
             <select class="form-select" name="exang" required>
@@ -113,10 +127,14 @@
               <option value="0">No</option>
             </select>
           </div>
+
           <div class="mb-3">
             <label class="form-label">ST Depression Induced by Exercise:</label>
-            <input type="number" class="form-control" name="oldpeak" step="0.1" required>
+            <input type="number" class="form-control" name="oldpeak" step="0.1" required min="0" max="6.0"
+              oninvalid="this.setCustomValidity('Enter ST depression between 0.0 and 6.0.')"
+              oninput="this.setCustomValidity('')" title="ST depression usually ranges between 0.0 and 10.0">
           </div>
+
           <div class="mb-3">
             <label class="form-label">Slope of Peak Exercise ST Segment:</label>
             <select class="form-select" name="slope" required>
@@ -126,6 +144,7 @@
               <option value="2">Downsloping</option>
             </select>
           </div>
+
           <div class="mb-3">
             <label class="form-label">Number of Major Vessels Colored by Fluoroscopy:</label>
             <select class="form-select" name="ca" required>
@@ -136,6 +155,7 @@
               <option value="3">3</option>
             </select>
           </div>
+
           <div class="mb-3">
             <label class="form-label">Thalassemia:</label>
             <select class="form-select" name="thal" required>
@@ -147,6 +167,7 @@
           </div>
         </div>
       </div>
+
 
       <button type="submit" class="btn btn-primary btn-custom"><i class="fas fa-microscope me-2"></i>Predict</button>
       <a href="/dashboard" class="btn btn-secondary btn-custom mt-3"><i class="fas fa-arrow-left me-2"></i>Back</a>
