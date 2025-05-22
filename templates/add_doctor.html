@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Add Doctor | Admin Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- AOS Animation CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+
+    <!-- Custom Styling -->
+    <style>
+        body {
+            background: #f1f4f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .form-wrapper {
+            max-width: 600px;
+            margin: 50px auto;
+        }
+
+        .form-title {
+            letter-spacing: 0.5px;
+        }
+
+        .shadow-lg {
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.07) !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container form-wrapper" data-aos="zoom-in">
+        <form method="POST" enctype="multipart/form-data" class="p-4 shadow-lg rounded-4 bg-white border border-2">
+
+            <h4 class="mb-4 text-center fw-bold text-primary form-title">
+                <i class="bi bi-person-plus-fill me-2"></i>Add New Doctor
+            </h4>
+
+            <!-- Doctor Name -->
+            <div class="mb-3">
+                <label class="form-label fw-semibold">
+                    <i class="bi bi-person-fill me-2 text-primary"></i>Doctor Name
+                </label>
+                <input type="text" name="name" class="form-control rounded-3 shadow-sm" placeholder="Enter full name"
+                    required>
+            </div>
+
+            <!-- Specialization -->
+            <div class="mb-3">
+                <label class="form-label fw-semibold">
+                    <i class="bi bi-briefcase-medical me-2 text-success"></i>Specialization
+                </label>
+                <select name="specialization" class="form-select rounded-3 shadow-sm" required>
+                    <option disabled selected>Select specialization</option>
+                    {% for spec in specializations %}
+                    <option value="{{ spec }}">{{ spec }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Experience -->
+            <div class="mb-3">
+                <label class="form-label fw-semibold">
+                    <i class="bi bi-award-fill me-2 text-warning"></i>Years of Experience
+                </label>
+                <input type="number" name="experience" min="0" class="form-control rounded-3 shadow-sm"
+                    placeholder="e.g., 5" required>
+            </div>
+
+            <!-- Upload Photo -->
+            <div class="mb-4">
+                <label class="form-label fw-semibold">
+                    <i class="bi bi-camera-fill me-2 text-danger"></i>Doctor Photo
+                </label>
+                <input type="file" name="photo" id="photoInput" class="form-control rounded-3 shadow-sm"
+                    accept="image/*" required>
+
+                <!-- Hidden image preview -->
+                <div class="mt-3 text-center" id="previewContainer" style="display: none;">
+                    <img id="photoPreview" class="img-thumbnail rounded" alt="Doctor Photo Preview" width="150">
+                </div>
+            </div>
+
+
+            <!-- Submit Button -->
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary px-4 py-2 rounded-pill shadow-sm">
+                    <i class="bi bi-save2-fill me-2"></i>Add Doctor
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- AOS Animation JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+    <script>
+        const photoInput = document.getElementById('photoInput');
+        const photoPreview = document.getElementById('photoPreview');
+        const previewContainer = document.getElementById('previewContainer');
+
+        photoInput.addEventListener('change', function () {
+            const file = this.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    photoPreview.src = e.target.result;
+                    previewContainer.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            } else {
+                previewContainer.style.display = 'none';
+                photoPreview.src = '';
+            }
+        });
+    </script>
+
+</body>
+
+</html>

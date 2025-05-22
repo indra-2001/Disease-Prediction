@@ -70,6 +70,11 @@
             margin-right: 8px;
             color: #0277bd;
         }
+
+        .modal-content {
+            border: 6px solid #1fe0b0;
+            border-radius: 10px;
+        }
     </style>
 </head>
 
@@ -81,26 +86,26 @@
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label">MDVP:Fo(Hz)[Avg freq]</label>
-                        <input type="number" step="any" class="form-control" name="MDVP:Fo(Hz)" required />
+                        <input type="number" step="any" min="88" max="260" class="form-control" name="MDVP:Fo(Hz)" required />
                     </div>
                     <div class="mb-3">
                         <label class="form-label">MDVP:Fhi(Hz)[Max freq]</label>
-                        <input type="number" step="any" class="form-control" name="MDVP:Fhi(Hz)" required />
+                        <input type="number" step="any" min="102" max="600" class="form-control" name="MDVP:Fhi(Hz)" required />
                     </div>
                     <div class="mb-3">
                         <label class="form-label">MDVP:Flo(Hz)[Min freq]</label>
-                        <input type="number" step="any" class="form-control" name="MDVP:Flo(Hz)" required />
+                        <input type="number" step="any" min="65" max="240" class="form-control" name="MDVP:Flo(Hz)" required />
                     </div>
                     <div class="mb-3">
                         <label class="form-label">MDVP:PPQ[Pitch Jitter]</label>
-                        <input type="number" step="any" class="form-control" name="MDVP:PPQ" required />
+                        <input type="number" step="any"  class="form-control" name="MDVP:PPQ" required />
                     </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label">MDVP:APQ[Amp Jitter]</label>
-                        <input type="number" step="any" class="form-control" name="MDVP:APQ" required />
+                        <input type="number" step="any"  class="form-control" name="MDVP:APQ" required />
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Shimmer:APQ5</label>

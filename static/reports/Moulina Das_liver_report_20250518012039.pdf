@@ -1,0 +1,627 @@
+%PDF-1.3
+%ºß¬à
+3 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 4 0 R
+>>
+endobj
+4 0 obj
+<<
+/Length 4973
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F1 18 Tf
+20.6999999999999993 TL
+0 g
+39.6850393700787407 779.5277952755905062 Td
+(Liver Disease Prediction Report) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+39.6850393700787407 762.5199212598424765 Td
+(Generated on: 18/5/2025, 1:20:39 am) Tj
+ET
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0 g
+39.6850393700787407 739.8427559055118081 Td
+(User Input Data:) Tj
+ET
+0.1 0.74 0.61 rg
+0.78 G
+0. w
+0.1 0.74 0.61 rg
+40. 739.8427559055118081 407.745866209262374 -21.4999999999999964 re
+f
+BT
+/F2 10 Tf
+11.5 TL
+1. g
+45. 726.3427559055118081 Td
+(Parameter) Tj
+ET
+0.1 0.74 0.61 rg
+0.78 G
+0. w
+0.1 0.74 0.61 rg
+447.745866209262374 739.8427559055118081 107.5341337907375134 -21.4999999999999964 re
+f
+BT
+/F2 10 Tf
+11.5 TL
+1. g
+452.745866209262374 726.3427559055118081 Td
+(Value) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 718.3427559055118081 407.745866209262374 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 704.8427559055118081 Td
+(Age) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+447.745866209262374 718.3427559055118081 107.5341337907375134 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+452.745866209262374 704.8427559055118081 Td
+(88) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 696.8427559055118081 407.745866209262374 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 683.3427559055118081 Td
+(Gender) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+447.745866209262374 696.8427559055118081 107.5341337907375134 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+452.745866209262374 683.3427559055118081 Td
+(1) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 675.3427559055118081 407.745866209262374 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 661.8427559055118081 Td
+(Total_Bilirubin) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+447.745866209262374 675.3427559055118081 107.5341337907375134 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+452.745866209262374 661.8427559055118081 Td
+(21.4) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 653.8427559055118081 407.745866209262374 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 640.3427559055118081 Td
+(Direct_Bilirubin) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+447.745866209262374 653.8427559055118081 107.5341337907375134 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+452.745866209262374 640.3427559055118081 Td
+(25.3) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 632.3427559055118081 407.745866209262374 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 618.8427559055118081 Td
+(Alkaline_Phosphotase) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+447.745866209262374 632.3427559055118081 107.5341337907375134 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+452.745866209262374 618.8427559055118081 Td
+(9) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 610.8427559055118081 407.745866209262374 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 597.3427559055118081 Td
+(Alamine_Aminotransferase) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+447.745866209262374 610.8427559055118081 107.5341337907375134 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+452.745866209262374 597.3427559055118081 Td
+(10) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 589.3427559055116944 407.745866209262374 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 575.8427559055116944 Td
+(Aspartate_Aminotransferase) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+447.745866209262374 589.3427559055116944 107.5341337907375134 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+452.745866209262374 575.8427559055116944 Td
+(10) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 567.8427559055118081 407.745866209262374 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 554.3427559055116944 Td
+(Total_Protiens) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+447.745866209262374 567.8427559055118081 107.5341337907375134 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+452.745866209262374 554.3427559055116944 Td
+(1.1) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 546.3427559055118081 407.745866209262374 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 532.8427559055116944 Td
+(Albumin) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+447.745866209262374 546.3427559055118081 107.5341337907375134 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+452.745866209262374 532.8427559055116944 Td
+(0.9) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 524.8427559055116944 407.745866209262374 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 511.3427559055117513 Td
+(Albumin_and_Globulin_Ratio) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+447.745866209262374 524.8427559055116944 107.5341337907375134 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+452.745866209262374 511.3427559055117513 Td
+(0.13) Tj
+ET
+0.78 G
+0. w
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0. g
+39.6850393700787407 474.9962992125983305 Td
+(Prediction Result: The prediction indicates a positive case of liver disease.) Tj
+ET
+endstream
+endobj
+5 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 6 0 R
+>>
+endobj
+6 0 obj
+<<
+/Length 1906
+>>
+stream
+0.5670000000000001 w
+0.78 G
+BT
+/F1 16 Tf
+18.3999999999999986 TL
+0. g
+39.6850393700787407 785.1970866141732586 Td
+(Trusted Advices For You:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0. g
+39.6850393700787407 768.1892125984252289 Td
+() Tj
+T* (Your test indicates signs of liver disease. It's crucial to take steps to manage the condition and) Tj
+T* (prevent further liver damage.) Tj
+T* () Tj
+T* ( Advice to Manage Your Liver Health ----) Tj
+T* () Tj
+T* (Diet & Nutrition :) Tj
+T* () Tj
+T* (  • Follow a low-fat, balanced diet rich in fruits and vegetables.) Tj
+T* (  • Limit salt to reduce fluid retention and liver workload.) Tj
+T* (  • Avoid alcohol completely—it can accelerate liver damage.) Tj
+T* (  • Reduce sugar intake to prevent fatty liver complications.) Tj
+T* (  • Stay hydrated; drink plenty of water unless otherwise advised.) Tj
+T* () Tj
+T* () Tj
+T* ( Medication :) Tj
+T* () Tj
+T* (  • Take all liver-related medications as prescribed.) Tj
+T* (  • Avoid self-medicating—many drugs can harm the liver.) Tj
+T* (  • Check with your doctor before taking herbal or OTC supplements.) Tj
+T* () Tj
+T* () Tj
+T* ( Monitor Health :) Tj
+T* () Tj
+T* (  • Get regular liver function tests \(LFTs\) to track your progress.) Tj
+T* (  • Watch for signs of jaundice, swelling, or fatigue.) Tj
+T* (  • Maintain a healthy weight to reduce fatty liver risk.) Tj
+T* () Tj
+T* () Tj
+T* ( Lifestyle :) Tj
+T* () Tj
+T* (  • Avoid alcohol and smoking completely.) Tj
+T* (  • Engage in light to moderate physical activity.) Tj
+T* (  • Get vaccinated for hepatitis A and B, if at risk.) Tj
+T* () Tj
+T* () Tj
+T* ( Seek Medical Help If :) Tj
+T* () Tj
+T* (  • You experience yellowing of eyes/skin \(jaundice\).) Tj
+T* (  • Swelling in abdomen or legs.) Tj
+T* (  • Severe fatigue or confusion.) Tj
+T* (  • Dark urine or pale stool.) Tj
+T* () Tj
+T* () Tj
+T* (Note: Always consult a hepatologist for personalized guidance.) Tj
+T* (    ) Tj
+ET
+endstream
+endobj
+1 0 obj
+<</Type /Pages
+/Kids [3 0 R 5 0 R ]
+/Count 2
+>>
+endobj
+7 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+8 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+9 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+10 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+11 0 obj
+<<
+/Type /Font
+/BaseFont /Courier
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+12 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+13 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+14 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+15 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Roman
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+16 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+17 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Italic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+18 0 obj
+<<
+/Type /Font
+/BaseFont /Times-BoldItalic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+19 0 obj
+<<
+/Type /Font
+/BaseFont /ZapfDingbats
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+20 0 obj
+<<
+/Type /Font
+/BaseFont /Symbol
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+2 0 obj
+<<
+/ProcSet [/PDF /Text /ImageB /ImageC /ImageI]
+/Font <<
+/F1 7 0 R
+/F2 8 0 R
+/F3 9 0 R
+/F4 10 0 R
+/F5 11 0 R
+/F6 12 0 R
+/F7 13 0 R
+/F8 14 0 R
+/F9 15 0 R
+/F10 16 0 R
+/F11 17 0 R
+/F12 18 0 R
+/F13 19 0 R
+/F14 20 0 R
+>>
+/XObject <<
+>>
+>>
+endobj
+21 0 obj
+<<
+/Producer (jsPDF 2.4.0)
+/CreationDate (D:20250518012039+05'30')
+>>
+endobj
+22 0 obj
+<<
+/Type /Catalog
+/Pages 1 0 R
+/OpenAction [3 0 R /FitH null]
+/PageLayout /OneColumn
+>>
+endobj
+xref
+0 23
+0000000000 65535 f 
+0000007272 00000 n 
+0000009097 00000 n 
+0000000015 00000 n 
+0000000152 00000 n 
+0000005177 00000 n 
+0000005314 00000 n 
+0000007335 00000 n 
+0000007460 00000 n 
+0000007590 00000 n 
+0000007723 00000 n 
+0000007861 00000 n 
+0000007985 00000 n 
+0000008114 00000 n 
+0000008246 00000 n 
+0000008382 00000 n 
+0000008510 00000 n 
+0000008637 00000 n 
+0000008766 00000 n 
+0000008899 00000 n 
+0000009001 00000 n 
+0000009347 00000 n 
+0000009433 00000 n 
+trailer
+<<
+/Size 23
+/Root 22 0 R
+/Info 21 0 R
+/ID [ <5A7234BF300E4D74985B28B4D4948445> <5A7234BF300E4D74985B28B4D4948445> ]
+>>
+startxref
+9537
+%%EOF

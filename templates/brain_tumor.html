@@ -21,52 +21,91 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background: #f2f7ff;
+            background: linear-gradient(to right, #dbeafe, #e0f2fe);
             color: #333;
             padding-top: 50px;
+            margin: 0;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
         }
 
         .container {
             max-width: 600px;
-            background: #fff;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin: auto;
         }
 
         h2 {
             text-align: center;
-            font-weight: 600;
+            font-weight: 700;
             margin-bottom: 30px;
-            color: #004085;
+            color: #0d47a1;
+            font-size: 28px;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #333;
         }
 
         .form-control {
-            border-radius: 8px;
+            border-radius: 10px;
+            padding: 10px 15px;
+            font-size: 15px;
+        }
+
+        .btn-custom {
+            border-radius: 12px;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
 
         .btn-primary {
-            width: 100%;
-            border-radius: 8px;
-            font-weight: 500;
+            background-color: #1976d2;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #0d47a1;
+        }
+
+        .btn-secondary {
+            background-color: #90a4ae;
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: #607d8b;
         }
 
         .result-box {
             margin-top: 30px;
-            padding: 20px;
-            border-radius: 12px;
-            background-color: #e9f7ef;
-            border: 1px solid #c3e6cb;
+            padding: 25px;
+            border-radius: 15px;
+            background-color: #e3fcef;
+            border: 2px solid #a5d6a7;
+            box-shadow: inset 0 0 8px rgba(0, 128, 0, 0.1);
         }
 
         .result-box h3 {
-            font-weight: 600;
-            color: #155724;
+            font-weight: 700;
+            color: #2e7d32;
+            font-size: 20px;
         }
 
         .result-box p {
-            margin-bottom: 10px;
             font-weight: 500;
+            font-size: 15px;
+            color: #333;
         }
 
         .preview-img {
@@ -75,23 +114,41 @@
             display: block;
             margin: 20px auto 0;
             border-radius: 10px;
-            border: 2px solid #ddd;
+            border: 2px solid #b0bec5;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        #downloadPdf {
+            width: 100%;
+            font-weight: 600;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 16px;
+            background-color: #388e3c;
+            border: none;
+            margin-top: 20px;
+        }
+
+        #downloadPdf:hover {
+            background-color: #1b5e20;
         }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h2>Brain Tumor Detection</h2>
+        <h2><i class="fas fa-brain me-2"></i>Brain Tumor Detection</h2>
+        <!--<h2>Brain Tumor Detection</h2>-->
         <form method="POST" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="file" class="form-label">Upload MRI Scan</label>
                 <input class="form-control" type="file" name="file" id="file" required />
             </div>
-            <button type="submit" class="btn btn-primary btn-custom"><i
-                    class="fas fa-microscope me-2"></i>Predict</button>
-            <a href="/dashboard" class="btn btn-secondary btn-custom mt-3"><i
-                    class="fas fa-arrow-left me-2"></i>Back</a>
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary btn-custom"><i
+                        class="fas fa-microscope me-2"></i>Predict</button>
+                <a href="/dashboard" class="btn btn-secondary btn-custom"><i class="fas fa-arrow-left me-2"></i>Back</a>
+            </div>
         </form>
 
         {% if result %}

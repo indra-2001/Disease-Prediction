@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>fatty_Liver Disease Prediction</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    body {
+      background: linear-gradient(135deg, #d0e6f7, #f5f7fa);
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .container {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      padding: 40px 30px;
+      max-width: 1000px;
+      margin-top: 50px;
+    }
+
+    h2 {
+      font-weight: bold;
+      color: #146C94;
+      margin-bottom: 30px;
+    }
+
+    .form-label {
+      font-weight: 500;
+      color: #333;
+    }
+
+    .form-control,
+    .form-select {
+      border-radius: 8px;
+    }
+
+    .btn-custom {
+      width: 100%;
+      padding: 12px;
+      font-size: 18px;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: #125e84;
+    }
+
+    .btn-secondary:hover {
+      background-color: #6c757d;
+    }
+
+    .result-table {
+      margin-top: 30px;
+      display: none;
+    }
+
+    .table th {
+      background-color: #146C94;
+      color: white;
+    }
+
+    .form-icon {
+      margin-right: 8px;
+      color: #146C94;
+    }
+
+    .modal-content {
+      border: 6px solid #1fe0b0;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2 class="text-center"><i class="fas fa-heartbeat me-2"></i>Fatty Liver Disease Prediction</h2>
+    <form id="fatty_liverForm">
+  <div class="row">
+    <!-- Left Column -->
+    <div class="col-md-6">
+      <div class="mb-3">
+        <label class="form-label">Age</label>
+        <input type="number" class="form-control" name="Age" min="18" max="100" required />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Gender</label>
+        <select name="Gender" class="form-select" required>
+          <option value="">Select</option>
+          <option value="1">Female</option>
+          <option value="2">Male</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Body Mass Index (kg/m²)</label>
+        <input type="number" step="0.1" class="form-control" name="Body_Mass_Index" min="15" max="60" required />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">ALT (U/L)</label>
+        <input type="number" class="form-control" name="ALT" min="5" max="200" required />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">AST (U/L)</label>
+        <input type="number" class="form-control" name="AST" min="5" max="200" required />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">GGT (U/L)</label>
+        <input type="number" class="form-control" name="GGT" min="5" max="400" required />
+      </div>
+    </div>
+
+    <!-- Right Column -->
+    <div class="col-md-6">
+      <div class="mb-3">
+        <label class="form-label">Triglycerides (mg/dL)</label>
+        <input type="number" class="form-control" name="Triglycerides" min="30" max="1000" required />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Glucose (mg/dL)</label>
+        <input type="number" class="form-control" name="Glucose" min="60" max="300" required />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Total Cholesterol (mg/dL)</label>
+        <input type="number" class="form-control" name="Total_Cholesterol" min="100" max="400" required />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">HDL (mg/dL)</label>
+        <input type="number" class="form-control" name="HDL" min="20" max="100" required />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">LDL (mg/dL)</label>
+        <input type="number" class="form-control" name="LDL" min="30" max="300" required />
+      </div>
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-primary btn-custom">
+    <i class="fas fa-microscope me-2"></i>Predict
+  </button>
+  <a href="/dashboard" class="btn btn-secondary btn-custom mt-3">
+    <i class="fas fa-arrow-left me-2"></i>Back
+  </a>
+</form>
+
+    <div class="result-table">
+      <h4 class="text-center mt-4">Prediction Result</h4>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Parameter</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody id="resultBody"></tbody>
+      </table>
+      <button id="downloadPdf" class="btn btn-success btn-custom mt-2">Download Report</button>
+      <br>
+      <div class="d-flex justify-content-center">
+        <button type="button" id="adviceBtn" class="btn btn-success mt-3" data-bs-toggle="modal"
+          data-bs-target="#staticBackdrop" style="display: inline-block;">
+          <i class="fas fa-notes-medical me-2"></i>See Advices
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- modal for advises start-->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel"></h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="adviceContent">
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- modal for advises End-->
+
+  <script>
+    //for report pdf generation
+    document.getElementById("downloadPdf").addEventListener("click", function () {
+      if (!globalFormData) {
+        alert("Please submit the form first to generate prediction.");
+        return;
+      }
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      // Title
+      doc.setFontSize(18);
+      doc.text("Fatty_Liver Disease Prediction Report", 14, 22);
+
+      const timestamp = new Date().toLocaleString();
+      doc.setFontSize(10);
+      doc.text("Generated on: " + timestamp, 14, 28);
+
+      // User Input Data
+      doc.setFontSize(12);
+      doc.text("User Input Data:", 14, 36);
+
+      const inputData = [];
+      document.querySelectorAll("#resultBody tr").forEach(row => {
+        const cols = row.querySelectorAll("td");
+        inputData.push([cols[0].innerText, cols[1].innerText]);
+      });
+
+      doc.autoTable({
+        startY: 40,
+        head: [['Parameter', 'Value']],
+        body: inputData,
+        theme: 'grid',
+        styles: { fontSize: 12 }
+      });
+
+      let y = doc.lastAutoTable.finalY + 10;
+      doc.setFontSize(14);
+      if (window.lastResult == 0) {
+        doc.text("Prediction Result: Severe illness)", 14, y);
+      } else {
+        doc.text("Prediction Result:  Mild illness", 14, y);
+      }
+
+      fetch("/fatty_liver", {
+        method: "POST",
+        body: new URLSearchParams(globalFormData)
+      })
+        .then(response => response.json())
+        .then(data => {
+          const adviceHtml = getAdvice(parseInt(data.result));
+
+          // Replace icons and remove tags
+          const adviceText = adviceHtml
+            .replace(/<li>/g, '• ')
+            .replace(/<h6[^>]*>/g, '# ')
+            .replace(/<[^>]+>/g, '');
+
+          const wrappedAdvice = doc.splitTextToSize(adviceText, 180);
+          const lineHeight = 4.5;
+          const requiredHeight = wrappedAdvice.length * lineHeight;
+          y = y + 10;
+
+          if (y + requiredHeight > doc.internal.pageSize.height - 10) {
+            doc.addPage();
+            y = 20;
+          }
+
+          doc.setFontSize(16);
+          doc.text("Trusted Advices For You :", 14, y);
+
+          doc.setFontSize(10);
+          doc.text(wrappedAdvice, 14, y + 6);
+
+          // Save the PDF
+          doc.save("Fatty_Liver_Disease_Prediction_Report.pdf");
+        });
+
+    });
+
+    // Displaying result table
+    let globalFormData = null;
+
+    document.getElementById("fatty_liverForm").addEventListener("submit", function (event) {
+      event.preventDefault();
+      const formData = new FormData(this);
+      globalFormData = formData;
+      fetch("/fatty_liver", {
+        method: "POST",
+        body: new URLSearchParams(formData)
+      })
+        .then(response => response.json())
+        .then(data => {
+          const resultTable = document.querySelector(".result-table");
+          const resultBody = document.getElementById("resultBody");
+          resultBody.innerHTML = "";
+          for (let [key, value] of formData.entries()) {
+            const element = document.querySelector(`[name="${key}"]`);
+            let displayValue = value;
+
+            if (element && element.tagName === "SELECT") {
+              displayValue = element.options[element.selectedIndex].text;
+            }
+
+            resultBody.innerHTML += `<tr><td>${key}</td><td>${displayValue}</td></tr>`;
+          }
+          resultBody.innerHTML += `<tr><td><strong>Prediction</strong></td><td><strong>${data.prediction}</strong></td></tr>`;
+          resultTable.style.display = "block";
+
+          // ✅ Generate PDF and send to server immediately after prediction
+          const { jsPDF } = window.jspdf;
+          const doc = new jsPDF();
+
+          doc.setFontSize(18);
+          doc.text("Fatty_Liver disease Prediction Report", 14, 22);
+
+          const timestamp = new Date().toLocaleString();
+          doc.setFontSize(10);
+          doc.text("Generated on: " + timestamp, 14, 28);
+
+          doc.setFontSize(12);
+          doc.text("User Input Data:", 14, 36);
+
+          const inputData = [];
+          let predictionResult = data.prediction;
+
+          for (let [key, value] of formData.entries()) {
+            inputData.push([key, value]);
+          }
+
+          doc.autoTable({
+            startY: 36,
+            head: [['Parameter', 'Value']],
+            body: inputData,
+            theme: 'grid',
+            styles: { fontSize: 10 }
+          });
+
+          let finalY = doc.lastAutoTable.finalY + 10;
+          doc.setFontSize(12);
+          doc.text("Prediction Result: " + predictionResult, 14, finalY);
+
+          // 🔁 Include advice text like the download logic
+          const adviceHtml = getAdvice(parseInt(data.result));
+          const adviceText = adviceHtml.replace(/<li>/g, '• ').replace(/<[^>]+>/g, '');
+          const wrappedAdvice = doc.splitTextToSize(adviceText, 180);
+          const lineHeight = 4.5;
+          const requiredHeight = wrappedAdvice.length * lineHeight;
+
+          // Start new page if needed
+          if (finalY + requiredHeight > doc.internal.pageSize.height - 10) {
+            doc.addPage();
+            finalY = 20;
+          } else {
+            finalY += 10;
+          }
+
+          doc.setFontSize(16);
+          doc.text("Trusted Advices For You:", 14, finalY);
+          doc.setFontSize(10);
+          doc.text(wrappedAdvice, 14, finalY + 6);
+
+          const pdfBlob = doc.output("blob");
+
+          const pdfFormData = new FormData();
+          pdfFormData.append("pdf", pdfBlob, "Fatty_Liver_Report.pdf");
+          pdfFormData.append("prediction_result", predictionResult);
+          pdfFormData.append("disease_name", "fatty_Liver");
+
+          fetch("/save_pdf", {
+            method: "POST",
+            body: pdfFormData
+          });
+
+          if (parseInt(data.result) == 0) {
+            document.getElementById("staticBackdropLabel").innerHTML = `<strong style="font-size: 1.3rem;">🔴 Severe illness</strong>`;
+          } else {
+            document.getElementById("staticBackdropLabel").innerHTML = `<strong style="font-size: 1.3rem;">🟢 Mild illness</strong>`;
+          }
+
+          document.getElementById("adviceContent").innerHTML = getAdvice(parseInt(data.result));
+
+          // Save prediction globally if needed later
+          window.lastResult = data.result;
+        });
+    });
+
+
+    function getAdvice(category) {
+      if (category == 0) {
+    return `
+Your results indicate **severe fatty liver**. Immediate lifestyle changes and medical supervision are crucial to prevent further liver damage.<br><br><br>
+
+<h5 class="text-danger"><i class="bi bi-exclamation-triangle-fill"></i> Critical Advice for Severe Fatty Liver ----</h5>
+
+<h6 class="mt-3 text-success"><i class="bi bi-basket-fill"></i>Dietary Guidelines:</h6>
+<ul class="text-start">
+  <li>Adopt a low-calorie, high-fiber diet focused on vegetables, lean proteins, and whole grains.</li>
+  <li>Eliminate all sugary drinks and processed foods.</li>
+  <li>Completely avoid alcohol—it worsens liver fat accumulation.</li>
+  <li>Control portion sizes to support gradual weight loss.</li>
+</ul>
+
+<h6 class="mt-3 text-primary"><i class="bi bi-capsule-pill"></i> Medical Management:</h6>
+<ul class="text-start">
+  <li>Follow up regularly with your hepatologist or liver specialist.</li>
+  <li>Take any prescribed medications for liver function or related conditions (e.g., diabetes, cholesterol).</li>
+  <li>Avoid over-the-counter medications unless approved by your doctor.</li>
+</ul>
+
+<h6 class="mt-3 text-info"><i class="bi bi-heart-pulse-fill"></i> Physical Activity:</h6>
+<ul class="text-start">
+  <li>Engage in at least 30 minutes of moderate exercise daily (e.g., brisk walking).</li>
+  <li>Avoid a sedentary lifestyle—stand and stretch every hour if sitting long.</li>
+</ul>
+
+<h6 class="mt-3 text-warning"><i class="bi bi-clipboard-data-fill"></i> Monitor & Act:</h6>
+<ul class="text-start">
+  <li>Track liver enzymes (LFTs), blood sugar, and cholesterol levels regularly.</li>
+  <li>Watch for signs of fatigue, abdominal swelling, or jaundice.</li>
+</ul>
+
+<p class="mt-3 text-muted"><em>Note: Lifestyle correction is essential—early intervention can reverse fatty liver effects.</em></p>
+    `;
+  } else if (category == 1) {
+    return `
+Your test indicates **mild fatty liver**. With proper care, this condition is reversible. Start managing your liver health today.<br><br><br>
+
+<h5 class="text-success"><i class="bi bi-check-circle-fill"></i> Advice for Mild Fatty Liver ----</h5>
+
+<h6 class="mt-3 text-success"><i class="bi bi-basket-fill"></i>Nutrition Tips:</h6>
+<ul class="text-start">
+  <li>Opt for a Mediterranean-style diet rich in veggies, fruits, and healthy fats.</li>
+  <li>Reduce intake of refined carbs, sugars, and saturated fats.</li>
+  <li>Limit red meat and processed snacks.</li>
+</ul>
+
+<h6 class="mt-3 text-primary"><i class="bi bi-activity"></i> Physical Activity:</h6>
+<ul class="text-start">
+  <li>Engage in 20–30 minutes of aerobic exercise (e.g., walking, swimming) most days of the week.</li>
+  <li>Strength training twice a week can help with fat metabolism.</li>
+</ul>
+
+<h6 class="mt-3 text-info"><i class="bi bi-shield-plus"></i> Lifestyle Adjustments:</h6>
+<ul class="text-start">
+  <li>Avoid alcohol or consume only occasionally in moderation.</li>
+  <li>Maintain a healthy weight—losing 5-10% of your body weight helps reverse fatty liver.</li>
+</ul>
+
+<h6 class="mt-3 text-warning"><i class="bi bi-eye-fill"></i> Follow-up:</h6>
+<ul class="text-start">
+  <li>Schedule periodic liver function tests and ultrasounds to monitor progress.</li>
+</ul>
+
+<p class="mt-3 text-muted"><em>Note: With discipline in diet and exercise, fatty liver can be reversed in early stages.</em></p>
+    `;
+  } else {
+    return `<p>No advice available for this category.</p>`;
+  }
+    }
+
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</body>
+
+</html>

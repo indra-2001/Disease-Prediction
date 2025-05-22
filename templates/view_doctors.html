@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Doctors Directory</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: #f8f9fa;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .section-title {
+            border-left: 5px solid #0d6efd;
+            padding-left: 15px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .doctor-card {
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .doctor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .doctor-img {
+            height: 250px;
+            width: 100%;
+            object-fit: cover;
+            /* Ensures image fills without stretching */
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+            background-color: #e9ecef;
+            /* fallback if image doesn't load */
+        }
+
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .specialization-icon {
+            font-size: 2rem;
+            color: #0d6efd;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container py-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-primary" data-aos="fade-right">
+                <i class="bi bi-arrow-left-circle me-1"></i> Back
+            </a>
+            <h2 class="text-center fw-bold text-primary flex-grow-1" data-aos="fade-down">
+                Doctors
+            </h2>
+            <div style="width: 40px;"></div>
+        </div>
+
+        {% for specialization, docs in grouped.items() %}
+        <h4 class="section-title text-primary" data-aos="fade-right">
+            <i class="bi bi-person-heart me-2 specialization-icon"></i>{{ specialization }}
+        </h4>
+        <div class="row">
+            {% for doc in docs %}
+            <div class="col-md-3 col-sm-6 mb-4" data-aos="zoom-in" data-aos-delay="{{ loop.index * 100 }}">
+                <div class="card doctor-card shadow-sm h-100">
+                    <img src="{{ url_for('static', filename=doc['photo_path'].split('static/')[-1].replace('\\', '/')) }}"
+                        class="doctor-img card-img-top" alt="{{ doc['name'] }}">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">
+                            <i class="bi bi-person-circle me-1 text-secondary"></i>{{ doc['name'] }}
+                        </h5>
+                        <p class="card-text mb-1">
+                            <i class="bi bi-award-fill me-1 text-success"></i>{{ doc['experience'] }} years experience
+                        </p>
+                        <p class="badge bg-primary text-white mt-2">{{ specialization }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+    </script>
+
+</body>
+
+</html>

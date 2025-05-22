@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, flash,session,url_for,jsonify,send_from_directory
 from flask_mysqldb import MySQL
+import MySQLdb.cursors
 import re
 import os
 import joblib
@@ -24,6 +25,8 @@ warnings.filterwarnings('ignore')
 
 
 dotenv.load_dotenv()
+ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL')
+ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD')
 
 app = Flask(__name__)
 app.secret_key = "group10"
@@ -75,6 +78,8 @@ kidney_model =  pickle.load(open('kidney_disease(short).sav', 'rb'))
 Breast_Cancer_model = pickle.load(open('Breast_Cancer.sav', 'rb'))
 Liver_model = pickle.load(open('liver_model.sav', 'rb'))
 Liver_scaler_model = pickle.load(open('liver_scaler.sav', 'rb'))
+Fatty_Liver_model = pickle.load(open('fatty_liver_model.sav', 'rb'))
+Fatty_Liver_scaler_model = pickle.load(open('fatty_liver_scaler.sav', 'rb'))
 model_package = joblib.load('parkinsons_model_package.sav')
 model = model_package['model']
 scaler = model_package['scaler']
@@ -94,6 +99,7 @@ with open("symptom_list.pkl", "rb") as f:
 
 with open("disease_names.pkl", "rb") as f:
     disease_mapping = pickle.load(f)
+
 
 # Email & Password Validation
 def validate_email(email):
@@ -187,6 +193,14 @@ def login():
         email = request.form['email']
         password = request.form['password']
         remember = request.form.get('remember')
+         # Check if user is admin
+        if email == ADMIN_EMAIL and password == ADMIN_PASSWORD:
+            session['admin'] = True
+            session['email'] = email
+            session['username'] = "Indra"
+            flash("Admin login successful!", "success")
+            return redirect('/admin/dashboard')
+        
         cur = mysql.connection.cursor()
         cur.execute("SELECT * FROM users WHERE email = %s", (email,))
         user = cur.fetchone()
@@ -221,6 +235,7 @@ def login():
             return redirect('/login')
 
     return render_template('login.html')
+
 
 # Logout Route
 @app.route('/logout')
@@ -654,45 +669,6 @@ def diabetes():
     return render_template('diabetes.html')
 
 
-
-# @app.route('/parkinson', methods=['POST','GET'])
-# def predict():
-#     if request.method == 'POST':
-#         try:
-#             # Get form values
-#             features = [
-#                 float(request.form['fo']),
-#                 float(request.form['fhi']),
-#                 float(request.form['flo']),
-#                 float(request.form['Jitter_percent']),
-#                 float(request.form['Jitter_Abs']),
-#                 float(request.form['RAP']),
-#                 float(request.form['PPQ']),
-#                 float(request.form['DFA']),
-#                 float(request.form['Shimmer']),
-#                 float(request.form['Shimmer_dB']),
-#                 float(request.form['APQ3']),
-#                 float(request.form['APQ5']),
-#                 float(request.form['APQ']),
-#                 float(request.form['DDA']),
-#                 float(request.form['NHR']),
-#                 float(request.form['HNR']),
-#                 float(request.form['RPDE']),
-#                 float(request.form['D2']),
-#                 float(request.form['spread1']),
-#                 float(request.form['spread2']),
-#                 float(request.form['PPE'])
-#             ]
-
-#             input_data = np.array([features])
-#             prediction = parkinson.predict(input_data)
-
-#             result = "Parkinson's Detected" if prediction[0] == 1 else "Healthy - No Parkinson's Detected"
-#             return jsonify({"success": True, "prediction": result})
-        
-#         except Exception as e:
-#             return jsonify({"success": False, "error": str(e)})
-#     return render_template('parkinson.html')
 @app.route('/parkinson', methods=['GET', 'POST'])
 def predict_parkinson():
     if request.method == 'POST':
@@ -788,6 +764,43 @@ def liver():
     return render_template('liver.html')
 
 
+@app.route('/fatty_liver', methods=['GET', 'POST'])
+def fatty_liver():
+    if request.method == 'POST':
+        try:
+            # Extract form values and convert them into float
+            input_data = [float(request.form[key]) for key in [
+                                                                    "Age",
+                                                                    "Gender",
+                                                                    "Body_Mass_Index",
+                                                                    "ALT",
+                                                                    "AST",
+                                                                    "GGT",
+                                                                    "Triglycerides",
+                                                                    "Glucose",
+                                                                    "Total_Cholesterol",
+                                                                    "HDL",
+                                                                    "LDL"
+                                                                ]]
+            #input_array = np.array(input_data).reshape(1, -1)
+            input_scaled = Fatty_Liver_scaler_model.transform([input_data])
+
+            # Predict using model
+            prediction = Fatty_Liver_model.predict(input_scaled)
+
+            # Determine result
+            result_text = "The prediction indicates a Severe illness." if prediction == 0 else "The prediction indicates a mild illness."
+
+             # return jsonify({"success": True, "prediction": result_text})
+            return jsonify({"success": True, "prediction": result_text, "result": int(prediction)})
+
+        except Exception as e:
+            return jsonify({"success": False, "error": str(e)})
+
+    return render_template('fatty_liver.html')
+
+
+
 
 @app.route('/kidney', methods=['GET', 'POST'])
 def kidney():
@@ -832,6 +845,133 @@ def bmi():
 @app.route("/BMR")
 def bmr():
     return render_template("BMR.html")
+
+@app.route('/depression', methods=['GET', 'POST'])
+def depression():
+    if request.method == 'POST':
+        try:
+            scores = []
+            for i in range(1, 10):
+                val = request.form.get(f'q{i}')
+                scores.append(int(val) if val else 0)
+
+            total_score = sum(scores)
+
+            # Generate message based on PHQ-9 scoring scale
+            if total_score <= 4:
+                message = "😊 Your depression score is low. You are likely experiencing minimal or no depression symptoms. Keep taking care of your mental health!"
+            elif total_score <= 9:
+                message = "😐 You are showing some mild depressive symptoms. Consider trying mindfulness, regular activity, or talking to someone you trust."
+            elif total_score <= 14:
+                message = "⚠️ Your score suggests moderate depression. Speaking to a mental health professional would be beneficial."
+            elif total_score <= 19:
+                message = "⚠️ You may be experiencing moderately severe depression. Please consult a healthcare provider soon."
+            else:
+                message = "🚨 Your score indicates severe depression. Immediate professional help is strongly recommended."
+
+            
+            return jsonify({"score": total_score, "message": message})
+        except Exception as e:
+            return jsonify({"error": str(e)})
+    
+    return render_template("depression.html")
+
+
+'''@app.route('/stress_screening', methods=['GET', 'POST'])
+def stress_screening():
+    if request.method == 'POST':
+        try:
+            answers = {1: 4, 2: 4, 3: 4, 4: 0, 5: 0, 6: 4, 7: 0, 8: 0, 9: 4, 10: 4}
+            total_score = 0
+            positive_questions = {4, 5, 7, 8}
+            for i in range(1, 11):
+                score = answers[i]
+                if i in positive_questions:
+                    score = 4 - score  # Reverse scoring
+                    print(f"Q{i}: adjusted score = {score}")
+                    total_score += score
+
+            # Interpret PSS-10 score
+            if total_score <= 13:
+                message = "😊 Low stress. You're managing things well—keep it up!"
+            elif total_score <= 26:
+                message = "😐 Moderate stress. Consider stress-reducing activities like mindfulness, sleep, or exercise."
+            else:
+                message = "🚨 High stress. Prioritize self-care and consider speaking to a mental health professional."
+
+            print(f"Total score: {total_score}, Message: {message}")
+            return jsonify({"score": total_score, "message": message})
+
+        except Exception as e:
+            return jsonify({"error": f"Server error: {str(e)}"}), 500
+
+    return render_template("Stress_question_answer.html")
+'''
+
+@app.route('/stress_screening', methods=['GET', 'POST'])
+def stress_question_answer():
+    if request.method == 'POST':
+        try:
+            #print("Form data:",request.form)
+            scores = []
+            #reverse_scored_items = [4, 5, 7, 8]  # PSS-10 reverse scoring (1-indexed)
+
+            for i in range(1, 11):
+                val = request.form.get(f'q{i}', None)
+                if val is None or not val.isdigit():
+                    return jsonify({"error": f"Invalid or missing answer for question {i}"})
+
+                score = int(val)
+
+                # Apply reverse scoring
+                #if i in reverse_scored_items:
+                    #score = 4 - score  # Reverse the score (assuming scale 0 to 4)
+
+                scores.append(score)
+
+            total_score = sum(scores)
+
+            # Interpret stress levels (based on general PSS-10 interpretation)
+            if total_score <= 13:
+                message = "😊 Low stress. You seem to be managing things well."
+            elif total_score <= 26:
+                message = "😐 Moderate stress. Some stress is normal, but try relaxation techniques or mindfulness."
+            else:
+                message = "⚠️ High stress. Consider speaking with a counselor or therapist to find support strategies."
+
+
+            return jsonify({"score": total_score, "message": message})
+
+        except Exception as e:
+            return jsonify({"error": str(e)})
+
+    return render_template("Stress_question_answer.html")
+
+
+
+
+@app.route('/anxiety', methods=['GET', 'POST'])
+def anxiety():
+    if request.method == 'POST':
+        try:
+            scores = [int(request.form.get(f'q{i}', 0)) for i in range(1, 8)]
+            total_score = sum(scores)
+
+            if total_score <= 4:
+                message = "😊 Minimal anxiety. You're likely doing well, but keep maintaining your mental wellness habits."
+            elif total_score <= 9:
+                message = "😐 Mild anxiety symptoms. Practicing relaxation techniques may help. Monitor your feelings."
+            elif total_score <= 14:
+                message = "⚠️ Moderate anxiety. Consider seeking support from a counselor or therapist."
+            else:
+                message = "🚨 Severe anxiety. Please consult a mental health professional as soon as possible."
+
+            return jsonify({"score": total_score, "message": message})
+        except Exception as e:
+            return jsonify({"error": str(e)})
+    
+    return render_template("anxiety.html")
+
 
 
 @app.route('/profile')
@@ -961,7 +1101,7 @@ def health_activity():
     return render_template('bmi_bmr_activity.html', activities=activities)
 
 def predict_brain_tumor(image_path):
-    img_size = 224
+    img_size = 256
     img = load_img(image_path, target_size=(img_size, img_size))
     img_array = img_to_array(img) / 255.0
     img_array = np.expand_dims(img_array, axis=0)
@@ -1018,6 +1158,267 @@ def tumor_detection():
 # @app.route('/uploads/<filename>')
 # def uploaded_file(filename):
 #     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+# Load the model and features for typhoid
+try:
+    model_path = os.path.join(os.path.dirname(__file__), 'typhoid_model_best8.sav')
+    features_path = os.path.join(os.path.dirname(__file__), 'typhoid_top8_features.sav')
+
+    Typhoid_model = joblib.load(model_path)
+    top_features = joblib.load(features_path)
+
+except Exception as e:
+    print(f"Error loading model or features: {e}")
+    exit(1)
+
+# Ensure top_features is a list of feature names
+if not isinstance(top_features, list):
+    print("Error: 'top_features' should be a list of feature names.")
+    exit(1)
+
+@app.route('/typhoid', methods=['GET', 'POST'])
+def typhoid():
+    if request.method == 'POST':
+        try:
+            if not request.form:
+                return jsonify({"success": False, "error": "No form data received."}), 400
+
+            input_data = []
+            for feature in top_features:
+                try:
+                    value = request.form.get(feature)
+                    if value is None:
+                        return jsonify({"success": False, "error": f"Missing data for feature: {feature}"}), 400
+                    input_data.append(float(value))
+                except ValueError:
+                    return jsonify({"success": False, "error": f"Invalid data type for {feature}. Must be a number."}), 400
+
+            input_array = np.array(input_data).reshape(1, -1)
+
+            try:
+                prediction = Typhoid_model.predict(input_array)[0]
+                probabilities = Typhoid_model.predict_proba(input_array)[0]
+            except Exception as model_err:
+                return jsonify({"success": False, "error": f"Error during prediction: {model_err}"}), 500
+
+            result_text = "The patient is predicted to NOT have Typhoid." if prediction == 0 else "The patient is predicted to have Typhoid."
+
+            response_data = {
+                "success": True,
+                "prediction": result_text,
+                "result": int(prediction),
+                "probability_no_typhoid": probabilities[0],
+                "probability_typhoid": probabilities[1]
+            }
+            return jsonify(response_data)
+
+        except Exception as e:
+            error_message = f"An unexpected error occurred: {str(e)}"
+            print(error_message)
+            return jsonify({"success": False, "error": error_message}), 500
+
+    # This part handles GET requests to /typhoid, if you want it to show the form as well
+    # Otherwise, you can remove the `return render_template` line from this block
+    return render_template('typhoid.html', features=top_features)
+
+@app.route("/stress")
+def stress():
+    return render_template("stress.html")
+
+@app.route('/admin/dashboard')
+def admin_dashboard():
+    if 'admin' in session:
+        return render_template('admin_dashboard.html', admin_name=session['username'])
+    else:
+        flash("Unauthorized access. Please log in as admin.", "danger")
+        return redirect('/login')
+    
+
+@app.route('/admin/users')
+def view_users():
+    if 'admin' not in session:
+        return redirect('/login')
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT id, username, email, phone, gender FROM users")
+    users = cur.fetchall()
+    cur.close()
+    return render_template('admin_users.html', users=users)
+
+@app.route('/delete_user/<int:id>', methods=['GET'])
+def delete_user(id):
+    cur = mysql.connection.cursor()
+    try:
+        cur.execute("DELETE FROM users WHERE id = %s", (id,))
+        mysql.connection.commit()
+        flash("User deleted successfully!", "success")
+    except Exception as e:
+        flash(f"Error deleting user: {str(e)}", "danger")
+    finally:
+        cur.close()
+    
+    return redirect(url_for('view_users'))  # make sure this route exists
+
+@app.route('/admin/block_user/<int:id>')
+def block_user(id):
+    cur = mysql.connection.cursor()
+    cur.execute("UPDATE users SET status='blocked' WHERE id=%s", (id,))
+    mysql.connection.commit()
+    cur.close()
+    flash("User has been blocked!", "warning")
+    return redirect(url_for('view_users'))
+
+
+@app.route('/admin/view_bmi_bmr')
+def view_bmi_bmr_history():
+    if 'admin' not in session:
+        return redirect('/login')
+
+    page = int(request.args.get('page', 1))
+    per_page = int(request.args.get('per_page', 10))
+    filter_username = request.args.get('filter_username', '')
+    filter_category = request.args.get('filter_category', '')
+
+    cur = mysql.connection.cursor()
+
+    cur.execute("SELECT DISTINCT username FROM health_reports")
+    usernames = [row[0] for row in cur.fetchall()]
+    cur.execute("SELECT DISTINCT category FROM health_reports")
+    categories = [row[0] for row in cur.fetchall()]
+
+    query = "SELECT id, username, height, weight, category, result_value FROM health_reports WHERE 1"
+    filters = []
+    params = []
+
+    if filter_username:
+        filters.append("username = %s")
+        params.append(filter_username)
+    if filter_category:
+        filters.append("category = %s")
+        params.append(filter_category)
+
+    if filters:
+        query += " AND " + " AND ".join(filters)
+
+    count_query = f"SELECT COUNT(*) FROM ({query}) AS sub"
+    cur.execute(count_query, params)
+    total = cur.fetchone()[0]
+    total_pages = (total + per_page - 1) // per_page
+
+    offset = (page - 1) * per_page
+    query += " ORDER BY id DESC LIMIT %s OFFSET %s"
+    cur.execute(query, (*params, per_page, offset))
+    users = cur.fetchall()
+    cur.close()
+
+    return render_template("admin_bmi_bmr_activity.html",
+                           users=users,
+                           page=page,
+                           per_page=per_page,
+                           total_pages=total_pages,
+                           filter_username=filter_username,
+                           filter_category=filter_category,
+                           usernames=usernames,
+                           categories=categories)
+
+
+@app.route('/admin/view_predictions')
+def view_prediction_history():
+    if 'admin' not in session:
+        return redirect('/login')
+
+    page = int(request.args.get('page', 1))
+    per_page = int(request.args.get('per_page', 10))
+    filter_username = request.args.get('filter_username', '').strip()
+    filter_disease = request.args.get('filter_disease', '').strip()
+
+    cur = mysql.connection.cursor()
+
+    # Unique dropdown data
+    cur.execute("SELECT DISTINCT username FROM user_activity")
+    usernames = [row[0] for row in cur.fetchall()]
+    cur.execute("SELECT DISTINCT disease_name FROM user_activity")
+    diseases = [row[0] for row in cur.fetchall()]
+
+    # Filtering
+    base_query = "SELECT id, username, disease_name, prediction_result, pdf_report, created_at FROM user_activity WHERE 1"
+    filters = []
+    params = []
+
+    if filter_username:
+        filters.append("username = %s")
+        params.append(filter_username)
+    if filter_disease:
+        filters.append("disease_name = %s")
+        params.append(filter_disease)
+
+    if filters:
+        base_query += " AND " + " AND ".join(filters)
+
+    count_query = f"SELECT COUNT(*) FROM ({base_query}) AS sub"
+    cur.execute(count_query, params)
+    total = cur.fetchone()[0]
+    total_pages = (total + per_page - 1) // per_page
+
+    offset = (page - 1) * per_page
+    base_query += " ORDER BY created_at DESC LIMIT %s OFFSET %s"
+    cur.execute(base_query, (*params, per_page, offset))
+    users = cur.fetchall()
+    cur.close()
+
+    return render_template("admin_prediction_history.html",
+                           users=users,
+                           page=page,
+                           per_page=per_page,
+                           total_pages=total_pages,
+                           filter_username=filter_username,
+                           filter_disease=filter_disease,
+                           usernames=usernames,
+                           diseases=diseases)
+
+
+
+@app.route('/admin/view-doctors')
+def view_doctors():
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute("SELECT * FROM doctors ORDER BY specialization, name")
+    doctors = cur.fetchall()
+    cur.close()
+
+    # Group by specialization
+    grouped = {}
+    for doc in doctors:
+        grouped.setdefault(doc['specialization'], []).append(doc)
+
+    return render_template('view_doctors.html', grouped=grouped)
+
+
+@app.route('/admin/add-doctor', methods=['GET', 'POST'])
+def add_doctor():
+    if request.method == 'POST':
+        name = request.form['name']
+        specialization = request.form['specialization']
+        experience = request.form['experience']
+        photo = request.files['photo']
+
+        photo_path = os.path.join('static/Doctors_Photo', secure_filename(photo.filename))
+        #id_card_path = os.path.join('static/uploads/id_cards', secure_filename(id_card.filename))
+
+        photo.save(photo_path)
+
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO doctors (name, specialization, experience, photo_path) VALUES (%s, %s, %s, %s)", 
+                    (name, specialization, experience, photo_path))
+        mysql.connection.commit()
+        cur.close()
+
+        flash("Doctor added successfully!", "success")
+        return redirect(url_for('view_doctors'))
+
+    # Send specialization options to the form
+    specializations = ['Cardiologist', 'Hepatologist', 'Diabetologist', 'Nephrologist', 'Oncologist (Breast)',
+                       'Neurologist (Parkinson)', 'Pulmonologist', 'Infectious Disease Specialist', 'Gastroenterologist']
+    return render_template('add_doctor.html', specializations=specializations)
+
 
 
 if __name__ == '__main__':
