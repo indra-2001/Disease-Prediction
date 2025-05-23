@@ -560,9 +560,9 @@ def diabetes():
     if request.method == 'POST':
         try:
             # Extract form values and convert them into float
-            input_data = [float(request.form[key]) for key in ['pregnancies', 'glucose', 'bloodPressure', 
-                                                               'skinThickness', 'insulin', 'bmi', 
-                                                               'diabetesPedigree', 'age']]
+            input_data = [float(request.form[key]) for key in ['Pregnancies (times)', 'Glucose Level (mg/dL)', 'Blood Pressure (mm Hg)', 
+                                                               'Skin Thickness (mm)', 'Insulin (μU/mL)', 'BMI (kg/m²)', 
+                                                               'Diabetes Pedigree Function', 'Age (years)']]
             # Convert into numpy array for model prediction
             input_array = np.array(input_data).reshape(1, -1)
 
@@ -1398,27 +1398,44 @@ def add_doctor():
         name = request.form['name']
         specialization = request.form['specialization']
         experience = request.form['experience']
+        contact = request.form['contact']  # <-- New field
         photo = request.files['photo']
 
         photo_path = os.path.join('static/Doctors_Photo', secure_filename(photo.filename))
-        #id_card_path = os.path.join('static/uploads/id_cards', secure_filename(id_card.filename))
-
         photo.save(photo_path)
 
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO doctors (name, specialization, experience, photo_path) VALUES (%s, %s, %s, %s)", 
-                    (name, specialization, experience, photo_path))
+        cur.execute("""
+            INSERT INTO doctors (name, specialization, experience, contact, photo_path) 
+            VALUES (%s, %s, %s, %s, %s)
+        """, (name, specialization, experience, contact, photo_path))
         mysql.connection.commit()
         cur.close()
 
         flash("Doctor added successfully!", "success")
         return redirect(url_for('view_doctors'))
 
-    # Send specialization options to the form
     specializations = ['Cardiologist', 'Hepatologist', 'Diabetologist', 'Nephrologist', 'Oncologist (Breast)',
                        'Neurologist (Parkinson)', 'Pulmonologist', 'Infectious Disease Specialist', 'Gastroenterologist']
     return render_template('add_doctor.html', specializations=specializations)
 
+@app.route("/get_doctors")
+def get_doctors():
+    specialization = request.args.get("specialization")
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT name, specialization, experience, contact, photo_path FROM doctors WHERE specialization = %s", [specialization])
+    rows = cursor.fetchall()
+
+    doctors = []
+    for row in rows:
+        doctors.append({
+            "name": row[0],
+            "specialization": row[1],
+            "experience": row[2],
+            "contact": row[3],
+            "photo_path": row[4]
+        })
+    return jsonify(doctors)
 
 
 if __name__ == '__main__':

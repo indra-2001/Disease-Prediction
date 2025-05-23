@@ -42,13 +42,10 @@
             height: 250px;
             width: 100%;
             object-fit: cover;
-            /* Ensures image fills without stretching */
             border-top-left-radius: 0.5rem;
             border-top-right-radius: 0.5rem;
             background-color: #e9ecef;
-            /* fallback if image doesn't load */
         }
-
 
         .card-title {
             font-size: 1.1rem;
@@ -91,6 +88,11 @@
                         </h5>
                         <p class="card-text mb-1">
                             <i class="bi bi-award-fill me-1 text-success"></i>{{ doc['experience'] }} years experience
+                        </p>
+                        <p class="card-text">
+                            <i class="bi bi-telephone-fill me-1 text-primary"></i>
+                            <a href="tel:{{ doc['contact'] }}" class="text-decoration-none text-dark">{{ doc['contact']
+                                }}</a>
                         </p>
                         <p class="badge bg-primary text-white mt-2">{{ specialization }}</p>
                     </div>
