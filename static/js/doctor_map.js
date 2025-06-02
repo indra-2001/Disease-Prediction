@@ -5,8 +5,9 @@ const diseaseDoctorMap = {
   "Kidney Disease": "Nephrologist",
   "Liver Disease": "Hepatologist",
   "Fatty Liver": "Gastroenterologist",
-  "Parkinson's Disease": "Neurologist (Parkinson)",
+  "Parkinson's Disease": "Neurologist",
   "Typhoid": "Infectious Disease Specialist",
-  "Brain Tumor": "Oncologist (Breast)",
+  "Brain Tumor": "Oncologist",
+  "Breast Cancer": "Oncologist",
   "Lungs Cancer": "Pulmonologist"
 };

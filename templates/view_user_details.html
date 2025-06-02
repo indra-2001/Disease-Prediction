@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>User Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        .container {
+            max-width: 600px;
+        }
+
+        .card {
+            margin-top: 50px;
+        }
+
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #343a40;
+        }
+
+        .badge-active {
+            background-color: #28a745;
+        }
+
+        .badge-blocked {
+            background-color: #dc3545;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="card shadow">
+            <div class="card-header bg-dark text-white d-flex align-items-center">
+                <img src="{{ url_for('static', filename='profile_pics/' + user.profile_pic) }}" alt="Profile Picture"
+                    class="profile-img me-3">
+                <h4 class="mb-0">User Details</h4>
+            </div>
+            <div class="card-body">
+                <p><strong>User ID:</strong> {{ user.id }}</p>
+                <p><strong>Username:</strong> {{ user.username }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <p><strong>Phone:</strong> {{ user.phone }}</p>
+                <p><strong>Gender:</strong> {{ user.gender }}</p>
+                <p><strong>Registered On:</strong> {{ user.created_at }}</p>
+                <p>
+                    <strong>Status:</strong>
+                    {% if user.status == 'active' %}
+                    <span class="badge badge-active">Active</span>
+                    {% else %}
+                    <span class="badge badge-blocked">Blocked</span>
+                    {% endif %}
+                </p>
+            </div>
+            <div class="card-footer text-end">
+                <a href="{{ url_for('view_users') }}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

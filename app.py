@@ -207,6 +207,10 @@ def login():
         print(user)
         cur.close()
 
+        if user[8] == 'blocked':  
+                flash("Your account is blocked. Please contact admin.", "danger")
+                return redirect('/login')
+        
         if user and check_password_hash(user[5], password):  # user[5] is the password column
         #if user and check_password_hash(user['password'], password):
 
@@ -366,19 +370,19 @@ def heart_prediction():
         try:
             # Extract input values safely using request.form.get()
             input_data = [
-                float(request.form.get('age', 0)),
-                float(request.form.get('sex', 0)),
-                float(request.form.get('cp', 0)),
-                float(request.form.get('trestbps', 0)),
-                float(request.form.get('chol', 0)),
-                float(request.form.get('fbs', 0)),
-                float(request.form.get('restecg', 0)),
-                float(request.form.get('thalach', 0)),
-                float(request.form.get('exang', 0)),
-                float(request.form.get('oldpeak', 0)),
-                float(request.form.get('slope', 0)),
-                float(request.form.get('ca', 0)),
-                float(request.form.get('thal', 0))
+                float(request.form.get('Age', 0)),
+                float(request.form.get('Sex', 0)),
+                float(request.form.get('Chest Pain Type', 0)),
+                float(request.form.get('Resting Blood Pressure', 0)),
+                float(request.form.get('Cholesterol', 0)),
+                float(request.form.get('Fasting Blood Sugar > 120 mg/dl', 0)),
+                float(request.form.get('Resting ECG Results', 0)),
+                float(request.form.get('Max Heart Rate Achieved', 0)),
+                float(request.form.get('Exercise Induced Angina', 0)),
+                float(request.form.get('ST Depression Induced by Exercise', 0)),
+                float(request.form.get('Slope of Peak Exercise ST Segment', 0)),
+                float(request.form.get('Number of Major Vessels Colored by Fluoroscopy', 0)),
+                float(request.form.get('Thalassemia', 0))
             ]
 
             # Convert into numpy array for model prediction
@@ -1239,33 +1243,69 @@ def view_users():
     if 'admin' not in session:
         return redirect('/login')
     cur = mysql.connection.cursor()
-    cur.execute("SELECT id, username, email, phone, gender FROM users")
+    cur.execute("SELECT id, username, email, phone, gender,status FROM users")
     users = cur.fetchall()
     cur.close()
     return render_template('admin_users.html', users=users)
 
-@app.route('/delete_user/<int:id>', methods=['GET'])
+@app.route('/delete_user/<int:id>')
 def delete_user(id):
-    cur = mysql.connection.cursor()
-    try:
-        cur.execute("DELETE FROM users WHERE id = %s", (id,))
+    cursor = mysql.connection.cursor()
+
+    cursor.execute("SELECT username FROM users WHERE id = %s", (id,))
+    user = cursor.fetchone()
+
+    if user:
+        username = user[0]
+
+        cursor.execute("DELETE FROM health_reports WHERE username = %s", (username,))
+        cursor.execute("DELETE FROM user_activity WHERE username = %s", (username,))
+
+        cursor.execute("DELETE FROM users WHERE id = %s", (id,))
+
         mysql.connection.commit()
-        flash("User deleted successfully!", "success")
-    except Exception as e:
-        flash(f"Error deleting user: {str(e)}", "danger")
-    finally:
-        cur.close()
-    
-    return redirect(url_for('view_users'))  # make sure this route exists
+
+    return redirect(url_for('view_users')) 
 
 @app.route('/admin/block_user/<int:id>')
 def block_user(id):
     cur = mysql.connection.cursor()
-    cur.execute("UPDATE users SET status='blocked' WHERE id=%s", (id,))
+    cur.execute("UPDATE users SET status = 'blocked' WHERE id = %s", (id,))
     mysql.connection.commit()
     cur.close()
-    flash("User has been blocked!", "warning")
+    flash("User blocked successfully!", "warning")
     return redirect(url_for('view_users'))
+
+
+@app.route('/admin/unblock_user/<int:id>')
+def unblock_user(id):
+    cur = mysql.connection.cursor()
+    cur.execute("UPDATE users SET status = 'active' WHERE id = %s", (id,))
+    mysql.connection.commit()
+    cur.close()
+    flash("User unblocked successfully!", "success")
+    return redirect(url_for('view_users'))
+
+@app.route('/admin/view_user/<int:id>')
+def view_user_details(id):
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT id, username, email, phone, gender, profile_pic, created_at, status FROM users WHERE id = %s", (id,))
+    row = cur.fetchone()
+    if row:
+        user = {
+            'id': row[0],
+            'username': row[1],
+            'email': row[2],
+            'phone': row[3],
+            'gender': row[4],
+            'profile_pic': row[5],
+            'created_at': row[6],
+            'status': row[7]
+        }
+        return render_template('view_user_details.html', user=user)
+    else:
+        flash("User not found", "danger")
+        return redirect(url_for('view_users'))
 
 
 @app.route('/admin/view_bmi_bmr')
@@ -1415,8 +1455,8 @@ def add_doctor():
         flash("Doctor added successfully!", "success")
         return redirect(url_for('view_doctors'))
 
-    specializations = ['Cardiologist', 'Hepatologist', 'Diabetologist', 'Nephrologist', 'Oncologist (Breast)',
-                       'Neurologist (Parkinson)', 'Pulmonologist', 'Infectious Disease Specialist', 'Gastroenterologist']
+    specializations = ['Cardiologist', 'Hepatologist', 'Diabetologist', 'Nephrologist', 'Oncologist',
+                       'Neurologist', 'Pulmonologist', 'Infectious Disease Specialist', 'Gastroenterologist']
     return render_template('add_doctor.html', specializations=specializations)
 
 @app.route("/get_doctors")
@@ -1437,7 +1477,55 @@ def get_doctors():
         })
     return jsonify(doctors)
 
+@app.route('/edit_doctor/<int:doctor_id>', methods=['GET', 'POST'])
+def edit_doctor(doctor_id):
+    doctor = get_doctor_by_id(doctor_id)  # Fetch current data
 
+    if request.method == 'POST':
+        name = request.form['name']
+        contact = request.form['contact']
+        experience = request.form['experience']
+        specialization = request.form['specialization']
+
+        photo = request.files.get('photo')
+        photo_path = doctor['photo_path']  # Default to existing path
+
+        if photo and allowed_file(photo.filename):
+            filename = secure_filename(photo.filename)
+            photo_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            photo.save(photo_path)
+            photo_path = photo_path.replace("\\", "/")  # Normalize path for HTML
+
+        update_doctor(doctor_id, name, contact, experience, specialization, photo_path)
+        return redirect(url_for('view_doctors'))
+
+    return render_template('edit_doctor.html', doctor=doctor)
+
+@app.route('/delete_doctor/<int:doctor_id>')
+def delete_doctor(doctor_id):
+    cursor = mysql.connection.cursor()
+    cursor.execute("DELETE FROM doctors WHERE id = %s", (doctor_id,))
+    mysql.connection.commit()
+    return redirect(url_for('view_doctors'))
+
+def update_doctor(doctor_id, name, contact, experience, specialization, photo_path):
+    cursor = mysql.connection.cursor()
+    cursor.execute("""
+        UPDATE doctors SET name=%s, contact=%s, experience=%s, specialization=%s, photo_path=%s
+        WHERE id=%s
+    """, (name, contact, experience, specialization, photo_path, doctor_id))
+    mysql.connection.commit()
+    cursor.close()
+
+def get_doctor_by_id(doctor_id):
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute("SELECT * FROM doctors WHERE id = %s", (doctor_id,))
+    doctor = cursor.fetchone()
+    cursor.close()
+    return doctor
+
+
+    
 if __name__ == '__main__':
     app.secret_key = "group10"
     app.run(debug=True)

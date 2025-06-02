@@ -161,10 +161,11 @@
 
         <!-- Pass variables to JavaScript -->
         <script>
-            const tumorResult = {{ result | tojson | safe }};
-            const tumorConfidence = {{ confidence | tojson | safe }};
-            const tumorImagePath = {{ file_path | tojson | safe }};
+            const tumorResult = JSON.parse('{{ result | tojson | safe }}');
+            const tumorConfidence = JSON.parse('{{ confidence | tojson | safe }}');
+            const tumorImagePath = JSON.parse('{{ file_path | tojson | safe }}');
         </script>
+
         {% endif %}
     </div>
 
