@@ -268,7 +268,9 @@ def forgot_password():
         if user:
             # Generate token
             token = serializer.dumps(email, salt='password-reset-salt')
-            reset_url = url_for('reset_password_token', token=token, _external=True)
+            #reset_url = url_for('reset_password_token', token=token, _external=True)
+            reset_url = request.host_url.rstrip('/') + url_for('reset_password_token', token=token)
+
 
             # Send email
             msg = Message("Reset Your HealthCheck Password", sender=os.environ.get('MAIL_USERNAME'), recipients=[email])
