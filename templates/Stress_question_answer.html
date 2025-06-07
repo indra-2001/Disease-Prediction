@@ -2,110 +2,87 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>PSS-10 Stress Screening</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-
     <style>
         body {
-            background: linear-gradient(to right, #e3f2fd, #ffffff);
-            font-family: 'Segoe UI', sans-serif;
+    background-color: #e9f7f9;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('../static/images/stress_sc_background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* Remove the below two lines */
+    /* height: 100vh; */
+    /* display: flex; */
+    /* justify-content: center;
+    align-items: center; */
+}
 
-            margin: 0;
-            padding: 0;
-            background-image: url('../static/images/stress_sc_background.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .container {
-            margin-top: 60px;
-            max-width: 900px;
-        }
-
-        .card {
-            border-radius: 1.5rem;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            border: 6px solid #6cfafa;
-            background-color: #e9f8f4;
-            padding: 2rem;
+        .container-box {
+            max-width: 850px;
+            margin: 50px auto;
+            border:  6px solid #46e1f5;
+            background-color: #d8f5f5;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         h2 {
+            text-align: center;
+            margin-bottom: 25px;
             font-weight: bold;
-            color: #0d6efd;
+            color: #333;
         }
 
-        label.form-label {
+        .form-label {
             font-weight: 500;
         }
+
+        select.form-select {
+            border-radius: 6px;
+        }
+
+        #result {
+    display: none;
+    background-color: #fffecd !important; /* soft yellow background */
+    color: #856404 !important;           /* dark amber text */
+    border: 2px solid #ffeeba;
+    font-size: 18px;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    font-weight: 500;
+    text-align: center;
+}
 
         .btn-primary {
-            background-color: #0d6efd;
-            border: none;
-            transition: 0.3s;
+            font-weight: 600;
+            width: 100%;
         }
 
-        .btn-primary:hover {
-            background-color: #0b5ed7;
-        }
-
-        .btn-secondary {
-            background-color: #6c757d;
-            border: none;
-            transition: 0.3s;
-        }
-
-        .btn-secondary:hover {
-            background-color: #5c636a;
-        }
-
-        .form-select {
-            border-radius: 0.5rem;
-        }
-
-        .result {
-            background: #e6ffed;
-            border-left: 6px solid #28a745;
-            padding: 18px;
+        .alert {
             margin-top: 25px;
-            border-radius: 10px;
-            font-weight: 500;
-            font-size: 1rem;
-            color: #155724;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-        }
-
-        .btn i {
-            margin-right: 8px;
         }
 
         .modal-content {
             border: 6px solid #dbfd18;
             border-radius: 10px;
         }
-
-        /* @media (max-width: 768px) {
-            .card {
-                padding: 1.5rem;
-            }
-        } */
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <div class="card">
-            <h2 class="mb-4 text-center"><i class="fas fa-brain me-2"></i>Stress Screening</h2>
-            <form id="pss-10Form">
+
+    <div class="container-box">
+        <h2 style="color: #0d6efd; font-weight: bold;"><i class="fas fa-brain me-2"></i>Stress Screening</h2>
+        <form id="pss-10Form">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
@@ -145,8 +122,7 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="q4" class="form-label">4. In the last month, how often have you felt
-                                <br>confident about your ability to handle your personal problems?</label>
+                            <label for="q4" class="form-label">4. In the last month, how often have you felt confident about your ability to handle your personal problems?</label>
                             <select id="q4" name="q4" class="form-select" required>
                                 <option value="" disabled selected>Select</option>
                                 <option value="0">Never</option>
@@ -156,6 +132,7 @@
                                 <option value="4">Very often</option>
                             </select>
                         </div>
+                        <br>
                         <div class="mb-3">
                             <label for="q5" class="form-label">5. In the last month, how often have you felt that things
                                 were going your way?</label>
@@ -240,13 +217,19 @@
                     Dashboard</a>
             </form>
 
-            <div id="depResult" class="result mt-3" style="display: none;"></div>
-            <button type="button" id="adviceBtn" class="btn btn-success mt-3" data-bs-toggle="modal"
-                data-bs-target="#staticBackdrop" style="display: none;">
-                <i class="fas fa-notes-medical me-2"></i>Get Advices
-            </button>
+
+        <div id="result" class="alert alert-info" style="display: none;">
+            <p id="resultText"></p>
+        </div>
+        <div class="d-flex justify-content-center">
+        <button type="button" id="adviceBtn" class="btn btn-success mt-3" data-bs-toggle="modal"
+            data-bs-target="#staticBackdrop" style="display: none;">
+            <i class="fas fa-notes-medical me-2"></i>Get Advices
+        </button>
         </div>
     </div>
+
+    
 
     <!-- modal start-->
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -269,32 +252,34 @@
         </div>
     </div>
     <!-- modal End-->
+     
+    
 
     <script>
-        document.getElementById("pss-10Form").addEventListener("submit", function (event) {
-            event.preventDefault();
+        document.getElementById('pss-10Form').addEventListener('submit', async function (e) {
+            e.preventDefault();
             const formData = new FormData(this);
-            fetch("/stress_screening", {
-                method: "POST",
+            const response = await fetch('/stress_screening', {
+                method: 'POST',
                 body: formData
-            })
-                .then(response => response.json())
-                .then(data => {
-                    const resultBox = document.getElementById("depResult");
-                    resultBox.style.display = "block";
-                    if (data.error) {
-                        resultBox.innerHTML = "❌ Error: " + data.error;
-                        resultBox.classList.remove("bg-success");
-                        resultBox.classList.add("bg-danger", "text-white");
-                    } else {
-                        resultBox.classList.remove("bg-danger", "text-white");
-                        resultBox.innerText = data.message;
-                        document.getElementById("adviceBtn").style.display = "block";
+            });
+            const data = await response.json();
+            if (data.error) {
+                alert(data.error);
+            } else {
+                // document.getElementById('scoreValue').innerText = data.score;
+                document.getElementById('resultText').innerText = data.message;
+                document.getElementById('result').style.display = 'block';
 
-                        document.getElementById("staticBackdropLabel").innerHTML = data.message;
-                        document.getElementById("adviceContent").innerHTML = getAdvice(parseInt(data.score));
-                    }
-                });
+                document.getElementById("adviceBtn").style.display = "block";
+
+                document.getElementById("staticBackdropLabel").innerHTML = data.message;
+                document.getElementById("adviceContent").innerHTML = getAdvice(parseInt(data.score));
+
+                setTimeout(() => {window.scrollTo({ top: 0, behavior: 'smooth' });}, 100); 
+                
+                
+            }
         });
 
 
@@ -302,34 +287,41 @@
             const adviceTitle = document.getElementById("staticBackdropLabel").innerText;
             const adviceBody = document.getElementById("adviceContent").innerHTML;
 
-            const pdfContainer = document.createElement("div");
-            pdfContainer.innerHTML = `
-            <div style="text-align: center; font-family: 'Segoe UI', sans-serif; margin-bottom: 20px; padding-bottom: 5px;">
-                <h1 style="color: #1e88e5; font-size: 31px; margin-bottom: 0;">📝 Your Stress Screening Report</h1>
-                <p style="color: #555; font-size: 16px; margin-top: 5px; border-bottom: 2px solid #2196f3;">Based on the PSS-10 Assessment</p>
-            </div>
-            <div style="color: #2196f3; font-size: 25px;  padding-bottom: 10px;"><strong>${adviceTitle}</strong></div>
-            <div style="font-family: Arial, sans-serif; font-size: 20px; padding-top: 10px">${adviceBody}</div>
-            `;
+    // Inject into a printable visible container
+    const printContainer = document.getElementById("printContainer");
+    printContainer.innerHTML = `
+        <div style="text-align: center; font-family: 'Segoe UI', sans-serif; margin-bottom: 20px; padding-bottom: 5px;">
+            <h1 style="color: #1e88e5; font-size: 31px; margin-bottom: 0;">📝 Your Stress Screening Report</h1>
+            <p style="color: #555; font-size: 16px; margin-top: 5px; border-bottom: 2px solid #2196f3;">Based on the PSS-10 Assessment</p>
+        </div>
+        <div style="color: #2196f3; font-size: 25px; padding-bottom: 10px;"><strong>${adviceTitle}</strong></div>
+        <div style="font-family: Arial, sans-serif; font-size: 20px; padding-top: 10px;">${adviceBody}</div>
+    `;
+    printContainer.style.display = 'block';
 
-            html2pdf()
-                .from(pdfContainer)
-                .set({
-                    margin: 10,
-                    filename: 'Stress_Screening_Report.pdf',
-                    html2canvas: { scale: 2 },
-                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-                })
-                .save();
+    html2pdf()
+        .from(printContainer)
+        .set({
+            margin: 10,
+            filename: 'Stress_Screening_Report.pdf',
+            html2canvas: { scale: 2, scrollY: 0 },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        })
+        .save()
+        .then(() => {
+            // Hide again after export
+            printContainer.style.display = 'none';
+        });
         }
+
 
 
         function getAdvice(score) {
             let advice = "";
 
-            if (score <= 13) {
-                // Low Stress
-                advice = `<div class="p-3 rounded" style="background-color: #E6FFFA; color: #155724;">
+             if (score <= 13) {
+        // Low Stress
+        advice = `<div class="p-3 rounded" style="background-color: #E6FFFA; color: #155724;">
         <h6><i class="fas fa-smile-beam"></i> 🟢 Low Stress (Score: ${score})</h6>
         <strong>✅ Interpretation:</strong> You are showing low levels of stress. That’s a healthy sign!<br><br>
 
@@ -399,12 +391,15 @@
     </div>`;
             }
 
+
             return advice;
         }
 
     </script>
+    <div id="printContainer" style="display: none;"></div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
 </body>
 
 </html>

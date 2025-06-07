@@ -19,8 +19,8 @@ from fpdf import FPDF
 from datetime import datetime
 os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-# from tensorflow.keras.models import load_model
-# from tensorflow.keras.preprocessing.image import load_img, img_to_array
+from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing.image import load_img, img_to_array
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -73,8 +73,8 @@ model = model_package['model']
 scaler = model_package['scaler']
 selected_features = model_package['features']
 
-# Load brain tumor classification model
-# tumor_model = load_model("model.h5")
+#Load brain tumor classification model
+tumor_model = load_model("model.h5")
 
 # Define class labels in same order as during training
 tumor_class_labels = ['glioma', 'meningioma', 'notumor', 'pituitary']
@@ -861,6 +861,24 @@ def bmi():
 def bmr():
     return render_template("BMR.html")
 
+# @app.route("/TDEE")
+# def tdee():
+#     return render_template("TDEE.html")
+
+@app.route("/HydrationCalculator")
+def hydration_calculator():
+    return render_template("Hydration Calculator.html")
+
+@app.route("/NutrientCalculator")
+def nutrient_calculator():
+    return render_template("nutrient.html")
+
+@app.route("/body_weight_Calculator")
+def body_weight_calculator():
+    return render_template("body_weight_calculator.html")
+
+
+
 @app.route('/depression', methods=['GET', 'POST'])
 def depression():
     if request.method == 'POST':
@@ -1115,60 +1133,60 @@ def health_activity():
     # Render the template with the fetched activities
     return render_template('bmi_bmr_activity.html', activities=activities)
 
-# def predict_brain_tumor(image_path):
-#     img_size = 224
-#     img = load_img(image_path, target_size=(img_size, img_size))
-#     img_array = img_to_array(img) / 255.0
-#     img_array = np.expand_dims(img_array, axis=0)
+def predict_brain_tumor(image_path):
+    img_size = 224
+    img = load_img(image_path, target_size=(img_size, img_size))
+    img_array = img_to_array(img) / 255.0
+    img_array = np.expand_dims(img_array, axis=0)
 
-#     predictions = tumor_model.predict(img_array)
-#     pred_index = np.argmax(predictions)
-#     confidence = np.max(predictions)
+    predictions = tumor_model.predict(img_array)
+    pred_index = np.argmax(predictions)
+    confidence = np.max(predictions)
 
-#     predicted_label = tumor_class_labels[pred_index]
-#     if predicted_label == 'notumor':
-#         return "No Tumor Detected", confidence
-#     else:
-#         return f"Tumor Detected: {predicted_label.title()}", confidence
-# from werkzeug.utils import secure_filename
-# from datetime import datetime
+    predicted_label = tumor_class_labels[pred_index]
+    if predicted_label == 'notumor':
+        return "No Tumor Detected", confidence
+    else:
+        return f"Tumor Detected: {predicted_label.title()}", confidence
+from werkzeug.utils import secure_filename
+from datetime import datetime
 
-# @app.route('/tumor', methods=['GET', 'POST'])
-# def tumor_detection():
-#     if request.method == 'POST':
-#         file = request.files['file']
-#         if file:
-#             original_filename = secure_filename(file.filename)
+@app.route('/tumor', methods=['GET', 'POST'])
+def tumor_detection():
+    if request.method == 'POST':
+        file = request.files['file']
+        if file:
+            original_filename = secure_filename(file.filename)
 
-#             # Generate a timestamp string (e.g., 20250515_153045)
-#             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-#             filename = f"{timestamp}_{original_filename}"
+            # Generate a timestamp string (e.g., 20250515_153045)
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            filename = f"{timestamp}_{original_filename}"
 
-#             # TEMP: Save file first to a generic location
-#             temp_path = os.path.join("static/tumor", filename)
-#             file.save(temp_path)
+            # TEMP: Save file first to a generic location
+            temp_path = os.path.join("static/tumor", filename)
+            file.save(temp_path)
 
-#             # Predict from saved file
-#             result_text, confidence = predict_brain_tumor(temp_path)
+            # Predict from saved file
+            result_text, confidence = predict_brain_tumor(temp_path)
 
-#             # Determine class label folder name
-#             predicted_label = result_text.split(":")[-1].strip().lower().replace(" ", "") if "Tumor" in result_text else "notumor"
+            # Determine class label folder name
+            predicted_label = result_text.split(":")[-1].strip().lower().replace(" ", "") if "Tumor" in result_text else "notumor"
 
-#             # Create class-specific subfolder (e.g., static/tumor/glioma)
-#             save_folder = os.path.join("static/tumor", predicted_label)
-#             os.makedirs(save_folder, exist_ok=True)
+            # Create class-specific subfolder (e.g., static/tumor/glioma)
+            save_folder = os.path.join("static/tumor", predicted_label)
+            os.makedirs(save_folder, exist_ok=True)
 
-#             # Final file path
-#             final_path = os.path.join(save_folder, filename)
+            # Final file path
+            final_path = os.path.join(save_folder, filename)
 
-#             # Move file to final subfolder
-#             os.rename(temp_path, final_path)
+            # Move file to final subfolder
+            os.rename(temp_path, final_path)
 
-#             return render_template('brain_tumor.html',
-#                                    result=result_text,
-#                                    confidence=f"{confidence * 100:.2f}%",
-#                                    file_path=f"/{final_path.replace(os.sep, '/')}")
-#     return render_template('brain_tumor.html', result=None)
+            return render_template('brain_tumor.html',
+                                   result=result_text,
+                                   confidence=f"{confidence * 100:.2f}%",
+                                   file_path=f"/{final_path.replace(os.sep, '/')}")
+    return render_template('brain_tumor.html', result=None)
 
 
 # @app.route('/uploads/<filename>')
@@ -1237,9 +1255,9 @@ def typhoid():
     # Otherwise, you can remove the `return render_template` line from this block
     return render_template('typhoid.html', features=top_features)
 
-@app.route("/stress")
-def stress():
-    return render_template("stress.html")
+# @app.route("/stress")
+# def stress():
+#     return render_template("stress.html")
 
 
 if __name__ == '__main__':
