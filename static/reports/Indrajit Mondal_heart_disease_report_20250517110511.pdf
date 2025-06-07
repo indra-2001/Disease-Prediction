@@ -1,0 +1,690 @@
+%PDF-1.3
+%ºß¬à
+3 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 4 0 R
+>>
+endobj
+4 0 obj
+<<
+/Length 6085
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F1 18 Tf
+20.6999999999999993 TL
+0 g
+39.6850393700787407 779.5277952755905062 Td
+(Heart Disease Prediction Report) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+39.6850393700787407 762.5199212598424765 Td
+(Generated on: 5/17/2025, 11:05:11 AM) Tj
+ET
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0 g
+39.6850393700787407 751.1813385826771992 Td
+(User Input Data:) Tj
+ET
+0.1 0.74 0.61 rg
+0.78 G
+0. w
+0.1 0.74 0.61 rg
+40. 739.8427559055118081 205.2712984364377462 -21.4999999999999964 re
+f
+BT
+/F2 10 Tf
+11.5 TL
+1. g
+45. 726.3427559055118081 Td
+(Parameter) Tj
+ET
+0.1 0.74 0.61 rg
+0.78 G
+0. w
+0.1 0.74 0.61 rg
+245.2712984364377462 739.8427559055118081 310.0087015635621128 -21.4999999999999964 re
+f
+BT
+/F2 10 Tf
+11.5 TL
+1. g
+250.2712984364377462 726.3427559055118081 Td
+(Value) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 718.3427559055118081 205.2712984364377462 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 704.8427559055118081 Td
+(age) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+245.2712984364377462 718.3427559055118081 310.0087015635621128 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+250.2712984364377462 704.8427559055118081 Td
+(56) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 696.8427559055118081 205.2712984364377462 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 683.3427559055118081 Td
+(sex) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+245.2712984364377462 696.8427559055118081 310.0087015635621128 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+250.2712984364377462 683.3427559055118081 Td
+(Female) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 675.3427559055118081 205.2712984364377462 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 661.8427559055118081 Td
+(cp) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+245.2712984364377462 675.3427559055118081 310.0087015635621128 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+250.2712984364377462 661.8427559055118081 Td
+(Typical Angina) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 653.8427559055118081 205.2712984364377462 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 640.3427559055118081 Td
+(trestbps) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+245.2712984364377462 653.8427559055118081 310.0087015635621128 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+250.2712984364377462 640.3427559055118081 Td
+(200) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 632.3427559055118081 205.2712984364377462 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 618.8427559055118081 Td
+(chol) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+245.2712984364377462 632.3427559055118081 310.0087015635621128 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+250.2712984364377462 618.8427559055118081 Td
+(288) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 610.8427559055118081 205.2712984364377462 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 597.3427559055118081 Td
+(fbs) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+245.2712984364377462 610.8427559055118081 310.0087015635621128 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+250.2712984364377462 597.3427559055118081 Td
+(True) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 589.3427559055116944 205.2712984364377462 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 575.8427559055116944 Td
+(restecg) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+245.2712984364377462 589.3427559055116944 310.0087015635621128 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+250.2712984364377462 575.8427559055116944 Td
+(Normal) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 567.8427559055118081 205.2712984364377462 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 554.3427559055116944 Td
+(thalach) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+245.2712984364377462 567.8427559055118081 310.0087015635621128 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+250.2712984364377462 554.3427559055116944 Td
+(133) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 546.3427559055118081 205.2712984364377462 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 532.8427559055116944 Td
+(exang) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+245.2712984364377462 546.3427559055118081 310.0087015635621128 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+250.2712984364377462 532.8427559055116944 Td
+(Yes) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 524.8427559055116944 205.2712984364377462 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 511.3427559055117513 Td
+(oldpeak) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+245.2712984364377462 524.8427559055116944 310.0087015635621128 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+250.2712984364377462 511.3427559055117513 Td
+(4) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 503.3427559055116944 205.2712984364377462 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 489.8427559055117513 Td
+(slope) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+245.2712984364377462 503.3427559055116944 310.0087015635621128 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+250.2712984364377462 489.8427559055117513 Td
+(Upsloping) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 481.8427559055116944 205.2712984364377462 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 468.3427559055117513 Td
+(ca) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+245.2712984364377462 481.8427559055116944 310.0087015635621128 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+250.2712984364377462 468.3427559055117513 Td
+(2) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 460.3427559055117513 205.2712984364377462 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 446.8427559055118081 Td
+(thal) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+245.2712984364377462 460.3427559055117513 310.0087015635621128 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+250.2712984364377462 446.8427559055118081 Td
+(Reversible Defect) Tj
+ET
+0.78 G
+0. w
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0. g
+39.6850393700787407 410.4962992125983874 Td
+(Prediction Result: No Heart Disease \(Negative\)) Tj
+ET
+endstream
+endobj
+5 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 6 0 R
+>>
+endobj
+6 0 obj
+<<
+/Length 1632
+>>
+stream
+0.5670000000000001 w
+0.78 G
+BT
+/F1 16 Tf
+18.3999999999999986 TL
+0. g
+39.6850393700787407 779.5277952755905062 Td
+(Trusted Advice For You) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0. g
+39.6850393700787407 751.1813385826771992 Td
+() Tj
+T* (Great news! Your test results do not show signs of heart disease. But staying heart-healthy is a lifelong effort.) Tj
+T* () Tj
+T* (Continue with These Practices to Maintain Your Heart Health ----) Tj
+T* () Tj
+T* (# Diet & Nutrition:) Tj
+T* () Tj
+T* (    • Follow a Mediterranean-style diet: rich in vegetables, fruits, whole grains, and lean proteins.) Tj
+T* (    • Avoid processed, sugary, and fatty foods.) Tj
+T* (    • Use healthy fats like olive oil instead of butter or margarine.) Tj
+T* (    • Reduce salt to help keep blood pressure in check.) Tj
+T* () Tj
+T* () Tj
+T* (# Lifestyle:) Tj
+T* () Tj
+T* (    • Be physically active at least 150 minutes a week \(e.g., brisk walking, cycling\).) Tj
+T* (    • Avoid tobacco in all forms — it damages your heart and blood vessels.) Tj
+T* (    • Limit alcohol consumption.) Tj
+T* (    • Maintain a healthy weight and sleep 7–8 hours nightly.) Tj
+T* (    • Practice stress reduction techniques such as yoga, meditation, or deep breathing.) Tj
+T* () Tj
+T* () Tj
+T* (# Monitor Regularly:) Tj
+T* () Tj
+T* (    • Get your blood pressure, cholesterol, and glucose levels checked routinely.) Tj
+T* (    • If you have a family history of heart disease, keep up with screenings.) Tj
+T* () Tj
+T* () Tj
+T* (Keep in touch with your healthcare provider for periodic evaluations.) Tj
+T* (A healthy lifestyle today means a healthier heart tomorrow!) Tj
+T* (            ) Tj
+ET
+endstream
+endobj
+1 0 obj
+<</Type /Pages
+/Kids [3 0 R 5 0 R ]
+/Count 2
+>>
+endobj
+7 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+8 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+9 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+10 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+11 0 obj
+<<
+/Type /Font
+/BaseFont /Courier
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+12 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+13 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+14 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+15 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Roman
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+16 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+17 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Italic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+18 0 obj
+<<
+/Type /Font
+/BaseFont /Times-BoldItalic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+19 0 obj
+<<
+/Type /Font
+/BaseFont /ZapfDingbats
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+20 0 obj
+<<
+/Type /Font
+/BaseFont /Symbol
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+2 0 obj
+<<
+/ProcSet [/PDF /Text /ImageB /ImageC /ImageI]
+/Font <<
+/F1 7 0 R
+/F2 8 0 R
+/F3 9 0 R
+/F4 10 0 R
+/F5 11 0 R
+/F6 12 0 R
+/F7 13 0 R
+/F8 14 0 R
+/F9 15 0 R
+/F10 16 0 R
+/F11 17 0 R
+/F12 18 0 R
+/F13 19 0 R
+/F14 20 0 R
+>>
+/XObject <<
+>>
+>>
+endobj
+21 0 obj
+<<
+/Producer (jsPDF 2.4.0)
+/CreationDate (D:20250517110511+05'30')
+>>
+endobj
+22 0 obj
+<<
+/Type /Catalog
+/Pages 1 0 R
+/OpenAction [3 0 R /FitH null]
+/PageLayout /OneColumn
+>>
+endobj
+xref
+0 23
+0000000000 65535 f 
+0000008110 00000 n 
+0000009935 00000 n 
+0000000015 00000 n 
+0000000152 00000 n 
+0000006289 00000 n 
+0000006426 00000 n 
+0000008173 00000 n 
+0000008298 00000 n 
+0000008428 00000 n 
+0000008561 00000 n 
+0000008699 00000 n 
+0000008823 00000 n 
+0000008952 00000 n 
+0000009084 00000 n 
+0000009220 00000 n 
+0000009348 00000 n 
+0000009475 00000 n 
+0000009604 00000 n 
+0000009737 00000 n 
+0000009839 00000 n 
+0000010185 00000 n 
+0000010271 00000 n 
+trailer
+<<
+/Size 23
+/Root 22 0 R
+/Info 21 0 R
+/ID [ <2B66EF1915BC24E82F65649F4576FD20> <2B66EF1915BC24E82F65649F4576FD20> ]
+>>
+startxref
+10375
+%%EOF

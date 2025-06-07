@@ -5,12 +5,15 @@
     <meta charset="utf-8">
     <title>HealthCheck - Smarter Health Starts Here</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="HealthCheck, AI-powered disease prediction, health insights, preventative healthcare" name="keywords">
-    <meta content="Empowering healthcare with AI-driven disease prediction for timely intervention and a healthier future."
+    <meta content="HealthCheck, AI-powered disease prediction, health insights, preventative healthcare"
+        name="keywords">
+    <meta
+        content="Empowering healthcare with AI-driven disease prediction for timely intervention and a healthier future."
         name="description">
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;600&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;600&display=swap"
         rel="stylesheet">
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
@@ -23,18 +26,21 @@
     <link href="../static/lib/twentytwenty/twentytwenty.css" rel="stylesheet" />
 
     <link href="../static/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../static/css/style1.css" rel="stylesheet"> 
+    <link href="../static/css/style1.css" rel="stylesheet">
 
     <style>
         :root {
-            --primary: #17a2b8; /* A vibrant teal */
-            --dark-primary: #107c8f; /* A darker shade for accents */
+            --primary: #17a2b8;
+            /* A vibrant teal */
+            --dark-primary: #107c8f;
+            /* A darker shade for accents */
             --secondary: #6c757d;
             --light: #f8f9fa;
             --dark: #343a40;
             --white: #ffffff;
             --gray: #6c757d;
-            --primary-light: #e0f2f4; /* Lighter shade for backgrounds */
+            --primary-light: #e0f2f4;
+            /* Lighter shade for backgrounds */
             --primary-gradient: linear-gradient(135deg, #17a2b8 0%, #107c8f 100%);
             --text-gradient: linear-gradient(to right, #17a2b8, #107c8f);
         }
@@ -42,10 +48,16 @@
         body {
             font-family: 'Open Sans', sans-serif;
             color: var(--dark);
-            overflow-x: hidden; /* Prevent horizontal scroll due to animations */
+            overflow-x: hidden;
+            /* Prevent horizontal scroll due to animations */
         }
 
-        h1, h2, h3, h4, h5, h6 {
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
             font-family: 'Jost', sans-serif;
             font-weight: 600;
         }
@@ -55,17 +67,23 @@
             border-color: var(--primary);
             transition: all 0.3s ease;
             font-weight: 600;
-            position: relative; /* For ripple effect */
-            overflow: hidden; /* For ripple effect */
-            z-index: 1; /* For ripple effect */
-            box-shadow: 0 4px 10px rgba(23, 162, 184, 0.3); /* Subtle shadow */
+            position: relative;
+            /* For ripple effect */
+            overflow: hidden;
+            /* For ripple effect */
+            z-index: 1;
+            /* For ripple effect */
+            box-shadow: 0 4px 10px rgba(23, 162, 184, 0.3);
+            /* Subtle shadow */
         }
 
         .btn-primary:hover {
-            background-color: var(--dark-primary); /* Slightly darker teal on hover */
+            background-color: var(--dark-primary);
+            /* Slightly darker teal on hover */
             border-color: var(--dark-primary);
             box-shadow: 0 6px 15px rgba(23, 162, 184, 0.4);
-            transform: translateY(-2px); /* Lift effect */
+            transform: translateY(-2px);
+            /* Lift effect */
         }
 
         .btn-primary .ripple {
@@ -96,7 +114,8 @@
         .btn-outline-primary:hover {
             background-color: var(--primary);
             color: var(--white);
-            transform: translateY(-2px); /* Lift effect */
+            transform: translateY(-2px);
+            /* Lift effect */
         }
 
         .navbar-brand {
@@ -110,7 +129,8 @@
         }
 
         .navbar-brand img {
-            margin-top: -5px; /* Adjust icon alignment */
+            margin-top: -5px;
+            /* Adjust icon alignment */
         }
 
         .nav-link {
@@ -138,46 +158,55 @@
         }
 
         .nav-link:hover::after {
-            width: calc(100% - 10px); /* Adjust width to leave some padding */
+            width: calc(100% - 10px);
+            /* Adjust width to leave some padding */
         }
 
 
         /* Hero section enhancements */
         .carousel-caption {
-            background: rgba(0, 0, 0, 0.6); /* Slightly darker overlay for text readability */
+            background: rgba(0, 0, 0, 0.6);
+            /* Slightly darker overlay for text readability */
             border-radius: 10px;
             padding: 30px 50px;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
         }
+
         .carousel-caption h4 {
             animation-delay: 0.5s;
             font-size: 1.6rem;
             letter-spacing: 2px;
             color: var(--primary-light) !important;
-            text-shadow: 1px 1px 5px rgba(0,0,0,0.4);
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);
         }
 
         .carousel-caption h3 {
             animation-delay: 1s;
-            font-size: 4rem; /* Larger and more impactful */
+            font-size: 4rem;
+            /* Larger and more impactful */
             line-height: 1.2;
-            text-shadow: 3px 3px 10px rgba(0,0,0,0.7);
+            text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.7);
         }
+
         @media (max-width: 768px) {
             .carousel-caption h3 {
                 font-size: 2.8rem;
             }
+
             .carousel-caption h4 {
                 font-size: 1.2rem;
             }
         }
+
         @media (max-width: 576px) {
             .carousel-caption h3 {
                 font-size: 2rem;
             }
+
             .carousel-caption h4 {
                 font-size: 0.9rem;
             }
+
             .carousel-caption {
                 padding: 15px 20px;
             }
@@ -186,18 +215,24 @@
         /* Section Title Style */
         .section-title {
             text-align: center;
-            margin-bottom: 60px; /* More space */
+            margin-bottom: 60px;
+            /* More space */
             position: relative;
         }
+
         .section-title h5 {
             color: var(--primary);
             display: inline-block;
-            font-size: 1.3rem; /* Slightly larger */
+            font-size: 1.3rem;
+            /* Slightly larger */
             text-transform: uppercase;
-            letter-spacing: 1.5px; /* More distinct */
-            margin-bottom: 15px; /* More space below subtitle */
+            letter-spacing: 1.5px;
+            /* More distinct */
+            margin-bottom: 15px;
+            /* More space below subtitle */
             position: relative;
         }
+
         .section-title h5::after {
             content: '';
             position: absolute;
@@ -206,25 +241,30 @@
             bottom: -8px;
             width: 60px;
             height: 4px;
-            background: var(--primary-gradient); /* Gradient underline */
+            background: var(--primary-gradient);
+            /* Gradient underline */
             border-radius: 2px;
         }
 
         .section-title h1 {
             color: var(--dark);
-            font-size: 3.8rem; /* Larger */
+            font-size: 3.8rem;
+            /* Larger */
             line-height: 1.2;
             margin-bottom: 0;
         }
+
         @media (max-width: 768px) {
             .section-title h1 {
                 font-size: 3rem;
             }
         }
+
         @media (max-width: 576px) {
             .section-title h1 {
                 font-size: 2.2rem;
             }
+
             .section-title h5 {
                 font-size: 1.1rem;
             }
@@ -236,10 +276,12 @@
             padding: 80px 0;
             text-align: center;
         }
+
         .what-we-do-item {
             background: var(--white);
             padding: 40px;
-            border-radius: 15px; /* More rounded */
+            border-radius: 15px;
+            /* More rounded */
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
             transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
             height: 100%;
@@ -247,26 +289,35 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            border: 2px solid transparent; /* Prepare for border change on hover */
+            border: 2px solid transparent;
+            /* Prepare for border change on hover */
         }
+
         .what-we-do-item:hover {
-            transform: translateY(-15px); /* More pronounced lift */
+            transform: translateY(-15px);
+            /* More pronounced lift */
             box-shadow: 0 18px 45px rgba(0, 0, 0, 0.2);
-            border-color: var(--primary); /* Accent border on hover */
+            border-color: var(--primary);
+            /* Accent border on hover */
         }
+
         .what-we-do-item i {
-            font-size: 4.5rem; /* Larger icons */
+            font-size: 4.5rem;
+            /* Larger icons */
             color: var(--primary);
-            margin-bottom: 30px; /* More space below icon */
+            margin-bottom: 30px;
+            /* More space below icon */
             animation: bounceIn 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55);
             transition: color 0.4s ease;
         }
+
         .what-we-do-item h3 {
             font-size: 2.2rem;
             color: var(--dark);
             margin-bottom: 15px;
             font-weight: 700;
         }
+
         .what-we-do-item p {
             color: var(--gray);
             font-size: 1.05rem;
@@ -285,20 +336,26 @@
             content: '';
             position: absolute;
             top: 50%;
-            left: 10%; /* Adjust to start before first step */
-            right: 10%; /* Adjust to end after last step */
+            left: 10%;
+            /* Adjust to start before first step */
+            right: 10%;
+            /* Adjust to end after last step */
             height: 3px;
             background: var(--primary-gradient);
             z-index: 1;
             transform: translateY(-50%);
-            display: none; /* Hidden by default, shown on larger screens */
+            display: none;
+            /* Hidden by default, shown on larger screens */
         }
-        @media (min-width: 992px) { /* Apply on desktop */
+
+        @media (min-width: 992px) {
+
+            /* Apply on desktop */
             .how-it-works-section .row.g-4::before {
                 display: block;
             }
         }
-        
+
         .how-it-works-step {
             background: var(--white);
             padding: 30px;
@@ -312,25 +369,32 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 2; /* Ensure steps are above the connecting line */
+            z-index: 2;
+            /* Ensure steps are above the connecting line */
         }
+
         .how-it-works-step:hover {
             transform: translateY(-12px);
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
-            background: var(--primary-gradient); /* Gradient background on hover */
+            background: var(--primary-gradient);
+            /* Gradient background on hover */
             color: var(--white) !important;
         }
+
         .how-it-works-step:hover h3,
         .how-it-works-step:hover p {
             color: var(--white) !important;
         }
+
         .how-it-works-step:hover .step-icon {
             color: var(--white) !important;
         }
+
         .how-it-works-step:hover .step-number {
             background: var(--white);
             color: var(--primary);
-            border-color: var(--white); /* White border on hover */
+            border-color: var(--white);
+            /* White border on hover */
         }
 
         .how-it-works-step .step-icon {
@@ -340,6 +404,7 @@
             display: block;
             transition: color 0.4s ease;
         }
+
         .how-it-works-step .step-number {
             position: absolute;
             top: -25px;
@@ -356,15 +421,17 @@
             font-weight: 700;
             font-size: 1.4rem;
             border: 4px solid var(--white);
-            box-shadow: 0 3px 12px rgba(0,0,0,0.3);
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
             transition: all 0.4s ease;
         }
+
         .how-it-works-step h3 {
             font-size: 2rem;
             margin-bottom: 15px;
             color: var(--dark);
             transition: color 0.4s ease;
         }
+
         .how-it-works-step p {
             font-size: 1.05rem;
             color: var(--gray);
@@ -376,11 +443,16 @@
             padding: 80px 0;
             background-color: var(--primary-light);
         }
+
         .core-feature-item {
-            background: rgba(255, 255, 255, 0.9); /* Slightly transparent for subtle glassmorphism */
-            backdrop-filter: blur(5px); /* Frosted glass effect */
-            -webkit-backdrop-filter: blur(5px); /* Safari support */
-            padding: 30px; /* Adjusted padding to accommodate larger images */
+            background: rgba(255, 255, 255, 0.9);
+            /* Slightly transparent for subtle glassmorphism */
+            backdrop-filter: blur(5px);
+            /* Frosted glass effect */
+            -webkit-backdrop-filter: blur(5px);
+            /* Safari support */
+            padding: 30px;
+            /* Adjusted padding to accommodate larger images */
             border-radius: 15px;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
             transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
@@ -392,53 +464,77 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            border: 2px solid rgba(255, 255, 255, 0.2); /* Subtle light border for glass effect */
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            /* Subtle light border for glass effect */
         }
 
         .core-feature-item:hover {
-            transform: translateY(-15px); /* More pronounced lift */
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); /* Stronger shadow */
-            background: var(--primary-gradient); /* Gradient on hover */
+            transform: translateY(-15px);
+            /* More pronounced lift */
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            /* Stronger shadow */
+            background: var(--primary-gradient);
+            /* Gradient on hover */
         }
+
         .core-feature-item:hover h3,
         .core-feature-item:hover p {
-            color: var(--white) !important; /* White text on hover */
+            color: var(--white) !important;
+            /* White text on hover */
         }
+
         .core-feature-item:hover i {
-             color: var(--white) !important;
+            color: var(--white) !important;
         }
+
         .core-feature-item:hover img {
-            filter: brightness(1.2) drop-shadow(0 5px 15px rgba(255,255,255,0.4)); /* Brighter image on hover */
-            transform: scale(1.1); /* More zoom on image */
+            filter: brightness(1.2) drop-shadow(0 5px 15px rgba(255, 255, 255, 0.4));
+            /* Brighter image on hover */
+            transform: scale(1.1);
+            /* More zoom on image */
         }
 
         .core-feature-item i {
-            font-size: 4rem; /* Slightly reduced icon size to balance with larger images */
+            font-size: 4rem;
+            /* Slightly reduced icon size to balance with larger images */
             color: var(--primary);
-            margin-bottom: 20px; /* Adjusted margin */
-            text-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            /* Adjusted margin */
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
             transition: color 0.4s ease;
         }
+
         .core-feature-item img {
-            width: 150px; /* Increased image width */
-            height: 150px; /* Increased image height */
-            object-fit: cover; /* Ensure images cover the container without distortion */
-            border-radius: 10px; /* Optional: Add a slight border radius to the images */
-            margin-bottom: 20px; /* Adjusted margin */
-            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.15));
+            width: 150px;
+            /* Increased image width */
+            height: 150px;
+            /* Increased image height */
+            object-fit: cover;
+            /* Ensure images cover the container without distortion */
+            border-radius: 10px;
+            /* Optional: Add a slight border radius to the images */
+            margin-bottom: 20px;
+            /* Adjusted margin */
+            filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.15));
             transition: transform 0.4s ease, filter 0.4s ease;
         }
+
         .core-feature-item h3 {
-            font-size: 2rem; /* Slightly reduced font size if needed */
+            font-size: 2rem;
+            /* Slightly reduced font size if needed */
             color: var(--dark);
-            margin-bottom: 10px; /* Adjusted margin */
+            margin-bottom: 10px;
+            /* Adjusted margin */
             font-weight: 700;
             transition: color 0.4s ease;
         }
+
         .core-feature-item p {
             color: var(--gray);
-            font-size: 1rem; /* Slightly reduced font size if needed */
-            line-height: 1.6; /* Adjusted line height if needed */
+            font-size: 1rem;
+            /* Slightly reduced font size if needed */
+            line-height: 1.6;
+            /* Adjusted line height if needed */
             margin-bottom: 0;
             transition: color 0.4s ease;
         }
@@ -447,26 +543,34 @@
         /* Footer */
         .footer {
             background-color: #212529 !important;
-            padding-top: 80px; /* More padding */
+            padding-top: 80px;
+            /* More padding */
         }
+
         .footer h4 {
             color: var(--primary) !important;
-            font-size: 1.6rem; /* Larger heading */
+            font-size: 1.6rem;
+            /* Larger heading */
             border-bottom: 3px solid var(--secondary);
             padding-bottom: 10px;
             margin-bottom: 30px;
             font-weight: 700;
         }
-        .footer p, .footer a {
+
+        .footer p,
+        .footer a {
             color: #adb5bd !important;
             font-size: 1rem;
         }
+
         .footer-link {
             transition: color 0.3s ease, transform 0.2s ease;
         }
+
         .footer-link:hover {
             color: var(--primary) !important;
-            transform: translateX(5px); /* Slide effect */
+            transform: translateX(5px);
+            /* Slide effect */
         }
 
         .footer .btn.btn-lg-square {
@@ -480,7 +584,8 @@
         .footer .btn.btn-lg-square:hover {
             background: var(--white);
             color: var(--primary);
-            transform: translateY(-3px); /* More pronounced lift */
+            transform: translateY(-3px);
+            /* More pronounced lift */
             box-shadow: 0 6px 15px rgba(23, 162, 184, 0.5);
         }
 
@@ -494,7 +599,8 @@
             background-color: var(--primary);
             color: var(--white);
             border-radius: 50%;
-            width: 55px; /* Larger */
+            width: 55px;
+            /* Larger */
             height: 55px;
             display: flex;
             align-items: center;
@@ -502,6 +608,7 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
         }
+
         .back-to-top:hover {
             background-color: var(--dark-primary);
             transform: translateY(-7px);
@@ -526,14 +633,15 @@
         'info': {'class': 'bg-info text-white', 'icon': 'bi-info-circle-fill'},
         'warning': {'class': 'bg-warning text-dark', 'icon': 'bi-exclamation-triangle-fill'}
         }[category] %}
-        <div class="toast align-items-center slide-in shadow {{ toast_config.class }} border-0 rounded mb-2" role="alert"
-            aria-live="assertive" aria-atomic="true">
+        <div class="toast align-items-center slide-in shadow {{ toast_config.class }} border-0 rounded mb-2"
+            role="alert" aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
                 <div class="toast-body d-flex align-items-center gap-2">
                     <i class="bi {{ toast_config.icon }}"></i>
                     {{ message }}
                 </div>
-                <button type="button" class="btn-close {{ 'btn-close-white' if category != 'warning' else '' }} me-2 m-auto"
+                <button type="button"
+                    class="btn-close {{ 'btn-close-white' if category != 'warning' else '' }} me-2 m-auto"
                     data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
         </div>
@@ -553,13 +661,17 @@
             </div>
 
             <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="/" class="nav-link px-3 link-secondary"><i class="fa fa-home me-1" aria-hidden="true"></i>Home</a></li>
-                <li><a href="/dashboard" class="nav-link px-3"><i class="fa fa-server me-1" aria-hidden="true"></i>Features</a></li>
-                <li><a href="/about" class="nav-link px-3"><i class="fa fa-info-circle me-1" aria-hidden="true"></i>About Us</a></li>
+                <li><a href="/" class="nav-link px-3 link-secondary"><i class="fa fa-home me-1"
+                            aria-hidden="true"></i>Home</a></li>
+                <li><a href="/dashboard" class="nav-link px-3"><i class="fa fa-server me-1"
+                            aria-hidden="true"></i>Features</a></li>
+                <li><a href="/about" class="nav-link px-3"><i class="fa fa-info-circle me-1"
+                            aria-hidden="true"></i>About Us</a></li>
             </ul>
 
             <div class="col-md-3 text-end">
-                <button type="button" class="btn btn-outline-primary me-2" onclick="location.href='/login'">Login</button>
+                <button type="button" class="btn btn-outline-primary me-2"
+                    onclick="location.href='/login'">Login</button>
                 <button type="button" class="btn btn-primary" onclick="location.href='/signup'">Sign Up</button>
             </div>
         </header>
@@ -571,9 +683,12 @@
                     <img class="w-100" src="../static/images/back3.webp" alt="Medical Background">
                     <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                         <div class="p-3 text-center" style="max-width: 900px;">
-                            <h4 class="text-white text-uppercase mb-3 animated slideInDown">Your Health, Predicted. Your Future, Protected.</h4>
-                            <h3 class="display-1 text-white mb-md-4 animated zoomIn">Empowering You with Early Disease Insights</h3>
-                            <a href="/signup" class="btn btn-primary py-md-3 px-md-5 mt-2 animated slideInLeft">Get Started Today</a>
+                            <h4 class="text-white text-uppercase mb-3 animated slideInDown">Your Health, Predicted. Your
+                                Future, Protected.</h4>
+                            <h3 class="display-1 text-white mb-md-4 animated zoomIn">Empowering You with Early Disease
+                                Insights</h3>
+                            <a href="/signup" class="btn btn-primary py-md-3 px-md-5 mt-2 animated slideInLeft">Get
+                                Started Today</a>
                         </div>
                     </div>
                 </div>
@@ -581,9 +696,13 @@
                     <img class="w-100" src="../static/images/back5.jpg" alt="Data to Diagnosis">
                     <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                         <div class="p-3 text-center" style="max-width: 900px;">
-                            <h4 class="text-white text-uppercase mb-3 animated slideInDown">Leveraging AI for a Healthier You</h4>
-                            <h3 class="display-1 text-white mb-md-4 animated zoomIn">From Data to Diagnosis: Instant, Accurate, Reliable</h3>
-                            <a href="/dashboard" class="btn btn-primary py-md-3 px-md-5 mt-2 animated slideInLeft">Explore Our Features</a>
+                            <h4 class="text-white text-uppercase mb-3 animated slideInDown">Leveraging AI for a
+                                Healthier You</h4>
+                            <h3 class="display-1 text-white mb-md-4 animated zoomIn">From Data to Diagnosis: Instant,
+                                Accurate, Reliable</h3>
+                            <a href="/dashboard"
+                                class="btn btn-primary py-md-3 px-md-5 mt-2 animated slideInLeft">Explore Our
+                                Features</a>
                         </div>
                     </div>
                 </div>
@@ -598,45 +717,49 @@
             </button>
         </div>
     </div>
-    ---
 
     <div class="container-fluid what-we-do-section wow fadeInUp" data-wow-delay="0.1s">
         <div class="container py-5">
             <div class="section-title mb-5">
-                <h5 class="position-relative d-inline-block text-primary text-uppercase" data-wow-delay="0.2s">What We Offer</h5>
-                <h1 class="display-5 mb-0" data-wow-delay="0.4s">Innovative Solutions for Proactive Health Management</h1>
+                <h5 class="position-relative d-inline-block text-primary text-uppercase" data-wow-delay="0.2s">What We
+                    Offer</h5>
+                <h1 class="display-5 mb-0" data-wow-delay="0.4s">Innovative Solutions for Proactive Health Management
+                </h1>
             </div>
             <div class="row g-4">
                 <div class="col-lg-4 col-md-6 wow zoomIn" data-wow-delay="0.6s">
                     <div class="what-we-do-item">
                         <i class="bi bi-heart-pulse-fill"></i>
                         <h3>Predictive Health Analysis</h3>
-                        <p>Our advanced AI models analyze your unique health data to forecast potential health risks across multiple diseases.</p>
+                        <p>Our advanced AI models analyze your unique health data to forecast potential health risks
+                            across multiple diseases.</p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 wow zoomIn" data-wow-delay="0.8s">
                     <div class="what-we-do-item">
                         <i class="bi bi-shield-fill-check"></i>
                         <h3>Early Detection & Prevention</h3>
-                        <p>Receive timely alerts and personalized insights, empowering you to take proactive steps for prevention.</p>
+                        <p>Receive timely alerts and personalized insights, empowering you to take proactive steps for
+                            prevention.</p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-12 wow zoomIn" data-wow-delay="1.0s">
                     <div class="what-we-do-item">
                         <i class="bi bi-person-lines-fill"></i>
                         <h3>Personalized Health Insights</h3>
-                        <p>Get tailored information and recommendations based on your unique health profile and prediction results.</p>
+                        <p>Get tailored information and recommendations based on your unique health profile and
+                            prediction results.</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    ---
 
     <div class="container-fluid how-it-works-section wow fadeInUp" data-wow-delay="0.1s">
         <div class="container py-5">
             <div class="section-title mb-5">
-                <h5 class="position-relative d-inline-block text-primary text-uppercase" data-wow-delay="0.2s">Get Started</h5>
+                <h5 class="position-relative d-inline-block text-primary text-uppercase" data-wow-delay="0.2s">Get
+                    Started</h5>
                 <h1 class="display-5 mb-0" data-wow-delay="0.4s">Your Path to Predictive Health in 3 Simple Steps</h1>
             </div>
             <div class="row g-4 justify-content-center position-relative">
@@ -645,7 +768,8 @@
                         <span class="step-number">1</span>
                         <i class="bi bi-person-fill-add step-icon"></i>
                         <h3>Create Your Secure Profile</h3>
-                        <p>Sign up quickly and securely enter your basic health data. Your privacy and data security are our top priority.</p>
+                        <p>Sign up quickly and securely enter your basic health data. Your privacy and data security are
+                            our top priority.</p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 wow zoomIn" data-wow-delay="0.8s">
@@ -653,7 +777,8 @@
                         <span class="step-number">2</span>
                         <i class="bi bi-clipboard-data-fill step-icon"></i>
                         <h3>Input Health Parameters</h3>
-                        <p>Provide specific information relevant to the disease you wish to predict (e.g., blood pressure, BMI, glucose levels).</p>
+                        <p>Provide specific information relevant to the disease you wish to predict (e.g., blood
+                            pressure, BMI, glucose levels).</p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 wow zoomIn" data-wow-delay="1.0s">
@@ -661,7 +786,8 @@
                         <span class="step-number">3</span>
                         <i class="bi bi-graph-up-arrow step-icon"></i>
                         <h3>Receive Instant Insights</h3>
-                        <p>Our powerful AI analyzes your data to give you immediate, actionable predictions and comprehensive risk assessments.</p>
+                        <p>Our powerful AI analyzes your data to give you immediate, actionable predictions and
+                            comprehensive risk assessments.</p>
                     </div>
                 </div>
             </div>
@@ -670,12 +796,12 @@
             </div>
         </div>
     </div>
-    ---
 
     <div class="container-fluid core-features-section wow fadeInUp" data-wow-delay="0.1s">
         <div class="container py-5">
             <div class="section-title mb-5">
-                <h5 class="position-relative d-inline-block text-primary text-uppercase" data-wow-delay="0.2s">Our Predictive Models</h5>
+                <h5 class="position-relative d-inline-block text-primary text-uppercase" data-wow-delay="0.2s">Our
+                    Predictive Models</h5>
                 <h1 class="display-5 mb-0" data-wow-delay="0.4s">Advanced AI for Comprehensive Health Insights</h1>
             </div>
             <div class="row g-4">
@@ -683,42 +809,48 @@
                     <div class="core-feature-item">
                         <img src="../static/images/h1.avif" alt="Heart Disease Icon">
                         <h3>Heart Disease Prediction</h3>
-                        <p>Assess your cardiovascular risk by analyzing key indicators like blood pressure and cholesterol levels.</p>
+                        <p>Assess your cardiovascular risk by analyzing key indicators like blood pressure and
+                            cholesterol levels.</p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 wow zoomIn" data-wow-delay="0.8s">
                     <div class="core-feature-item">
                         <img src="../static/images/d3.jpeg" alt="Diabetes Icon">
                         <h3>Diabetes Prediction</h3>
-                        <p>Evaluate your likelihood of developing diabetes based on blood sugar levels, BMI, and other health markers.</p>
+                        <p>Evaluate your likelihood of developing diabetes based on blood sugar levels, BMI, and other
+                            health markers.</p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 wow zoomIn" data-wow-delay="1.0s">
                     <div class="core-feature-item">
                         <img src="../static/images/c3.webp" alt="Cancer Icon">
                         <h3>Breast Cancer Classification</h3>
-                        <p>Utilize advanced models to help assess the risk of malignant tumors through detailed cellular analysis.</p>
+                        <p>Utilize advanced models to help assess the risk of malignant tumors through detailed cellular
+                            analysis.</p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 wow zoomIn" data-wow-delay="1.2s">
                     <div class="core-feature-item">
                         <img src="../static/images/ckd3.jpeg" alt="Kidney Disease Icon">
                         <h3>Kidney Disease Prediction</h3>
-                        <p>Identify chronic kidney disease risk by examining creatinine levels, blood pressure, and and other critical factors.</p>
+                        <p>Identify chronic kidney disease risk by examining creatinine levels, blood pressure, and and
+                            other critical factors.</p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 wow zoomIn" data-wow-delay="1.4s">
                     <div class="core-feature-item">
                         <img src="../static/images/l4.jpg" alt="Liver Disease Icon">
                         <h3>Liver Disease Prediction</h3>
-                        <p>Predict liver disease risk by evaluating bilirubin levels, liver enzymes, and other essential protein concentrations.</p>
+                        <p>Predict liver disease risk by evaluating bilirubin levels, liver enzymes, and other essential
+                            protein concentrations.</p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 wow zoomIn" data-wow-delay="1.6s">
                     <div class="core-feature-item">
                         <img src="../static/images/p4.jpg" alt="Parkinson's Icon">
                         <h3>Parkinson's Prediction</h3>
-                        <p>Assess the risk of Parkinson's disease by analyzing specific symptoms and motor function indicators.</p>
+                        <p>Assess the risk of Parkinson's disease by analyzing specific symptoms and motor function
+                            indicators.</p>
                     </div>
                 </div>
             </div>
@@ -727,7 +859,6 @@
             </div>
         </div>
     </div>
-    ---
 
     <div class="container-fluid bg-dark text-light mt-5 py-5 footer">
         <div class="container py-5">
@@ -743,9 +874,12 @@
                         Quick Links</h4>
                     <div class="d-flex flex-column justify-content-start">
                         <a class="text-light mb-2 footer-link" href="#"><i class="fa fa-angle-right me-2"></i>Home</a>
-                        <a class="text-light mb-2 footer-link" href="/about"><i class="fa fa-angle-right me-2"></i>About Us</a>
-                        <a class="text-light mb-2 footer-link" href="/login"><i class="fa fa-angle-right me-2"></i>Login</a>
-                        <a class="text-light mb-2 footer-link" href="/dashboard"><i class="fa fa-angle-right me-2"></i>Features</a>
+                        <a class="text-light mb-2 footer-link" href="/about"><i class="fa fa-angle-right me-2"></i>About
+                            Us</a>
+                        <a class="text-light mb-2 footer-link" href="/login"><i
+                                class="fa fa-angle-right me-2"></i>Login</a>
+                        <a class="text-light mb-2 footer-link" href="/dashboard"><i
+                                class="fa fa-angle-right me-2"></i>Features</a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
@@ -759,10 +893,14 @@
                     </form>
                     <h6 class="text-primary text-uppercase mt-4 mb-3">Follow Us</h6>
                     <div class="d-flex">
-                        <a class="btn btn-lg btn-primary btn-lg-square rounded-circle me-2" href="#"><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-lg btn-primary btn-lg-square rounded-circle me-2" href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-lg btn-primary btn-lg-square rounded-circle me-2" href="#"><i class="fab fa-linkedin-in"></i></a>
-                        <a class="btn btn-lg btn-primary btn-lg-square rounded-circle" href="#"><i class="fab fa-instagram"></i></a>
+                        <a class="btn btn-lg btn-primary btn-lg-square rounded-circle me-2" href="#"><i
+                                class="fab fa-twitter"></i></a>
+                        <a class="btn btn-lg btn-primary btn-lg-square rounded-circle me-2" href="#"><i
+                                class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-lg btn-primary btn-lg-square rounded-circle me-2" href="#"><i
+                                class="fab fa-linkedin-in"></i></a>
+                        <a class="btn btn-lg btn-primary btn-lg-square rounded-circle" href="#"><i
+                                class="fab fa-instagram"></i></a>
                     </div>
                 </div>
             </div>
@@ -810,13 +948,13 @@
                     const diameter = Math.max(this.clientWidth, this.clientHeight);
                     const radius = diameter / 2;
 
-                    ripple.style.width = ripple.style.height = `${diameter}px`;
-                    ripple.style.left = `${e.clientX - (this.getBoundingClientRect().left + radius)}px`;
-                    ripple.style.top = `${e.clientY - (this.getBoundingClientRect().top + radius)}px`;
+                    ripple.style.width = ripple.style.height = `${diameter} px`;
+                    ripple.style.left = `${e.clientX - (this.getBoundingClientRect().left + radius)} px`;
+                    ripple.style.top = `${e.clientY - (this.getBoundingClientRect().top + radius)} px`;
 
                     this.appendChild(ripple);
 
-                    ripple.addEventListener('animationend', function() {
+                    ripple.addEventListener('animationend', function () {
                         this.remove();
                     });
                 });

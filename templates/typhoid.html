@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+    <script src="../static/js/doctor_map.js"></script>
     <style>
         body {
             background: linear-gradient(135deg, #e0f2f7, #f0f8ff);
@@ -129,7 +129,8 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Hemoglobin (g/dL)</label>
-                        <input type="number" step="0.1" class="form-control" name="Hemoglobin (g/dL)" min="0" required />
+                        <input type="number" step="0.1" class="form-control" name="Hemoglobin (g/dL)" min="0"
+                            required />
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Calcium (mg/dL)</label>
@@ -140,7 +141,8 @@
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label">Potassium (mmol/L)</label>
-                        <input type="number" step="0.1" class="form-control" name="Potassium (mmol/L)" min="0" required />
+                        <input type="number" step="0.1" class="form-control" name="Potassium (mmol/L)" min="0"
+                            required />
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Treatment Duration (Days)</label>
@@ -157,8 +159,10 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary btn-custom"><i class="fas fa-microscope me-2"></i>Predict</button>
-            <a href="/dashboard" class="btn btn-secondary btn-custom mt-3"><i class="fas fa-arrow-left me-2"></i>Back</a>
+            <button type="submit" class="btn btn-primary btn-custom"><i
+                    class="fas fa-microscope me-2"></i>Predict</button>
+            <a href="/dashboard" class="btn btn-secondary btn-custom mt-3"><i
+                    class="fas fa-arrow-left me-2"></i>Back</a>
         </form>
 
         <div class="result-table" id="predictionResultTable">
@@ -173,6 +177,10 @@
                 <tbody id="resultBody"></tbody>
             </table>
             <button id="downloadPdf" class="btn btn-success btn-custom mt-2">Download Report</button>
+            <button type="button" id="doctorBtn" class="btn btn-info btn-custom mt-2" data-bs-toggle="modal"
+                data-bs-target="#doctorModal" style="display: none;">
+                <i class="fas fa-user-md me-2"></i>Consult Doctor
+            </button>
             <br>
             <div class="d-flex justify-content-center">
                 <button type="button" id="adviceBtn" class="btn btn-success mt-3" data-bs-toggle="modal"
@@ -200,7 +208,23 @@
             </div>
         </div>
     </div>
-
+    <!-- Doctor Modal -->
+    <div class="modal fade" id="doctorModal" tabindex="-1" aria-labelledby="doctorModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="doctorModalLabel">Available Doctors</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="doctorList">
+                    <!-- Doctor list will be populated here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -328,6 +352,7 @@
                     body: dataBody
                 });
 
+
                 // Check if the HTTP response itself was successful
                 if (!response.ok) {
                     const errorText = await response.text();
@@ -342,6 +367,41 @@
                 try {
                     data = await response.json();
                     lastPredictionResult = data; // Store the full successful response
+                    const prediction = data.prediction
+                    if (prediction.toLowerCase().includes("positive")) {
+                        document.getElementById("doctorBtn").style.display = "inline-block";
+
+                        const currentDisease = "Typhoid";
+                        const specialization = diseaseDoctorMap[currentDisease];
+                        // Fetch doctors for the predicted disease
+                        fetch(`/get_doctors?specialization=${encodeURIComponent(specialization)}`)
+                            .then(res => res.json())
+                            .then(doctors => {
+                                const doctorList = document.getElementById("doctorList");
+                                doctorList.innerHTML = "";
+
+                                if (doctors.length === 0) {
+                                    doctorList.innerHTML = "<p class='text-danger'>No doctors available for this disease at the moment.</p>";
+                                    return;
+                                }
+
+                                doctors.forEach(doc => {
+                                    doctorList.innerHTML += `
+        <div class="card mb-3 shadow-sm">
+          <div class="card-body d-flex align-items-center">
+            <img src="${doc.photo_path}" class="rounded-circle me-3" width="60" height="60" alt="Doctor Photo">
+            <div>
+              <h5 class="card-title mb-1">${doc.name}</h5>
+              <p class="mb-1"><strong>Specialization:</strong> ${doc.specialization}</p>
+              <p class="mb-1"><strong>Experience:</strong> ${doc.experience} years</p>
+              <p class="mb-0"><strong>Contact:</strong> ${doc.contact}</p>
+            </div>
+          </div>
+        </div>`;
+                                });
+                            });
+
+                    }
                 } catch (jsonError) {
                     const rawText = await response.text();
                     resultBody.innerHTML = `<tr><td colspan="2" class="error-message">JSON Parse Error: Invalid server response.</td></tr><tr><td colspan="2">Raw Response: ${rawText}</td></tr>`;

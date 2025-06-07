@@ -1,10 +1,10 @@
 from flask import Flask, render_template, request, redirect, flash,session,url_for,jsonify,send_from_directory
 from flask_mysqldb import MySQL
+import MySQLdb.cursors
 import re
 import os
 import joblib
 import io
-from reportlab.pdfgen import canvas
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
@@ -12,20 +12,21 @@ import pickle
 import numpy as np
 import pandas as pd
 from datetime import timedelta
-from flask_mail import Mail, Message
+from flask_mail import Mail, Message # type: ignore
 from itsdangerous import URLSafeTimedSerializer
-import dotenv
-from fpdf import FPDF
+import dotenv # type: ignore
 from datetime import datetime
 os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing.image import load_img, img_to_array
+from tensorflow.keras.models import load_model # type: ignore
+from tensorflow.keras.preprocessing.image import load_img, img_to_array # type: ignore
 import warnings
 warnings.filterwarnings('ignore')
 
 
 dotenv.load_dotenv()
+ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL')
+ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD')
 
 app = Flask(__name__)
 app.secret_key = "group10"
@@ -60,7 +61,18 @@ def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # Load the trained model
-heart_model = pickle.load(open('heart_disease_model.sav', 'rb'))
+#heart_model = pickle.load(open('heart_disease_model.sav', 'rb'))
+# with open("heart_disease_model.pkl", "rb") as f:
+#     heart_model = pickle.load(f)
+
+# Load model
+with open("heart_model.pkl", "rb") as f:
+    heart_model = pickle.load(f)
+
+# Load scaler
+with open("scaler.pkl", "rb") as f:
+    scalerH = pickle.load(f)
+
 diabetes_model = pickle.load(open('diabetes_model.sav', 'rb')) 
 kidney_model =  pickle.load(open('kidney_disease(short).sav', 'rb'))
 Breast_Cancer_model = pickle.load(open('Breast_Cancer.sav', 'rb'))
@@ -73,7 +85,7 @@ model = model_package['model']
 scaler = model_package['scaler']
 selected_features = model_package['features']
 
-#Load brain tumor classification model
+# Load brain tumor classification model
 tumor_model = load_model("model.h5")
 
 # Define class labels in same order as during training
@@ -181,12 +193,24 @@ def login():
         email = request.form['email']
         password = request.form['password']
         remember = request.form.get('remember')
+         # Check if user is admin
+        if email == ADMIN_EMAIL and password == ADMIN_PASSWORD:
+            session['admin'] = True
+            session['email'] = email
+            session['username'] = "Indra"
+            flash("Admin login successful!", "success")
+            return redirect('/admin/dashboard')
+        
         cur = mysql.connection.cursor()
         cur.execute("SELECT * FROM users WHERE email = %s", (email,))
         user = cur.fetchone()
         print(user)
         cur.close()
 
+        if user[6] == 'blocked':  
+                flash("Your account is blocked. Please contact admin.", "danger")
+                return redirect('/login')
+        
         if user and check_password_hash(user[5], password):  # user[5] is the password column
         #if user and check_password_hash(user['password'], password):
 
@@ -216,6 +240,7 @@ def login():
 
     return render_template('login.html')
 
+
 # Logout Route
 @app.route('/logout')
 def logout():
@@ -243,7 +268,9 @@ def forgot_password():
         if user:
             # Generate token
             token = serializer.dumps(email, salt='password-reset-salt')
-            reset_url = url_for('reset_password_token', token=token, _external=True)
+            #reset_url = url_for('reset_password_token', token=token, _external=True)
+            reset_url = request.host_url.rstrip('/') + url_for('reset_password_token', token=token)
+
 
             # Send email
             msg = Message("Reset Your HealthCheck Password", sender=os.environ.get('MAIL_USERNAME'), recipients=[email])
@@ -345,26 +372,29 @@ def heart_prediction():
         try:
             # Extract input values safely using request.form.get()
             input_data = [
-                float(request.form.get('age', 0)),
-                float(request.form.get('sex', 0)),
-                float(request.form.get('cp', 0)),
-                float(request.form.get('trestbps', 0)),
-                float(request.form.get('chol', 0)),
-                float(request.form.get('fbs', 0)),
-                float(request.form.get('restecg', 0)),
-                float(request.form.get('thalach', 0)),
-                float(request.form.get('exang', 0)),
-                float(request.form.get('oldpeak', 0)),
-                float(request.form.get('slope', 0)),
-                float(request.form.get('ca', 0)),
-                float(request.form.get('thal', 0))
+                float(request.form.get('Age', 0)),
+                float(request.form.get('Sex', 0)),
+                float(request.form.get('Chest Pain Type', 0)),
+                float(request.form.get('Resting Blood Pressure', 0)),
+                float(request.form.get('Cholesterol', 0)),
+                float(request.form.get('Fasting Blood Sugar > 120 mg/dl', 0)),
+                float(request.form.get('Resting ECG Results', 0)),
+                float(request.form.get('Max Heart Rate Achieved', 0)),
+                float(request.form.get('Exercise Induced Angina', 0)),
+                float(request.form.get('ST Depression Induced by Exercise', 0)),
+                float(request.form.get('Slope of Peak Exercise ST Segment', 0)),
+                float(request.form.get('Number of Major Vessels Colored by Fluoroscopy', 0)),
+                float(request.form.get('Thalassemia', 0))
             ]
 
             # Convert into numpy array for model prediction
             input_array = np.array(input_data).reshape(1, -1)
 
+            # Scale the input using the loaded scaler
+            scaled_input = scalerH.transform(input_array)
+
             # Predict using the model
-            prediction = heart_model.predict(input_array)[0]
+            prediction = heart_model.predict(scaled_input)[0]
 
             # Result message
             result_text = "Heart Disease Detected (Positive)" if prediction == 1 else "No Heart Disease (Negative)"
@@ -536,9 +566,9 @@ def diabetes():
     if request.method == 'POST':
         try:
             # Extract form values and convert them into float
-            input_data = [float(request.form[key]) for key in ['pregnancies', 'glucose', 'bloodPressure', 
-                                                               'skinThickness', 'insulin', 'bmi', 
-                                                               'diabetesPedigree', 'age']]
+            input_data = [float(request.form[key]) for key in ['Pregnancies (times)', 'Glucose Level (mg/dL)', 'Blood Pressure (mm Hg)', 
+                                                               'Skin Thickness (mm)', 'Insulin (μU/mL)', 'BMI (kg/m²)', 
+                                                               'Diabetes Pedigree Function', 'Age (years)']]
             # Convert into numpy array for model prediction
             input_array = np.array(input_data).reshape(1, -1)
 
@@ -645,45 +675,6 @@ def diabetes():
     return render_template('diabetes.html')
 
 
-
-# @app.route('/parkinson', methods=['POST','GET'])
-# def predict():
-#     if request.method == 'POST':
-#         try:
-#             # Get form values
-#             features = [
-#                 float(request.form['fo']),
-#                 float(request.form['fhi']),
-#                 float(request.form['flo']),
-#                 float(request.form['Jitter_percent']),
-#                 float(request.form['Jitter_Abs']),
-#                 float(request.form['RAP']),
-#                 float(request.form['PPQ']),
-#                 float(request.form['DFA']),
-#                 float(request.form['Shimmer']),
-#                 float(request.form['Shimmer_dB']),
-#                 float(request.form['APQ3']),
-#                 float(request.form['APQ5']),
-#                 float(request.form['APQ']),
-#                 float(request.form['DDA']),
-#                 float(request.form['NHR']),
-#                 float(request.form['HNR']),
-#                 float(request.form['RPDE']),
-#                 float(request.form['D2']),
-#                 float(request.form['spread1']),
-#                 float(request.form['spread2']),
-#                 float(request.form['PPE'])
-#             ]
-
-#             input_data = np.array([features])
-#             prediction = parkinson.predict(input_data)
-
-#             result = "Parkinson's Detected" if prediction[0] == 1 else "Healthy - No Parkinson's Detected"
-#             return jsonify({"success": True, "prediction": result})
-        
-#         except Exception as e:
-#             return jsonify({"success": False, "error": str(e)})
-#     return render_template('parkinson.html')
 @app.route('/parkinson', methods=['GET', 'POST'])
 def predict_parkinson():
     if request.method == 'POST':
@@ -1134,7 +1125,7 @@ def health_activity():
     return render_template('bmi_bmr_activity.html', activities=activities)
 
 def predict_brain_tumor(image_path):
-    img_size = 224
+    img_size = 256
     img = load_img(image_path, target_size=(img_size, img_size))
     img_array = img_to_array(img) / 255.0
     img_array = np.expand_dims(img_array, axis=0)
@@ -1148,8 +1139,7 @@ def predict_brain_tumor(image_path):
         return "No Tumor Detected", confidence
     else:
         return f"Tumor Detected: {predicted_label.title()}", confidence
-from werkzeug.utils import secure_filename
-from datetime import datetime
+
 
 @app.route('/tumor', methods=['GET', 'POST'])
 def tumor_detection():
@@ -1259,7 +1249,303 @@ def typhoid():
 # def stress():
 #     return render_template("stress.html")
 
+@app.route('/admin/dashboard')
+def admin_dashboard():
+    if 'admin' in session:
+        return render_template('admin_dashboard.html', admin_name=session['username'])
+    else:
+        flash("Unauthorized access. Please log in as admin.", "danger")
+        return redirect('/login')
+    
 
+@app.route('/admin/users')
+def view_users():
+    if 'admin' not in session:
+        return redirect('/login')
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT id, username, email, phone, gender,status FROM users")
+    users = cur.fetchall()
+    cur.close()
+    return render_template('admin_users.html', users=users)
+
+@app.route('/delete_user/<int:id>')
+def delete_user(id):
+    cursor = mysql.connection.cursor()
+
+    cursor.execute("SELECT username FROM users WHERE id = %s", (id,))
+    user = cursor.fetchone()
+
+    if user:
+        username = user[0]
+
+        cursor.execute("DELETE FROM health_reports WHERE username = %s", (username,))
+        cursor.execute("DELETE FROM user_activity WHERE username = %s", (username,))
+
+        cursor.execute("DELETE FROM users WHERE id = %s", (id,))
+
+        mysql.connection.commit()
+
+    return redirect(url_for('view_users')) 
+
+@app.route('/admin/block_user/<int:id>')
+def block_user(id):
+    cur = mysql.connection.cursor()
+    cur.execute("UPDATE users SET status = 'blocked' WHERE id = %s", (id,))
+    mysql.connection.commit()
+    cur.close()
+    flash("User blocked successfully!", "warning")
+    return redirect(url_for('view_users'))
+
+
+@app.route('/admin/unblock_user/<int:id>')
+def unblock_user(id):
+    cur = mysql.connection.cursor()
+    cur.execute("UPDATE users SET status = 'active' WHERE id = %s", (id,))
+    mysql.connection.commit()
+    cur.close()
+    flash("User unblocked successfully!", "success")
+    return redirect(url_for('view_users'))
+
+@app.route('/admin/view_user/<int:id>')
+def view_user_details(id):
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT id, username, email, phone, gender, profile_pic, created_at, status FROM users WHERE id = %s", (id,))
+    row = cur.fetchone()
+    if row:
+        user = {
+            'id': row[0],
+            'username': row[1],
+            'email': row[2],
+            'phone': row[3],
+            'gender': row[4],
+            'profile_pic': row[5],
+            'created_at': row[6],
+            'status': row[7]
+        }
+        return render_template('view_user_details.html', user=user)
+    else:
+        flash("User not found", "danger")
+        return redirect(url_for('view_users'))
+
+
+@app.route('/admin/view_bmi_bmr')
+def view_bmi_bmr_history():
+    if 'admin' not in session:
+        return redirect('/login')
+
+    page = int(request.args.get('page', 1))
+    per_page = int(request.args.get('per_page', 10))
+    filter_username = request.args.get('filter_username', '')
+    filter_category = request.args.get('filter_category', '')
+
+    cur = mysql.connection.cursor()
+
+    cur.execute("SELECT DISTINCT username FROM health_reports")
+    usernames = [row[0] for row in cur.fetchall()]
+    cur.execute("SELECT DISTINCT category FROM health_reports")
+    categories = [row[0] for row in cur.fetchall()]
+
+    query = "SELECT id, username, height, weight, category, result_value FROM health_reports WHERE 1"
+    filters = []
+    params = []
+
+    if filter_username:
+        filters.append("username = %s")
+        params.append(filter_username)
+    if filter_category:
+        filters.append("category = %s")
+        params.append(filter_category)
+
+    if filters:
+        query += " AND " + " AND ".join(filters)
+
+    count_query = f"SELECT COUNT(*) FROM ({query}) AS sub"
+    cur.execute(count_query, params)
+    total = cur.fetchone()[0]
+    total_pages = (total + per_page - 1) // per_page
+
+    offset = (page - 1) * per_page
+    query += " ORDER BY id DESC LIMIT %s OFFSET %s"
+    cur.execute(query, (*params, per_page, offset))
+    users = cur.fetchall()
+    cur.close()
+
+    return render_template("admin_bmi_bmr_activity.html",
+                           users=users,
+                           page=page,
+                           per_page=per_page,
+                           total_pages=total_pages,
+                           filter_username=filter_username,
+                           filter_category=filter_category,
+                           usernames=usernames,
+                           categories=categories)
+
+
+@app.route('/admin/view_predictions')
+def view_prediction_history():
+    if 'admin' not in session:
+        return redirect('/login')
+
+    page = int(request.args.get('page', 1))
+    per_page = int(request.args.get('per_page', 10))
+    filter_username = request.args.get('filter_username', '').strip()
+    filter_disease = request.args.get('filter_disease', '').strip()
+
+    cur = mysql.connection.cursor()
+
+    # Unique dropdown data
+    cur.execute("SELECT DISTINCT username FROM user_activity")
+    usernames = [row[0] for row in cur.fetchall()]
+    cur.execute("SELECT DISTINCT disease_name FROM user_activity")
+    diseases = [row[0] for row in cur.fetchall()]
+
+    # Filtering
+    base_query = "SELECT id, username, disease_name, prediction_result, pdf_report, created_at FROM user_activity WHERE 1"
+    filters = []
+    params = []
+
+    if filter_username:
+        filters.append("username = %s")
+        params.append(filter_username)
+    if filter_disease:
+        filters.append("disease_name = %s")
+        params.append(filter_disease)
+
+    if filters:
+        base_query += " AND " + " AND ".join(filters)
+
+    count_query = f"SELECT COUNT(*) FROM ({base_query}) AS sub"
+    cur.execute(count_query, params)
+    total = cur.fetchone()[0]
+    total_pages = (total + per_page - 1) // per_page
+
+    offset = (page - 1) * per_page
+    base_query += " ORDER BY created_at DESC LIMIT %s OFFSET %s"
+    cur.execute(base_query, (*params, per_page, offset))
+    users = cur.fetchall()
+    cur.close()
+
+    return render_template("admin_prediction_history.html",
+                           users=users,
+                           page=page,
+                           per_page=per_page,
+                           total_pages=total_pages,
+                           filter_username=filter_username,
+                           filter_disease=filter_disease,
+                           usernames=usernames,
+                           diseases=diseases)
+
+
+
+@app.route('/admin/view-doctors')
+def view_doctors():
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute("SELECT * FROM doctors ORDER BY specialization, name")
+    doctors = cur.fetchall()
+    cur.close()
+
+    # Group by specialization
+    grouped = {}
+    for doc in doctors:
+        grouped.setdefault(doc['specialization'], []).append(doc)
+
+    return render_template('view_doctors.html', grouped=grouped)
+
+
+@app.route('/admin/add-doctor', methods=['GET', 'POST'])
+def add_doctor():
+    if request.method == 'POST':
+        name = request.form['name']
+        specialization = request.form['specialization']
+        experience = request.form['experience']
+        contact = request.form['contact']  # <-- New field
+        photo = request.files['photo']
+
+        photo_path = os.path.join('static/Doctors_Photo', secure_filename(photo.filename))
+        photo.save(photo_path)
+
+        cur = mysql.connection.cursor()
+        cur.execute("""
+            INSERT INTO doctors (name, specialization, experience, contact, photo_path) 
+            VALUES (%s, %s, %s, %s, %s)
+        """, (name, specialization, experience, contact, photo_path))
+        mysql.connection.commit()
+        cur.close()
+
+        flash("Doctor added successfully!", "success")
+        return redirect(url_for('view_doctors'))
+
+    specializations = ['Cardiologist', 'Hepatologist', 'Diabetologist', 'Nephrologist', 'Oncologist',
+                       'Neurologist', 'Pulmonologist', 'Infectious Disease Specialist', 'Gastroenterologist']
+    return render_template('add_doctor.html', specializations=specializations)
+
+@app.route("/get_doctors")
+def get_doctors():
+    specialization = request.args.get("specialization")
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT name, specialization, experience, contact, photo_path FROM doctors WHERE specialization = %s", [specialization])
+    rows = cursor.fetchall()
+
+    doctors = []
+    for row in rows:
+        doctors.append({
+            "name": row[0],
+            "specialization": row[1],
+            "experience": row[2],
+            "contact": row[3],
+            "photo_path": row[4]
+        })
+    return jsonify(doctors)
+
+@app.route('/edit_doctor/<int:doctor_id>', methods=['GET', 'POST'])
+def edit_doctor(doctor_id):
+    doctor = get_doctor_by_id(doctor_id)  # Fetch current data
+
+    if request.method == 'POST':
+        name = request.form['name']
+        contact = request.form['contact']
+        experience = request.form['experience']
+        specialization = request.form['specialization']
+
+        photo = request.files.get('photo')
+        photo_path = doctor['photo_path']  # Default to existing path
+
+        if photo and allowed_file(photo.filename):
+            filename = secure_filename(photo.filename)
+            photo_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            photo.save(photo_path)
+            photo_path = photo_path.replace("\\", "/")  # Normalize path for HTML
+
+        update_doctor(doctor_id, name, contact, experience, specialization, photo_path)
+        return redirect(url_for('view_doctors'))
+
+    return render_template('edit_doctor.html', doctor=doctor)
+
+@app.route('/delete_doctor/<int:doctor_id>')
+def delete_doctor(doctor_id):
+    cursor = mysql.connection.cursor()
+    cursor.execute("DELETE FROM doctors WHERE id = %s", (doctor_id,))
+    mysql.connection.commit()
+    return redirect(url_for('view_doctors'))
+
+def update_doctor(doctor_id, name, contact, experience, specialization, photo_path):
+    cursor = mysql.connection.cursor()
+    cursor.execute("""
+        UPDATE doctors SET name=%s, contact=%s, experience=%s, specialization=%s, photo_path=%s
+        WHERE id=%s
+    """, (name, contact, experience, specialization, photo_path, doctor_id))
+    mysql.connection.commit()
+    cursor.close()
+
+def get_doctor_by_id(doctor_id):
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute("SELECT * FROM doctors WHERE id = %s", (doctor_id,))
+    doctor = cursor.fetchone()
+    cursor.close()
+    return doctor
+
+
+    
 if __name__ == '__main__':
     app.secret_key = "group10"
     app.run(debug=True)

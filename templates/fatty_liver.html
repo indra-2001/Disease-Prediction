@@ -8,7 +8,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-
+  <script src="../static/js/doctor_map.js"></script>
   <style>
     body {
       background: linear-gradient(135deg, #d0e6f7, #f5f7fa);
@@ -82,71 +82,71 @@
   <div class="container">
     <h2 class="text-center"><i class="fas fa-heartbeat me-2"></i>Fatty Liver Disease Prediction</h2>
     <form id="fatty_liverForm">
-  <div class="row">
-    <!-- Left Column -->
-    <div class="col-md-6">
-      <div class="mb-3">
-        <label class="form-label">Age</label>
-        <input type="number" class="form-control" name="Age" min="18" max="100" required />
-      </div>
-      <div class="mb-3">
-        <label class="form-label">Gender</label>
-        <select name="Gender" class="form-select" required>
-          <option value="">Select</option>
-          <option value="1">Female</option>
-          <option value="2">Male</option>
-        </select>
-      </div>
-      <div class="mb-3">
-        <label class="form-label">Body Mass Index (kg/m²)</label>
-        <input type="number" step="0.1" class="form-control" name="Body_Mass_Index" min="15" max="60" required />
-      </div>
-      <div class="mb-3">
-        <label class="form-label">ALT (U/L)</label>
-        <input type="number" class="form-control" name="ALT" min="5" max="200" required />
-      </div>
-      <div class="mb-3">
-        <label class="form-label">AST (U/L)</label>
-        <input type="number" class="form-control" name="AST" min="5" max="200" required />
-      </div>
-      <div class="mb-3">
-        <label class="form-label">GGT (U/L)</label>
-        <input type="number" class="form-control" name="GGT" min="5" max="400" required />
-      </div>
-    </div>
+      <div class="row">
+        <!-- Left Column -->
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label class="form-label">Age</label>
+            <input type="number" class="form-control" name="Age" min="18" max="100" required />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Gender</label>
+            <select name="Gender" class="form-select" required>
+              <option value="">Select</option>
+              <option value="1">Female</option>
+              <option value="2">Male</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Body Mass Index (kg/m²)</label>
+            <input type="number" step="0.1" class="form-control" name="Body_Mass_Index" min="15" max="60" required />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">ALT (U/L)</label>
+            <input type="number" class="form-control" name="ALT" min="5" max="200" required />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">AST (U/L)</label>
+            <input type="number" class="form-control" name="AST" min="5" max="200" required />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">GGT (U/L)</label>
+            <input type="number" class="form-control" name="GGT" min="5" max="400" required />
+          </div>
+        </div>
 
-    <!-- Right Column -->
-    <div class="col-md-6">
-      <div class="mb-3">
-        <label class="form-label">Triglycerides (mg/dL)</label>
-        <input type="number" class="form-control" name="Triglycerides" min="30" max="1000" required />
+        <!-- Right Column -->
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label class="form-label">Triglycerides (mg/dL)</label>
+            <input type="number" class="form-control" name="Triglycerides" min="30" max="1000" required />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Glucose (mg/dL)</label>
+            <input type="number" class="form-control" name="Glucose" min="60" max="300" required />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Total Cholesterol (mg/dL)</label>
+            <input type="number" class="form-control" name="Total_Cholesterol" min="100" max="400" required />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">HDL (mg/dL)</label>
+            <input type="number" class="form-control" name="HDL" min="20" max="100" required />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">LDL (mg/dL)</label>
+            <input type="number" class="form-control" name="LDL" min="30" max="300" required />
+          </div>
+        </div>
       </div>
-      <div class="mb-3">
-        <label class="form-label">Glucose (mg/dL)</label>
-        <input type="number" class="form-control" name="Glucose" min="60" max="300" required />
-      </div>
-      <div class="mb-3">
-        <label class="form-label">Total Cholesterol (mg/dL)</label>
-        <input type="number" class="form-control" name="Total_Cholesterol" min="100" max="400" required />
-      </div>
-      <div class="mb-3">
-        <label class="form-label">HDL (mg/dL)</label>
-        <input type="number" class="form-control" name="HDL" min="20" max="100" required />
-      </div>
-      <div class="mb-3">
-        <label class="form-label">LDL (mg/dL)</label>
-        <input type="number" class="form-control" name="LDL" min="30" max="300" required />
-      </div>
-    </div>
-  </div>
 
-  <button type="submit" class="btn btn-primary btn-custom">
-    <i class="fas fa-microscope me-2"></i>Predict
-  </button>
-  <a href="/dashboard" class="btn btn-secondary btn-custom mt-3">
-    <i class="fas fa-arrow-left me-2"></i>Back
-  </a>
-</form>
+      <button type="submit" class="btn btn-primary btn-custom">
+        <i class="fas fa-microscope me-2"></i>Predict
+      </button>
+      <a href="/dashboard" class="btn btn-secondary btn-custom mt-3">
+        <i class="fas fa-arrow-left me-2"></i>Back
+      </a>
+    </form>
 
     <div class="result-table">
       <h4 class="text-center mt-4">Prediction Result</h4>
@@ -160,6 +160,10 @@
         <tbody id="resultBody"></tbody>
       </table>
       <button id="downloadPdf" class="btn btn-success btn-custom mt-2">Download Report</button>
+      <button type="button" id="doctorBtn" class="btn btn-info btn-custom mt-2" data-bs-toggle="modal"
+        data-bs-target="#doctorModal" style="display: none;">
+        <i class="fas fa-user-md me-2"></i>Consult Doctor
+      </button>
       <br>
       <div class="d-flex justify-content-center">
         <button type="button" id="adviceBtn" class="btn btn-success mt-3" data-bs-toggle="modal"
@@ -189,6 +193,24 @@
     </div>
   </div>
   <!-- modal for advises End-->
+
+  <!-- Doctor Modal -->
+  <div class="modal fade" id="doctorModal" tabindex="-1" aria-labelledby="doctorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="doctorModalLabel">Available Doctors</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="doctorList">
+          <!-- Doctor list will be populated here -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script>
     //for report pdf generation
@@ -299,6 +321,41 @@
           resultBody.innerHTML += `<tr><td><strong>Prediction</strong></td><td><strong>${data.prediction}</strong></td></tr>`;
           resultTable.style.display = "block";
 
+          const prediction = data.prediction
+          if (prediction.toLowerCase().includes("positive")) {
+            document.getElementById("doctorBtn").style.display = "inline-block";
+
+            const currentDisease = "Fatty Liver";
+            const specialization = diseaseDoctorMap[currentDisease];
+            // Fetch doctors for the predicted disease
+            fetch(`/get_doctors?specialization=${encodeURIComponent(specialization)}`)
+              .then(res => res.json())
+              .then(doctors => {
+                const doctorList = document.getElementById("doctorList");
+                doctorList.innerHTML = "";
+
+                if (doctors.length === 0) {
+                  doctorList.innerHTML = "<p class='text-danger'>No doctors available for this disease at the moment.</p>";
+                  return;
+                }
+
+                doctors.forEach(doc => {
+                  doctorList.innerHTML += `
+        <div class="card mb-3 shadow-sm">
+          <div class="card-body d-flex align-items-center">
+            <img src="${doc.photo_path}" class="rounded-circle me-3" width="60" height="60" alt="Doctor Photo">
+            <div>
+              <h5 class="card-title mb-1">${doc.name}</h5>
+              <p class="mb-1"><strong>Specialization:</strong> ${doc.specialization}</p>
+              <p class="mb-1"><strong>Experience:</strong> ${doc.experience} years</p>
+              <p class="mb-0"><strong>Contact:</strong> ${doc.contact}</p>
+            </div>
+          </div>
+        </div>`;
+                });
+              });
+          }
+
           // ✅ Generate PDF and send to server immediately after prediction
           const { jsPDF } = window.jspdf;
           const doc = new jsPDF();
@@ -380,7 +437,7 @@
 
     function getAdvice(category) {
       if (category == 0) {
-    return `
+        return `
 Your results indicate **severe fatty liver**. Immediate lifestyle changes and medical supervision are crucial to prevent further liver damage.<br><br><br>
 
 <h5 class="text-danger"><i class="bi bi-exclamation-triangle-fill"></i> Critical Advice for Severe Fatty Liver ----</h5>
@@ -414,8 +471,8 @@ Your results indicate **severe fatty liver**. Immediate lifestyle changes and me
 
 <p class="mt-3 text-muted"><em>Note: Lifestyle correction is essential—early intervention can reverse fatty liver effects.</em></p>
     `;
-  } else if (category == 1) {
-    return `
+      } else if (category == 1) {
+        return `
 Your test indicates **mild fatty liver**. With proper care, this condition is reversible. Start managing your liver health today.<br><br><br>
 
 <h5 class="text-success"><i class="bi bi-check-circle-fill"></i> Advice for Mild Fatty Liver ----</h5>
@@ -446,9 +503,9 @@ Your test indicates **mild fatty liver**. With proper care, this condition is re
 
 <p class="mt-3 text-muted"><em>Note: With discipline in diet and exercise, fatty liver can be reversed in early stages.</em></p>
     `;
-  } else {
-    return `<p>No advice available for this category.</p>`;
-  }
+      } else {
+        return `<p>No advice available for this category.</p>`;
+      }
     }
 
   </script>

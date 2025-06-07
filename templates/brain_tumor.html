@@ -19,119 +19,119 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
-       body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(to right, #dbeafe, #e0f2fe);
-    color: #333;
-    padding-top: 50px;
-    margin: 0;
-}
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #dbeafe, #e0f2fe);
+            color: #333;
+            padding-top: 50px;
+            margin: 0;
+        }
 
-.button-group {
-    display: flex;
-    gap: 15px;
-    margin-top: 30px;
-}
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
 
-.container {
-    max-width: 600px;
-    background: #ffffff;
-    border-radius: 20px;
-    padding: 40px 30px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    margin: auto;
-}
+        .container {
+            max-width: 600px;
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin: auto;
+        }
 
-h2 {
-    text-align: center;
-    font-weight: 700;
-    margin-bottom: 30px;
-    color: #0d47a1;
-    font-size: 28px;
-}
+        h2 {
+            text-align: center;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: #0d47a1;
+            font-size: 28px;
+        }
 
-.form-label {
-    font-weight: 500;
-    color: #333;
-}
+        .form-label {
+            font-weight: 500;
+            color: #333;
+        }
 
-.form-control {
-    border-radius: 10px;
-    padding: 10px 15px;
-    font-size: 15px;
-}
+        .form-control {
+            border-radius: 10px;
+            padding: 10px 15px;
+            font-size: 15px;
+        }
 
-.btn-custom {
-    border-radius: 12px;
-    padding: 12px;
-    font-size: 16px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
+        .btn-custom {
+            border-radius: 12px;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
 
-.btn-primary {
-    background-color: #1976d2;
-    border: none;
-}
+        .btn-primary {
+            background-color: #1976d2;
+            border: none;
+        }
 
-.btn-primary:hover {
-    background-color: #0d47a1;
-}
+        .btn-primary:hover {
+            background-color: #0d47a1;
+        }
 
-.btn-secondary {
-    background-color: #90a4ae;
-    border: none;
-}
+        .btn-secondary {
+            background-color: #90a4ae;
+            border: none;
+        }
 
-.btn-secondary:hover {
-    background-color: #607d8b;
-}
+        .btn-secondary:hover {
+            background-color: #607d8b;
+        }
 
-.result-box {
-    margin-top: 30px;
-    padding: 25px;
-    border-radius: 15px;
-    background-color: #e3fcef;
-    border: 2px solid #a5d6a7;
-    box-shadow: inset 0 0 8px rgba(0, 128, 0, 0.1);
-}
+        .result-box {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 15px;
+            background-color: #e3fcef;
+            border: 2px solid #a5d6a7;
+            box-shadow: inset 0 0 8px rgba(0, 128, 0, 0.1);
+        }
 
-.result-box h3 {
-    font-weight: 700;
-    color: #2e7d32;
-    font-size: 20px;
-}
+        .result-box h3 {
+            font-weight: 700;
+            color: #2e7d32;
+            font-size: 20px;
+        }
 
-.result-box p {
-    font-weight: 500;
-    font-size: 15px;
-    color: #333;
-}
+        .result-box p {
+            font-weight: 500;
+            font-size: 15px;
+            color: #333;
+        }
 
-.preview-img {
-    max-width: 100%;
-    max-height: 300px;
-    display: block;
-    margin: 20px auto 0;
-    border-radius: 10px;
-    border: 2px solid #b0bec5;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-}
+        .preview-img {
+            max-width: 100%;
+            max-height: 300px;
+            display: block;
+            margin: 20px auto 0;
+            border-radius: 10px;
+            border: 2px solid #b0bec5;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
 
-#downloadPdf {
-    width: 100%;
-    font-weight: 600;
-    padding: 12px;
-    border-radius: 10px;
-    font-size: 16px;
-    background-color: #388e3c;
-    border: none;
-    margin-top: 20px;
-}
+        #downloadPdf {
+            width: 100%;
+            font-weight: 600;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 16px;
+            background-color: #388e3c;
+            border: none;
+            margin-top: 20px;
+        }
 
-#downloadPdf:hover {
-    background-color: #1b5e20;
-}
+        #downloadPdf:hover {
+            background-color: #1b5e20;
+        }
     </style>
 </head>
 
@@ -145,10 +145,9 @@ h2 {
                 <input class="form-control" type="file" name="file" id="file" required />
             </div>
             <div class="button-group">
-            <button type="submit" class="btn btn-primary btn-custom"><i
-                    class="fas fa-microscope me-2"></i>Predict</button>
-            <a href="/dashboard" class="btn btn-secondary btn-custom"><i
-                    class="fas fa-arrow-left me-2"></i>Back</a>
+                <button type="submit" class="btn btn-primary btn-custom"><i
+                        class="fas fa-microscope me-2"></i>Predict</button>
+                <a href="/dashboard" class="btn btn-secondary btn-custom"><i class="fas fa-arrow-left me-2"></i>Back</a>
             </div>
         </form>
 
@@ -162,10 +161,11 @@ h2 {
 
         <!-- Pass variables to JavaScript -->
         <script>
-            const tumorResult = {{ result | tojson | safe }};
-            const tumorConfidence = {{ confidence | tojson | safe }};
-            const tumorImagePath = {{ file_path | tojson | safe }};
+            const tumorResult = JSON.parse('{{ result | tojson | safe }}');
+            const tumorConfidence = JSON.parse('{{ confidence | tojson | safe }}');
+            const tumorImagePath = JSON.parse('{{ file_path | tojson | safe }}');
         </script>
+
         {% endif %}
     </div>
 
