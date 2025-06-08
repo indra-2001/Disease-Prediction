@@ -129,6 +129,11 @@
             margin-top: 20px;
         }
 
+        .modal-content {
+            border: 6px solid #1fe0b0;
+            border-radius: 10px;
+        }
+
         #downloadPdf:hover {
             background-color: #1b5e20;
         }
@@ -156,6 +161,12 @@
             <h3>{{ result }}</h3>
             <p>Confidence: {{ confidence }}</p>
             <img src="{{ file_path }}" alt="Uploaded MRI" class="preview-img" id="tumorImage">
+            <div class="d-flex justify-content-center">
+                <button type="button" id="adviceBtn" class="btn btn-success mt-3" data-bs-toggle="modal"
+                    data-bs-target="#staticBackdrop" style="display: inline-block;">
+                    <i class="fas fa-notes-medical me-2"></i>See Advices
+                </button>
+            </div>
             <button class="btn btn-success mt-3" id="downloadPdf">Download PDF</button>
         </div>
 
@@ -169,6 +180,27 @@
         {% endif %}
     </div>
 
+
+    <!-- modal for advises start-->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel"></h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="adviceContent">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- modal for advises End-->
+
     <!-- jsPDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <!-- Bootstrap JS -->
@@ -180,6 +212,16 @@
             if (typeof tumorResult !== 'undefined') {
                 createAndUploadTumorPDF(tumorResult, tumorConfidence, tumorImagePath);
             }
+
+            if ('{{result}}' == 'No Tumor Detected') {
+                document.getElementById("staticBackdropLabel").innerHTML = `<strong style="font-size: 1.3rem;">🟢 {{result}}</strong>
+                                                                            <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Confidence: {{ confidence }}`;
+            } else {
+                document.getElementById("staticBackdropLabel").innerHTML = `<strong style="font-size: 1.3rem;">🔴 {{result}}</strong>
+                                                                            <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Confidence: {{ confidence }}`;
+            }
+
+            document.getElementById("adviceContent").innerHTML = getBrainTumorAdvice('{{result}}');
 
             document.getElementById("downloadPdf").addEventListener("click", () => {
                 createTumorPDF(tumorResult, tumorConfidence, tumorImagePath).then(doc => {
@@ -211,6 +253,26 @@
             const imageData = await getImageBase64(imagePath);
             doc.addImage(imageData, 'JPEG', 14, 60, 180, 120);
 
+            let finalY = 190;
+            const adviceHtml = getBrainTumorAdvice('{{result}}');
+            const adviceText = adviceHtml.replace(/<li>/g, '• ').replace(/<h6[^>]*>/g, '#').replace(/<[^>]+>/g, '');
+            const wrappedAdvice = doc.splitTextToSize(adviceText, 180);
+            const lineHeight = 4.5;
+            const requiredHeight = wrappedAdvice.length * lineHeight;
+
+            // Start new page if needed
+            if (finalY + requiredHeight > doc.internal.pageSize.height - 10) {
+                doc.addPage();
+                finalY = 20;
+            } else {
+                finalY += 10;
+            }
+
+            doc.setFontSize(16);
+            doc.text("Trusted Advices For You:", 14, finalY);
+            doc.setFontSize(10);
+            doc.text(wrappedAdvice, 14, finalY + 6);
+
             return doc;
         }
 
@@ -241,6 +303,113 @@
                 else console.error("PDF upload failed.");
             }).catch(err => console.error("Error uploading PDF:", err));
         }
+
+
+
+
+        function getBrainTumorAdvice(type) {
+            if (type === "Tumor Detected: Glioma") {
+                return `
+<h5 class="text-danger"><i class="bi bi-exclamation-circle-fill"></i> You have been diagnosed with a Glioma brain tumor.</h5>
+<p>Gliomas are tumors that arise from glial cells in the brain or spine. Management often depends on the grade and location of the tumor.</p><br>
+
+<h6 class="text-success mt-3"><i class="bi bi-capsule-pill"></i> Medical & Treatment Options:</h6>
+<ul class="text-start">
+  <li>Consult a neuro-oncologist or neurosurgeon for treatment planning.</li>
+  <li>Treatment may include surgery, radiation therapy, and chemotherapy.</li>
+  <li>Regular MRI scans to monitor tumor progression.</li>
+</ul>
+
+<h6 class="text-primary mt-3"><i class="bi bi-activity"></i> Lifestyle & Supportive Care:</h6>
+<ul class="text-start">
+  <li>Follow a balanced diet and stay physically active as advised.</li>
+  <li>Consider physical therapy if there are movement issues.</li>
+  <li>Join a brain tumor support group for mental well-being.</li>
+</ul>
+
+<h6 class="text-warning mt-3"><i class="bi bi-eye-fill"></i> Watch For Symptoms:</h6>
+<ul class="text-start">
+  <li>New or worsening headaches.</li>
+  <li>Vision changes, seizures, or cognitive decline.</li>
+  <li>Weakness or balance issues.</li>
+</ul>
+
+<p class="text-muted mt-3"><em>Note: Early and aggressive treatment improves prognosis in most glioma cases.</em></p>
+    `;
+            } else if (type === "Tumor Detected: Meningioma") {
+                return `
+<h5 class="text-danger"><i class="bi bi-exclamation-circle-fill"></i> You have been diagnosed with a Meningioma brain tumor.</h5>
+<p>Meningiomas are typically benign and slow-growing tumors that form in the membranes covering the brain and spinal cord.</p><br>
+
+<h6 class="text-success mt-3"><i class="bi bi-capsule-pill"></i> Medical & Treatment Options:</h6>
+<ul class="text-start">
+  <li>Observation is possible for small, non-symptomatic tumors.</li>
+  <li>Larger or symptomatic tumors may require surgery or radiosurgery.</li>
+  <li>Routine MRIs to monitor growth.</li>
+</ul>
+
+<h6 class="text-primary mt-3"><i class="bi bi-activity"></i> Lifestyle & Management:</h6>
+<ul class="text-start">
+  <li>Maintain a healthy routine with enough rest.</li>
+  <li>Manage stress and anxiety levels.</li>
+  <li>Seek neuropsychological support if cognitive symptoms appear.</li>
+</ul>
+
+<h6 class="text-warning mt-3"><i class="bi bi-eye-fill"></i> Symptoms To Monitor:</h6>
+<ul class="text-start">
+  <li>Vision problems, headaches, or seizures.</li>
+  <li>Changes in memory or concentration.</li>
+</ul>
+
+<p class="text-muted mt-3"><em>Note: Many meningiomas can be managed effectively with regular follow-up.</em></p>
+    `;
+            } else if (type === "Tumor Detected: Pituitary") {
+                return `
+<h5 class="text-danger"><i class="bi bi-exclamation-circle-fill"></i> You have been diagnosed with a Pituitary Tumor.</h5>
+<p>Pituitary tumors affect hormone production and may cause vision or endocrine issues. Most are benign and treatable.</p><br>
+
+<h6 class="text-success mt-3"><i class="bi bi-capsule-pill"></i> Medical & Treatment Options:</h6>
+<ul class="text-start">
+  <li>Endocrinological evaluation is crucial to assess hormone imbalance.</li>
+  <li>Treatment may involve medications, surgery, or radiation therapy.</li>
+  <li>Regular visual field tests and MRI scans.</li>
+</ul>
+
+<h6 class="text-primary mt-3"><i class="bi bi-activity"></i> Self-Care & Monitoring:</h6>
+<ul class="text-start">
+  <li>Take medications consistently as prescribed.</li>
+  <li>Monitor symptoms like fatigue, mood changes, or weight fluctuations.</li>
+  <li>Maintain a log of any visual disturbances or headaches.</li>
+</ul>
+
+<p class="text-muted mt-3"><em>Note: Hormone-producing tumors may be managed with lifelong medication and follow-up.</em></p>
+    `;
+            } else if (type === "No Tumor Detected") {
+                return `
+<h5 class="text-success"><i class="bi bi-check-circle-fill"></i> No Brain Tumor Detected</h5>
+<p>Your scan does not show signs of a brain tumor. Continue maintaining brain health with these preventive habits:</p><br>
+
+<h6 class="text-success mt-3"><i class="bi bi-basket-fill"></i> Brain Health Tips:</h6>
+<ul class="text-start">
+  <li>Eat a balanced diet rich in omega-3s, antioxidants, and leafy greens.</li>
+  <li>Stay physically and mentally active (puzzles, reading, walking).</li>
+  <li>Get adequate sleep and manage stress levels.</li>
+</ul>
+
+<h6 class="text-info mt-3"><i class="bi bi-shield-plus"></i> Routine Care:</h6>
+<ul class="text-start">
+  <li>Monitor neurological symptoms like headaches or vision changes.</li>
+  <li>Avoid excessive radiation exposure.</li>
+  <li>Consult a neurologist if any new symptoms appear.</li>
+</ul>
+
+<p class="text-muted mt-3"><em>Note: Keep up with regular health checkups to maintain long-term brain health.</em></p>
+    `;
+            } else {
+                return `<p>No advice available for this condition.</p>`;
+            }
+        }
+
     </script>
 </body>
 
