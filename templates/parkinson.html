@@ -381,7 +381,7 @@
 
                     // 🔁 Include advice text like the download logic
                     const adviceHtml = getAdvice(parseInt(data.result));
-                    const adviceText = adviceHtml.replace(/<li>/g, '• ').replace(/<[^>]+>/g, '');
+                    const adviceText = adviceHtml.replace(/<li>/g, '• ').replace(/<h6[^>]*>/g, '#').replace(/<[^>]+>/g, '');
                     const wrappedAdvice = doc.splitTextToSize(adviceText, 180);
                     const lineHeight = 4.5;
                     const requiredHeight = wrappedAdvice.length * lineHeight;
