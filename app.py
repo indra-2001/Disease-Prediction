@@ -197,7 +197,8 @@ def login():
         if email == ADMIN_EMAIL and password == ADMIN_PASSWORD:
             session['admin'] = True
             session['email'] = email
-            session['username'] = "Indra"
+            # session['username'] = "Indra"
+            session['username'] = "Group10"
             flash("Admin login successful!", "success")
             return redirect('/admin/dashboard')
         
@@ -207,7 +208,7 @@ def login():
         print(user)
         cur.close()
 
-        if user[6] == 'blocked':  
+        if user[8] == 'blocked':  
                 flash("Your account is blocked. Please contact admin.", "danger")
                 return redirect('/login')
         
