@@ -47,7 +47,7 @@ serializer = URLSafeTimedSerializer(app.secret_key)
 # MySQL Configuration
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''  # Change to your MySQL password
+app.config['MYSQL_PASSWORD'] = 'pwd1234'  # Change to your MySQL password
 app.config['MYSQL_DB'] = 'healthcheck'
 
 mysql = MySQL(app)
@@ -80,10 +80,6 @@ Liver_model = pickle.load(open('liver_model.sav', 'rb'))
 Liver_scaler_model = pickle.load(open('liver_scaler.sav', 'rb'))
 Fatty_Liver_model = pickle.load(open('fatty_liver_model.sav', 'rb'))
 Fatty_Liver_scaler_model = pickle.load(open('fatty_liver_scaler.sav', 'rb'))
-model_package = joblib.load('parkinsons_model_package.sav')
-model = model_package['model']
-scaler = model_package['scaler']
-selected_features = model_package['features']
 
 # Load brain tumor classification model
 tumor_model = load_model("model.h5")
@@ -675,37 +671,38 @@ def diabetes():
 
     return render_template('diabetes.html')
 
+model = joblib.load('parkinsons_model.pkl')
+scaler = joblib.load('scaler1.pkl')
 
-@app.route('/parkinson', methods=['GET', 'POST'])
+
+@app.route('/parkinson', methods=['GET','POST'])
 def predict_parkinson():
     if request.method == 'POST':
         try:
-            # Extract float values from form for selected features
-            input_data = [float(request.form.get(feat, 0)) for feat in selected_features]
+            # Get data from form
+            input_features = [
+                float(request.form['fo']),
+                float(request.form['fhi']),
+                float(request.form['flo']),
+                float(request.form['jitter']),
+                float(request.form['shimmer']),
+                float(request.form['nhr']),
+                float(request.form['hnr']),
+                float(request.form['rpde']),
+            ]
 
-            # Prepare DataFrame
-            input_df = pd.DataFrame([input_data], columns=selected_features)
+            # Reshape and scale input
+            scaled_input = scaler.transform([input_features])
+            prediction = model.predict(scaled_input)[0]
 
-            # Scale and predict
-            input_scaled = scaler.transform(input_df)
-            prediction = model.predict(input_scaled)[0]
-
-            if prediction == 1:
-                result = "Parkinson's Detected"
-            else:
-                result = "Healthy"
-
-            return jsonify({
-                "prediction": result,
-                "result": int(prediction)
-            })
-
+            result = "Parkinson's Detected" if prediction == 1 else "Healthy"
+            return jsonify({"success": True, "prediction": result, "result": int(prediction)})
+            
         except Exception as e:
-            return jsonify({
-                "prediction": f"Error: {str(e)}",
-                "result": -1
-            })
-    return render_template('parkinson.html', features=selected_features)
+            return jsonify({"success": False, "error": str(e)})
+    return render_template('parkinson.html')
+
+
 
 @app.route('/Breast_cancer', methods=['GET', 'POST'])
 def Breast_cancer():
