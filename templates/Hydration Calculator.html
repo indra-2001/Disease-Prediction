@@ -211,30 +211,30 @@
             return await html2pdf().set(opt).from(content).output('blob');
         }
 
-        async function saveReport(weight, waterLiters, pdfBlob) {
-            const formData = new FormData();
-            formData.append("weight", weight);
-            formData.append("category", "Water Intake");
-            formData.append("result_value", waterLiters.toFixed(2));
-            formData.append("pdf", pdfBlob, "water_intake_report.pdf");
+        // async function saveReport(weight, waterLiters, pdfBlob) {
+        //     const formData = new FormData();
+        //     formData.append("weight", weight);
+        //     formData.append("category", "Water Intake");
+        //     formData.append("result_value", waterLiters.toFixed(2));
+        //     formData.append("pdf", pdfBlob, "water_intake_report.pdf");
 
        
-                fetch("/save_health_result", {
-                method: "POST",
-                body: formData
-            })
-            .then(response => {
-                if (response.ok) {
-                alert("✅ Water intake data and report saved to database.");
-                } else {
-                alert("❌ Failed to save data.");
-                }
-            })
-            .catch(err => {
-                console.error("Error:", err);
-                alert("❌ Error sending data to server.");
-            });
-            }
+        //         fetch("/save_health_result", {
+        //         method: "POST",
+        //         body: formData
+        //     })
+        //     .then(response => {
+        //         if (response.ok) {
+        //         alert("✅ Water intake data and report saved to database.");
+        //         } else {
+        //         alert("❌ Failed to save data.");
+        //         }
+        //     })
+        //     .catch(err => {
+        //         console.error("Error:", err);
+        //         alert("❌ Error sending data to server.");
+        //     });
+        //     }
 
         function downloadAdvicePDF() {
             const title = document.getElementById("staticBackdropLabel").innerText;

@@ -316,43 +316,43 @@
             return await html2pdf().set(opt).from(content).output('blob');
         }
 
-        async function saveReport(weight, calories, protein, carbs, fat, vitamins, pdfBlob) {
-            const formData = new FormData();
-            let resultSummary = `Calories: ${calories.toFixed(0)} kcal, ` +
-                `Protein: ${protein.toFixed(1)} g, ` +
-                `Carbs: ${carbs.toFixed(1)} g, ` +
-                `Fat: ${fat.toFixed(1)} g`;
+        // async function saveReport(weight, calories, protein, carbs, fat, vitamins, pdfBlob) {
+        //     const formData = new FormData();
+        //     let resultSummary = `Calories: ${calories.toFixed(0)} kcal, ` +
+        //         `Protein: ${protein.toFixed(1)} g, ` +
+        //         `Carbs: ${carbs.toFixed(1)} g, ` +
+        //         `Fat: ${fat.toFixed(1)} g`;
 
-            // Optionally append vitamins
-            if (vitamins && typeof vitamins === "object") {
-                for (const [key, value] of Object.entries(vitamins)) {
-                    resultSummary += `, ${key}: ${value}`;
-                }
-            }
+        //     // Optionally append vitamins
+        //     if (vitamins && typeof vitamins === "object") {
+        //         for (const [key, value] of Object.entries(vitamins)) {
+        //             resultSummary += `, ${key}: ${value}`;
+        //         }
+        //     }
 
-            formData.append("weight", weight);
-            formData.append("category", "Nutrient Intake");
-            formData.append("result_value", resultSummary);
-            formData.append("pdf", pdfBlob, "nutrient_intake_report.pdf");
+        //     formData.append("weight", weight);
+        //     formData.append("category", "Nutrient Intake");
+        //     formData.append("result_value", resultSummary);
+        //     formData.append("pdf", pdfBlob, "nutrient_intake_report.pdf");
 
 
 
-            fetch("/save_health_result", {
-                method: "POST",
-                body: formData
-            })
-                .then(response => {
-                    if (response.ok) {
-                        alert("✅ Nutrient intake data and report saved to database.");
-                    } else {
-                        alert("❌ Failed to save data.");
-                    }
-                })
-                .catch(err => {
-                    console.error("Error:", err);
-                    alert("❌ Error sending data to server.");
-                });
-        }
+        //     fetch("/save_health_result", {
+        //         method: "POST",
+        //         body: formData
+        //     })
+        //         .then(response => {
+        //             if (response.ok) {
+        //                 alert("✅ Nutrient intake data and report saved to database.");
+        //             } else {
+        //                 alert("❌ Failed to save data.");
+        //             }
+        //         })
+        //         .catch(err => {
+        //             console.error("Error:", err);
+        //             alert("❌ Error sending data to server.");
+        //         });
+        // }
 
         async function downloadAdvicePDF() {
             const title = document.getElementById("staticBackdropLabel").innerText;
