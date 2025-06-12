@@ -47,7 +47,7 @@ serializer = URLSafeTimedSerializer(app.secret_key)
 # MySQL Configuration
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'pwd1234'  # Change to your MySQL password
+app.config['MYSQL_PASSWORD'] = ''  # Change to your MySQL password
 app.config['MYSQL_DB'] = 'healthcheck'
 
 mysql = MySQL(app)
