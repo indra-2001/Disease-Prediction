@@ -368,7 +368,7 @@
                     data = await response.json();
                     lastPredictionResult = data; // Store the full successful response
                     const prediction = data.prediction
-                    if (prediction.toLowerCase().includes("positive")) {
+                    if (prediction.toLowerCase().includes("the patient is predicted to have typhoid")) {
                         document.getElementById("doctorBtn").style.display = "inline-block";
 
                         const currentDisease = "Typhoid";

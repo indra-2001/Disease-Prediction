@@ -76,7 +76,7 @@
           <!-- Skin Thickness -->
           <div class="mb-3">
             <label for="skinThickness" class="form-label">Skin Thickness (mm):</label>
-            <input type="number" class="form-control" name="Skin Thickness (mm)" id="skinThickness" min="0" max="80"
+            <input type="number" class="form-control" name="Skin Thickness (mm)" id="skinThickness" min="5" max="80"
               title="Triceps skin fold thickness (5–80 mm)" required>
           </div>
         </div>
@@ -85,7 +85,7 @@
           <!-- Insulin -->
           <div class="mb-3">
             <label for="insulin" class="form-label">Insulin (μU/mL):</label>
-            <input type="number" class="form-control" name="Insulin (μU/mL)" id="insulin" min="0" max="300"
+            <input type="number" class="form-control" name="Insulin (μU/mL)" id="insulin" min="10" max="300"
               title="2-hour postprandial serum insulin (10–300 μU/mL)" required>
           </div>
 
@@ -106,8 +106,8 @@
           <!-- Age -->
           <div class="mb-3">
             <label for="age" class="form-label">Age (years):</label>
-            <input type="number" class="form-control" name="Age (years)" id="age" min="10" max="100"
-              title="Age of the patient (10–100 years)" required>
+            <input type="number" class="form-control" name="Age (years)" id="age" min="4" max="100"
+              title="Age of the patient (4–100 years)" required>
           </div>
         </div>
       </div>
@@ -189,12 +189,12 @@
 
 
   <script>
-    let globalAdvice = "";      // To store advice HTML
-    let globalDecission = "";   // To store decision (used in modal title and PDF)
+    let globalAdvice = "";
+    let globalDecission = "";
 
     function getCurrentTimestamp() {
       const now = new Date();
-      return now.toLocaleString(); // Example: "5/13/2025, 3:42:10 PM"
+      return now.toLocaleString();
     }
 
     function generatePDF(inputData, predictionResult, adviceText = "") {
@@ -225,7 +225,7 @@
       doc.text("Prediction Result: " + predictionResult, 14, finalY);
 
       if (adviceText) {
-        // 👉 Add a new page for advice
+
         doc.addPage();
         doc.setFontSize(18);
         doc.text("Medical Advice", 14, 22);

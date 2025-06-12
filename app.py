@@ -201,16 +201,18 @@ def login():
         cur = mysql.connection.cursor()
         cur.execute("SELECT * FROM users WHERE email = %s", (email,))
         user = cur.fetchone()
-        print(user)
         cur.close()
 
+        if user is None:
+            flash("Invalid email or password. Please try again.", "danger")
+            return redirect('/login')
+        
         if user[8] == 'blocked':  
                 flash("Your account is blocked. Please contact admin.", "danger")
                 return redirect('/login')
         
         if user and check_password_hash(user[5], password):  # user[5] is the password column
-        #if user and check_password_hash(user['password'], password):
-
+        
             session['logged_in'] = True
             #session['email'] = user[2]
             session['id'] = user[0]
@@ -224,7 +226,7 @@ def login():
 
             if remember:
                 session.permanent = True
-                app.permanent_session_lifetime = timedelta(days=30)
+                #app.permanent_session_lifetime = timedelta(days=30)
             else:
                 session.permanent = False
 
@@ -252,8 +254,8 @@ def forgot_password():
         email = request.form['email'].strip()
 
         # Validate email format
-        if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
-            flash("Invalid email format", "danger")
+        if not re.match(r"^[a-zA-Z0-9._%+-]+@gmail\.com$", email):
+            flash("Email must be a valid Gmail address", "danger")
             return redirect(url_for('forgot_password'))
 
         # Check if email exists in DB
@@ -266,7 +268,7 @@ def forgot_password():
             # Generate token
             token = serializer.dumps(email, salt='password-reset-salt')
             reset_url = url_for('reset_password_token', token=token, _external=True)
-            # reset_url = request.host_url.rstrip('/') + url_for('reset_password_token', token=token)
+            
 
 
             # Send email

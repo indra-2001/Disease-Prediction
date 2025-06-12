@@ -1,0 +1,574 @@
+%PDF-1.3
+%ºß¬à
+3 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 4 0 R
+>>
+endobj
+4 0 obj
+<<
+/Length 4067
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F1 18 Tf
+20.6999999999999993 TL
+0 g
+39.6850393700787407 779.5277952755905062 Td
+(Parkinson's Disease Prediction Report) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+39.6850393700787407 762.5199212598424765 Td
+(Generated on: 6/12/2025, 5:33:56 PM) Tj
+ET
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0 g
+39.6850393700787407 739.8427559055118081 Td
+(User Input Data:) Tj
+ET
+0.1 0.74 0.61 rg
+0.78 G
+0. w
+0.1 0.74 0.61 rg
+40. 739.8427559055118081 317.5121766561513823 -21.4999999999999964 re
+f
+BT
+/F2 10 Tf
+11.5 TL
+1. g
+45. 726.3427559055118081 Td
+(Parameter) Tj
+ET
+0.1 0.74 0.61 rg
+0.78 G
+0. w
+0.1 0.74 0.61 rg
+357.5121766561513823 739.8427559055118081 197.7678233438485336 -21.4999999999999964 re
+f
+BT
+/F2 10 Tf
+11.5 TL
+1. g
+362.5121766561513823 726.3427559055118081 Td
+(Value) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 718.3427559055118081 317.5121766561513823 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 704.8427559055118081 Td
+(Fo) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+357.5121766561513823 718.3427559055118081 197.7678233438485336 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+362.5121766561513823 704.8427559055118081 Td
+(96) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 696.8427559055118081 317.5121766561513823 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 683.3427559055118081 Td
+(Fhi) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+357.5121766561513823 696.8427559055118081 197.7678233438485336 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+362.5121766561513823 683.3427559055118081 Td
+(180) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 675.3427559055118081 317.5121766561513823 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 661.8427559055118081 Td
+(Flo) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+357.5121766561513823 675.3427559055118081 197.7678233438485336 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+362.5121766561513823 661.8427559055118081 Td
+(96) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 653.8427559055118081 317.5121766561513823 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 640.3427559055118081 Td
+(Jitter) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+357.5121766561513823 653.8427559055118081 197.7678233438485336 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+362.5121766561513823 640.3427559055118081 Td
+(75) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 632.3427559055118081 317.5121766561513823 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 618.8427559055118081 Td
+(Shimmer) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+357.5121766561513823 632.3427559055118081 197.7678233438485336 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+362.5121766561513823 618.8427559055118081 Td
+(74) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 610.8427559055118081 317.5121766561513823 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 597.3427559055118081 Td
+(Nhr) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+357.5121766561513823 610.8427559055118081 197.7678233438485336 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+362.5121766561513823 597.3427559055118081 Td
+(95) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 589.3427559055116944 317.5121766561513823 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 575.8427559055116944 Td
+(Hnr) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+357.5121766561513823 589.3427559055116944 197.7678233438485336 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+362.5121766561513823 575.8427559055116944 Td
+(74) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 567.8427559055118081 317.5121766561513823 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 554.3427559055116944 Td
+(Rpde) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+357.5121766561513823 567.8427559055118081 197.7678233438485336 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+362.5121766561513823 554.3427559055116944 Td
+(45) Tj
+ET
+0.78 G
+0. w
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0. g
+39.6850393700787407 517.9962992125983874 Td
+(Prediction Result: Parkinson's Detected) Tj
+ET
+endstream
+endobj
+5 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 6 0 R
+>>
+endobj
+6 0 obj
+<<
+/Length 2127
+>>
+stream
+0.5670000000000001 w
+0.78 G
+BT
+/F1 16 Tf
+18.3999999999999986 TL
+0. g
+39.6850393700787407 785.1970866141732586 Td
+(Trusted Advices For You:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0. g
+39.6850393700787407 768.1892125984252289 Td
+() Tj
+T* (Your test indicates signs of Parkinson's Disease. It's important to consult a neurologist for a) Tj
+T* (proper diagnosis and management plan.) Tj
+T* () Tj
+T* ( Advice for Managing Parkinson's Disease ----) Tj
+T* () Tj
+T* (#  Physical Activity :) Tj
+T* () Tj
+T* (    • Engage in regular exercise, including aerobic activities, strength training, and balance) Tj
+T* (exercises.) Tj
+T* (    • Consider therapies like physical therapy, occupational therapy, and speech therapy.) Tj
+T* (    • Tai Chi and yoga can help with balance and flexibility.) Tj
+T* () Tj
+T* () Tj
+T* (#  Medication Management :) Tj
+T* () Tj
+T* (    • Take all prescribed medications \(e.g., Levodopa, dopamine agonists\) exactly as directed.) Tj
+T* (    • Do not stop or alter dosages without consulting your doctor.) Tj
+T* (    • Keep a medication diary to track efficacy and side effects.) Tj
+T* () Tj
+T* () Tj
+T* (#  Lifestyle Adjustments :) Tj
+T* () Tj
+T* (    • Maintain a healthy and balanced diet, rich in fiber and fluids to prevent constipation.) Tj
+T* (    • Ensure adequate rest and manage sleep disturbances.) Tj
+T* (    • Simplify daily tasks and modify your home environment to prevent falls.) Tj
+T* () Tj
+T* () Tj
+T* (#  Support & Mental Health :) Tj
+T* () Tj
+T* (    • Seek support from family, friends, and support groups.) Tj
+T* (    • Address emotional changes like anxiety, depression, and apathy with your healthcare team.) Tj
+T* (    • Engage in mentally stimulating activities.) Tj
+T* () Tj
+T* () Tj
+T* (#  When to Seek Medical Help Immediately :) Tj
+T* () Tj
+T* (    • Sudden worsening of symptoms.) Tj
+T* (    • New or severe side effects from medication.) Tj
+T* (    • Difficulty swallowing or severe choking episodes.) Tj
+T* (    • Significant changes in mood or cognition.) Tj
+T* () Tj
+T* () Tj
+T* (Note: Always consult a neurologist for personalized guidance and treatment plans.) Tj
+T* (        ) Tj
+ET
+endstream
+endobj
+1 0 obj
+<</Type /Pages
+/Kids [3 0 R 5 0 R ]
+/Count 2
+>>
+endobj
+7 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+8 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+9 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+10 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+11 0 obj
+<<
+/Type /Font
+/BaseFont /Courier
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+12 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+13 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+14 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+15 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Roman
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+16 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+17 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Italic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+18 0 obj
+<<
+/Type /Font
+/BaseFont /Times-BoldItalic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+19 0 obj
+<<
+/Type /Font
+/BaseFont /ZapfDingbats
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+20 0 obj
+<<
+/Type /Font
+/BaseFont /Symbol
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+2 0 obj
+<<
+/ProcSet [/PDF /Text /ImageB /ImageC /ImageI]
+/Font <<
+/F1 7 0 R
+/F2 8 0 R
+/F3 9 0 R
+/F4 10 0 R
+/F5 11 0 R
+/F6 12 0 R
+/F7 13 0 R
+/F8 14 0 R
+/F9 15 0 R
+/F10 16 0 R
+/F11 17 0 R
+/F12 18 0 R
+/F13 19 0 R
+/F14 20 0 R
+>>
+/XObject <<
+>>
+>>
+endobj
+21 0 obj
+<<
+/Producer (jsPDF 2.4.0)
+/CreationDate (D:20250612173356+05'30')
+>>
+endobj
+22 0 obj
+<<
+/Type /Catalog
+/Pages 1 0 R
+/OpenAction [3 0 R /FitH null]
+/PageLayout /OneColumn
+>>
+endobj
+xref
+0 23
+0000000000 65535 f 
+0000006587 00000 n 
+0000008412 00000 n 
+0000000015 00000 n 
+0000000152 00000 n 
+0000004271 00000 n 
+0000004408 00000 n 
+0000006650 00000 n 
+0000006775 00000 n 
+0000006905 00000 n 
+0000007038 00000 n 
+0000007176 00000 n 
+0000007300 00000 n 
+0000007429 00000 n 
+0000007561 00000 n 
+0000007697 00000 n 
+0000007825 00000 n 
+0000007952 00000 n 
+0000008081 00000 n 
+0000008214 00000 n 
+0000008316 00000 n 
+0000008662 00000 n 
+0000008748 00000 n 
+trailer
+<<
+/Size 23
+/Root 22 0 R
+/Info 21 0 R
+/ID [ <CCE2727AD2D7110C6E05A4163EF7FBAE> <CCE2727AD2D7110C6E05A4163EF7FBAE> ]
+>>
+startxref
+8852
+%%EOF

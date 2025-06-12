@@ -1,0 +1,643 @@
+%PDF-1.3
+%ºß¬à
+3 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 4 0 R
+>>
+endobj
+4 0 obj
+<<
+/Length 5297
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F1 18 Tf
+20.6999999999999993 TL
+0 g
+39.6850393700787407 779.5277952755905062 Td
+(Fatty_Liver disease Prediction Report) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+39.6850393700787407 762.5199212598424765 Td
+(Generated on: 6/12/2025, 5:23:02 PM) Tj
+ET
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0 g
+39.6850393700787407 739.8427559055118081 Td
+(User Input Data:) Tj
+ET
+0.1 0.74 0.61 rg
+0.78 G
+0. w
+0.1 0.74 0.61 rg
+40. 739.8427559055118081 368.5739157566301287 -21.4999999999999964 re
+f
+BT
+/F2 10 Tf
+11.5 TL
+1. g
+45. 726.3427559055118081 Td
+(Parameter) Tj
+ET
+0.1 0.74 0.61 rg
+0.78 G
+0. w
+0.1 0.74 0.61 rg
+408.5739157566301856 739.8427559055118081 146.7060842433697587 -21.4999999999999964 re
+f
+BT
+/F2 10 Tf
+11.5 TL
+1. g
+413.5739157566301856 726.3427559055118081 Td
+(Value) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 718.3427559055118081 368.5739157566301287 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 704.8427559055118081 Td
+(Age) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+408.5739157566301856 718.3427559055118081 146.7060842433697587 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+413.5739157566301856 704.8427559055118081 Td
+(75) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 696.8427559055118081 368.5739157566301287 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 683.3427559055118081 Td
+(Gender) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+408.5739157566301856 696.8427559055118081 146.7060842433697587 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+413.5739157566301856 683.3427559055118081 Td
+(1) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 675.3427559055118081 368.5739157566301287 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 661.8427559055118081 Td
+(Body_Mass_Index) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+408.5739157566301856 675.3427559055118081 146.7060842433697587 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+413.5739157566301856 661.8427559055118081 Td
+(40) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 653.8427559055118081 368.5739157566301287 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 640.3427559055118081 Td
+(ALT) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+408.5739157566301856 653.8427559055118081 146.7060842433697587 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+413.5739157566301856 640.3427559055118081 Td
+(65) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 632.3427559055118081 368.5739157566301287 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 618.8427559055118081 Td
+(AST) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+408.5739157566301856 632.3427559055118081 146.7060842433697587 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+413.5739157566301856 618.8427559055118081 Td
+(78) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 610.8427559055118081 368.5739157566301287 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 597.3427559055118081 Td
+(GGT) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+408.5739157566301856 610.8427559055118081 146.7060842433697587 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+413.5739157566301856 597.3427559055118081 Td
+(75) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 589.3427559055116944 368.5739157566301287 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 575.8427559055116944 Td
+(Triglycerides) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+408.5739157566301856 589.3427559055116944 146.7060842433697587 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+413.5739157566301856 575.8427559055116944 Td
+(65) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 567.8427559055118081 368.5739157566301287 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 554.3427559055116944 Td
+(Glucose) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+408.5739157566301856 567.8427559055118081 146.7060842433697587 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+413.5739157566301856 554.3427559055116944 Td
+(77) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 546.3427559055118081 368.5739157566301287 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 532.8427559055116944 Td
+(Total_Cholesterol) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+408.5739157566301856 546.3427559055118081 146.7060842433697587 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+413.5739157566301856 532.8427559055116944 Td
+(150) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 524.8427559055116944 368.5739157566301287 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 511.3427559055117513 Td
+(HDL) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+408.5739157566301856 524.8427559055116944 146.7060842433697587 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+413.5739157566301856 511.3427559055117513 Td
+(56) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 503.3427559055116944 368.5739157566301287 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 489.8427559055117513 Td
+(LDL) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+408.5739157566301856 503.3427559055116944 146.7060842433697587 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+413.5739157566301856 489.8427559055117513 Td
+(75) Tj
+ET
+0.78 G
+0. w
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0. g
+39.6850393700787407 453.4962992125983305 Td
+(Prediction Result: The prediction indicates a Severe illness.) Tj
+ET
+endstream
+endobj
+5 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 6 0 R
+>>
+endobj
+6 0 obj
+<<
+/Length 1715
+>>
+stream
+0.5670000000000001 w
+0.78 G
+BT
+/F1 16 Tf
+18.3999999999999986 TL
+0. g
+39.6850393700787407 785.1970866141732586 Td
+(Trusted Advices For You:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0. g
+39.6850393700787407 768.1892125984252289 Td
+() Tj
+T* (Your results indicate **severe fatty liver**. Immediate lifestyle changes and medical supervision) Tj
+T* (are crucial to prevent further liver damage.) Tj
+T* () Tj
+T* ( Critical Advice for Severe Fatty Liver ----) Tj
+T* () Tj
+T* (#Dietary Guidelines:) Tj
+T* () Tj
+T* (  • Adopt a low-calorie, high-fiber diet focused on vegetables, lean proteins, and whole grains.) Tj
+T* (  • Eliminate all sugary drinks and processed foods.) Tj
+T* (  • Completely avoid alcohol—it worsens liver fat accumulation.) Tj
+T* (  • Control portion sizes to support gradual weight loss.) Tj
+T* () Tj
+T* () Tj
+T* (# Medical Management:) Tj
+T* () Tj
+T* (  • Follow up regularly with your hepatologist or liver specialist.) Tj
+T* (  • Take any prescribed medications for liver function or related conditions \(e.g., diabetes,) Tj
+T* (cholesterol\).) Tj
+T* (  • Avoid over-the-counter medications unless approved by your doctor.) Tj
+T* () Tj
+T* () Tj
+T* (# Physical Activity:) Tj
+T* () Tj
+T* (  • Engage in at least 30 minutes of moderate exercise daily \(e.g., brisk walking\).) Tj
+T* (  • Avoid a sedentary lifestyle—stand and stretch every hour if sitting long.) Tj
+T* () Tj
+T* () Tj
+T* (# Monitor & Act:) Tj
+T* () Tj
+T* (  • Track liver enzymes \(LFTs\), blood sugar, and cholesterol levels regularly.) Tj
+T* (  • Watch for signs of fatigue, abdominal swelling, or jaundice.) Tj
+T* () Tj
+T* () Tj
+T* (Note: Lifestyle correction is essential—early intervention can reverse fatty liver effects.) Tj
+T* (    ) Tj
+ET
+endstream
+endobj
+1 0 obj
+<</Type /Pages
+/Kids [3 0 R 5 0 R ]
+/Count 2
+>>
+endobj
+7 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+8 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+9 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+10 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+11 0 obj
+<<
+/Type /Font
+/BaseFont /Courier
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+12 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+13 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+14 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+15 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Roman
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+16 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+17 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Italic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+18 0 obj
+<<
+/Type /Font
+/BaseFont /Times-BoldItalic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+19 0 obj
+<<
+/Type /Font
+/BaseFont /ZapfDingbats
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+20 0 obj
+<<
+/Type /Font
+/BaseFont /Symbol
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+2 0 obj
+<<
+/ProcSet [/PDF /Text /ImageB /ImageC /ImageI]
+/Font <<
+/F1 7 0 R
+/F2 8 0 R
+/F3 9 0 R
+/F4 10 0 R
+/F5 11 0 R
+/F6 12 0 R
+/F7 13 0 R
+/F8 14 0 R
+/F9 15 0 R
+/F10 16 0 R
+/F11 17 0 R
+/F12 18 0 R
+/F13 19 0 R
+/F14 20 0 R
+>>
+/XObject <<
+>>
+>>
+endobj
+21 0 obj
+<<
+/Producer (jsPDF 2.4.0)
+/CreationDate (D:20250612172302+05'30')
+>>
+endobj
+22 0 obj
+<<
+/Type /Catalog
+/Pages 1 0 R
+/OpenAction [3 0 R /FitH null]
+/PageLayout /OneColumn
+>>
+endobj
+xref
+0 23
+0000000000 65535 f 
+0000007405 00000 n 
+0000009230 00000 n 
+0000000015 00000 n 
+0000000152 00000 n 
+0000005501 00000 n 
+0000005638 00000 n 
+0000007468 00000 n 
+0000007593 00000 n 
+0000007723 00000 n 
+0000007856 00000 n 
+0000007994 00000 n 
+0000008118 00000 n 
+0000008247 00000 n 
+0000008379 00000 n 
+0000008515 00000 n 
+0000008643 00000 n 
+0000008770 00000 n 
+0000008899 00000 n 
+0000009032 00000 n 
+0000009134 00000 n 
+0000009480 00000 n 
+0000009566 00000 n 
+trailer
+<<
+/Size 23
+/Root 22 0 R
+/Info 21 0 R
+/ID [ <37A0AE53BF15A755134ECBE9767EB7BC> <37A0AE53BF15A755134ECBE9767EB7BC> ]
+>>
+startxref
+9670
+%%EOF

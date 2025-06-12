@@ -168,6 +168,13 @@
                     <i class="fas fa-notes-medical me-2"></i>See Advices
                 </button>
             </div>
+            <!-- Doctor Button -->
+            <div class="d-flex justify-content-center mt-3">
+                <button type="button" id="doctorBtn" class="btn btn-info btn-custom" data-bs-toggle="modal"
+                    data-bs-target="#doctorModal" style="display: none;">
+                    <i class="fas fa-user-md me-2"></i>Consult Doctor
+                </button>
+            </div>
             <button class="btn btn-success mt-3" id="downloadPdf">Download PDF</button>
         </div>
 
@@ -201,6 +208,23 @@
         </div>
     </div>
     <!-- modal for advises End-->
+    <!-- Doctor Modal -->
+    <div class="modal fade" id="doctorModal" tabindex="-1" aria-labelledby="doctorModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="doctorModalLabel">Available Doctors</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="doctorList">
+                    <!-- Doctor list will be populated here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- jsPDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -229,6 +253,45 @@
                     doc.save("Brain_Tumor_Report.pdf");
                 });
             });
+            // ✅ Show doctors only if tumor is detected
+
+            const resultText = '{{result}}';
+            if (resultText.toLowerCase().startsWith("tumor detected")) {
+                document.getElementById("doctorBtn").style.display = "inline-block";
+
+                const currentDisease = "Brain Tumor";
+                const specialization = diseaseDoctorMap[currentDisease];
+                fetch(`/get_doctors?specialization=${encodeURIComponent(specialization)}`)
+                    .then(res => res.json())
+                    .then(doctors => {
+                        const doctorList = document.getElementById("doctorList");
+                        doctorList.innerHTML = "";
+
+                        if (doctors.length === 0) {
+                            doctorList.innerHTML = "<p class='text-danger'>No doctors available for brain tumor at the moment.</p>";
+                            return;
+                        }
+
+                        doctors.forEach(doc => {
+                            doctorList.innerHTML += `
+                    <div class="card mb-3 shadow-sm">
+                        <div class="card-body d-flex align-items-center">
+                            <img src="${doc.photo_path}" class="rounded-circle me-3" width="60" height="60" alt="Doctor Photo">
+                            <div>
+                                <h5 class="card-title mb-1">${doc.name}</h5>
+                                <p class="mb-1"><strong>Specialization:</strong> ${doc.specialization}</p>
+                                <p class="mb-1"><strong>Experience:</strong> ${doc.experience} years</p>
+                                <p class="mb-0"><strong>Contact:</strong> ${doc.contact}</p>
+                            </div>
+                        </div>
+                    </div>`;
+                        });
+                    })
+                    .catch(err => {
+                        document.getElementById("doctorList").innerHTML = "<p class='text-danger'>Error loading doctor information.</p>";
+                        console.error(err);
+                    });
+            }
         };
 
         function getCurrentTimestamp() {

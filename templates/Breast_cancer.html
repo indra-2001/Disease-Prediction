@@ -330,7 +330,7 @@
           document.getElementById("adviceContent").innerHTML = getAdvice(parseInt(data.result));
 
           const prediction = data.prediction
-          if (prediction.toLowerCase().includes("positive")) {
+          if (prediction.toLowerCase().includes("malignant")) {
             document.getElementById("doctorBtn").style.display = "inline-block";
 
             const currentDisease = "Breast Cancer";
