@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="../static/js/doctor_map.js"></script>
 
   <style>
     body {
@@ -49,22 +50,25 @@
       <div class="row">
         <!-- Left Column -->
         <div class="col-md-6">
-          <!-- Input fields with placeholders fixed -->
           <div class="mb-3">
             <label class="form-label">Age:</label>
-            <input type="number" class="form-control" name="age" required>
+            <input type="number" class="form-control" name="Age" required min="1" max="120"
+              oninvalid="this.setCustomValidity('Please enter a valid age between 1 and 120.')"
+              oninput="this.setCustomValidity('')" title="Enter an age between 1 and 120">
           </div>
+
           <div class="mb-3">
             <label class="form-label">Sex:</label>
-            <select class="form-select" name="sex" required>
+            <select class="form-select" name="Sex" required>
               <option value="" disabled selected>Select an option</option>
               <option value="1">Male</option>
               <option value="0">Female</option>
             </select>
           </div>
+
           <div class="mb-3">
             <label class="form-label">Chest Pain Type:</label>
-            <select class="form-select" name="cp" required>
+            <select class="form-select" name="Chest Pain Type" required>
               <option value="" disabled selected>Select an option</option>
               <option value="0">Typical Angina</option>
               <option value="1">Atypical Angina</option>
@@ -72,25 +76,33 @@
               <option value="3">Asymptomatic</option>
             </select>
           </div>
+
           <div class="mb-3">
             <label class="form-label">Resting Blood Pressure:</label>
-            <input type="number" class="form-control" name="trestbps" required>
+            <input type="number" class="form-control" name="Resting Blood Pressure" required min="80" max="200"
+              oninvalid="this.setCustomValidity('Enter blood pressure between 80 and 200 mm Hg.')"
+              oninput="this.setCustomValidity('')" title="Typical resting BP is between 80–200 mm Hg">
           </div>
+
           <div class="mb-3">
             <label class="form-label">Cholesterol:</label>
-            <input type="number" class="form-control" name="chol" required>
+            <input type="number" class="form-control" name="Cholesterol" required min="100" max="600"
+              oninvalid="this.setCustomValidity('Enter cholesterol between 100 and 600 mg/dL.')"
+              oninput="this.setCustomValidity('')" title="Normal cholesterol is typically between 100–600 mg/dL">
           </div>
+
           <div class="mb-3">
             <label class="form-label">Fasting Blood Sugar > 120 mg/dl:</label>
-            <select class="form-select" name="fbs" required>
+            <select class="form-select" name="Fasting Blood Sugar > 120 mg/dl" required>
               <option value="" disabled selected>Select an option</option>
               <option value="1">True</option>
               <option value="0">False</option>
             </select>
           </div>
+
           <div class="mb-3">
             <label class="form-label">Resting ECG Results:</label>
-            <select class="form-select" name="restecg" required>
+            <select class="form-select" name="Resting ECG Results" required>
               <option value="" disabled selected>Select an option</option>
               <option value="0">Normal</option>
               <option value="1">ST-T Wave Abnormality</option>
@@ -103,32 +115,40 @@
         <div class="col-md-6">
           <div class="mb-3">
             <label class="form-label">Max Heart Rate Achieved:</label>
-            <input type="number" class="form-control" name="thalach" required>
+            <input type="number" class="form-control" name="Max Heart Rate Achieved" required min="60" max="220"
+              oninvalid="this.setCustomValidity('Enter heart rate between 60 and 220 bpm.')"
+              oninput="this.setCustomValidity('')" title="Max heart rate usually ranges from 60–220 bpm">
           </div>
+
           <div class="mb-3">
             <label class="form-label">Exercise Induced Angina:</label>
-            <select class="form-select" name="exang" required>
+            <select class="form-select" name="Exercise Induced Angina" required>
               <option value="" disabled selected>Select an option</option>
               <option value="1">Yes</option>
               <option value="0">No</option>
             </select>
           </div>
+
           <div class="mb-3">
             <label class="form-label">ST Depression Induced by Exercise:</label>
-            <input type="number" class="form-control" name="oldpeak" step="0.1" required>
+            <input type="number" class="form-control" name="ST Depression Induced by Exercise" step="0.1" required
+              min="0" max="6.0" oninvalid="this.setCustomValidity('Enter ST depression between 0.0 and 6.0.')"
+              oninput="this.setCustomValidity('')" title="ST depression usually ranges between 0.0 and 10.0">
           </div>
+
           <div class="mb-3">
             <label class="form-label">Slope of Peak Exercise ST Segment:</label>
-            <select class="form-select" name="slope" required>
+            <select class="form-select" name="Slope of Peak Exercise ST Segment" required>
               <option value="" disabled selected>Select an option</option>
               <option value="0">Upsloping</option>
               <option value="1">Flat</option>
               <option value="2">Downsloping</option>
             </select>
           </div>
+
           <div class="mb-3">
             <label class="form-label">Number of Major Vessels Colored by Fluoroscopy:</label>
-            <select class="form-select" name="ca" required>
+            <select class="form-select" name="Number of Major Vessels Colored by Fluoroscopy" required>
               <option value="" disabled selected>Select an option</option>
               <option value="0">0</option>
               <option value="1">1</option>
@@ -136,9 +156,10 @@
               <option value="3">3</option>
             </select>
           </div>
+
           <div class="mb-3">
             <label class="form-label">Thalassemia:</label>
-            <select class="form-select" name="thal" required>
+            <select class="form-select" name="Thalassemia" required>
               <option value="" disabled selected>Select an option</option>
               <option value="1">Normal</option>
               <option value="2">Fixed Defect</option>
@@ -147,6 +168,7 @@
           </div>
         </div>
       </div>
+
 
       <button type="submit" class="btn btn-primary btn-custom"><i class="fas fa-microscope me-2"></i>Predict</button>
       <a href="/dashboard" class="btn btn-secondary btn-custom mt-3"><i class="fas fa-arrow-left me-2"></i>Back</a>
@@ -169,6 +191,10 @@
       </button>
       <button id="downloadPdf" class="btn btn-success btn-custom mt-2"><i class="fas fa-download me-2"></i>Download
         Report</button>
+      <button type="button" id="doctorBtn" class="btn btn-info btn-custom mt-2" data-bs-toggle="modal"
+        data-bs-target="#doctorModal" style="display: none;">
+        <i class="fas fa-user-md me-2"></i>Consult Doctor
+      </button>
     </div>
   </div>
 
@@ -193,6 +219,24 @@
   </div>
   <!-- modal for advises End-->
 
+  <!-- Doctor Modal -->
+  <div class="modal fade" id="doctorModal" tabindex="-1" aria-labelledby="doctorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="doctorModalLabel">Available Doctors</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="doctorList">
+          <!-- Doctor list will be populated here -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- jsPDF libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
@@ -200,15 +244,44 @@
 
   <script>
     const labelMappings = {
-      sex: { "1": "Male", "0": "Female" },
-      cp: { "0": "Typical Angina", "1": "Atypical Angina", "2": "Non-anginal Pain", "3": "Asymptomatic" },
-      fbs: { "1": "True", "0": "False" },
-      restecg: { "0": "Normal", "1": "ST-T Wave Abnormality", "2": "Left Ventricular Hypertrophy" },
-      exang: { "1": "Yes", "0": "No" },
-      slope: { "0": "Upsloping", "1": "Flat", "2": "Downsloping" },
-      ca: { "0": "0", "1": "1", "2": "2", "3": "3" },
-      thal: { "1": "Normal", "2": "Fixed Defect", "3": "Reversible Defect" }
+      "Sex": { "1": "Male", "0": "Female" },
+      "Chest Pain Type": {
+        "0": "Typical Angina",
+        "1": "Atypical Angina",
+        "2": "Non-anginal Pain",
+        "3": "Asymptomatic"
+      },
+      "Fasting Blood Sugar > 120 mg/dl": {
+        "1": "True",
+        "0": "False"
+      },
+      "Resting ECG Results": {
+        "0": "Normal",
+        "1": "ST-T Wave Abnormality",
+        "2": "Left Ventricular Hypertrophy"
+      },
+      "Exercise Induced Angina": {
+        "1": "Yes",
+        "0": "No"
+      },
+      "Slope of Peak Exercise ST Segment": {
+        "0": "Upsloping",
+        "1": "Flat",
+        "2": "Downsloping"
+      },
+      "Number of Major Vessels Colored by Fluoroscopy": {
+        "0": "0",
+        "1": "1",
+        "2": "2",
+        "3": "3"
+      },
+      "Thalassemia": {
+        "1": "Normal",
+        "2": "Fixed Defect",
+        "3": "Reversible Defect"
+      }
     };
+
 
     let globalFormData = null;
     let globalPrediction = "";
@@ -251,6 +324,41 @@
           document.getElementById('staticBackdropLabel').innerText = data.decission;
           document.getElementById('adviceContent').innerHTML = data.advice;
 
+          const prediction = data.prediction
+          if (prediction.toLowerCase().includes("positive")) {
+            document.getElementById("doctorBtn").style.display = "inline-block";
+
+            const currentDisease = "Heart Disease";
+            const specialization = diseaseDoctorMap[currentDisease];
+            // Fetch doctors for the predicted disease
+            fetch(`/get_doctors?specialization=${encodeURIComponent(specialization)}`)
+              .then(res => res.json())
+              .then(doctors => {
+                const doctorList = document.getElementById("doctorList");
+                doctorList.innerHTML = "";
+
+                if (doctors.length === 0) {
+                  doctorList.innerHTML = "<p class='text-danger'>No doctors available for this disease at the moment.</p>";
+                  return;
+                }
+
+                doctors.forEach(doc => {
+                  doctorList.innerHTML += `
+        <div class="card mb-3 shadow-sm">
+          <div class="card-body d-flex align-items-center">
+            <img src="${doc.photo_path}" class="rounded-circle me-3" width="60" height="60" alt="Doctor Photo">
+            <div>
+              <h5 class="card-title mb-1">${doc.name}</h5>
+              <p class="mb-1"><strong>Specialization:</strong> ${doc.specialization}</p>
+              <p class="mb-1"><strong>Experience:</strong> ${doc.experience} years</p>
+              <p class="mb-0"><strong>Contact:</strong> ${doc.contact}</p>
+            </div>
+          </div>
+        </div>`;
+                });
+              });
+          }
+
           const doc = createPredictionPDF(inputData, data.prediction, data.advice);
 
           const pdfBlob = doc.output("blob");
@@ -283,7 +391,7 @@
       doc.text("Generated on: " + timestamp, 14, 28);
 
       doc.setFontSize(12);
-      doc.text("User Input Data:", 14, 32);
+      doc.text("User Input Data:", 14, 36);
 
       doc.autoTable({
         startY: 36,

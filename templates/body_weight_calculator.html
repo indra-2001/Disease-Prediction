@@ -15,7 +15,8 @@
             justify-content: center;
             align-items: center;
             font-family: Arial, sans-serif;
-            background-image: url('../static/images/Ideal_Body_weight_calculator2.jpg');
+            /* background-image: url('../static/images/Ideal_Body_weight_calculator2.jpg'); */
+            background-image: url('../static/images/BWC.png');
             background-size: cover;
             background-attachment: fixed;
             background-position: center;
@@ -195,30 +196,30 @@
             return await html2pdf().set(opt).from(content).output('blob');
         }
 
-        async function saveReport(height, ibw, pdfBlob) {
-            const formData = new FormData();
-            formData.append("height", height);
-            formData.append("category", "Ideal Body Weight");
-            formData.append("result_value", ibw.toFixed(2));
-            formData.append("pdf", pdfBlob, "ideal_body_weight_report.pdf");
+            // async function saveReport(height, ibw, pdfBlob) {
+            // const formData = new FormData();
+            // formData.append("height", height);
+            // formData.append("category", "Ideal Body Weight");
+            // formData.append("result_value", ibw.toFixed(2));
+            // formData.append("pdf", pdfBlob, "ideal_body_weight_report.pdf");
 
        
-                fetch("/save_health_result", {
-                method: "POST",
-                body: formData
-            })
-            .then(response => {
-                if (response.ok) {
-                alert("✅ Ideal Body Weight data and report saved to database.");
-                } else {
-                alert("❌ Failed to save data.");
-                }
-            })
-            .catch(err => {
-                console.error("Error:", err);
-                alert("❌ Error sending data to server.");
-            });
-            }
+            //     fetch("/save_health_result", {
+            //     method: "POST",
+            //     body: formData
+            // })
+            // .then(response => {
+            //     if (response.ok) {
+            //     alert("✅ Ideal Body Weight data and report saved to database.");
+            //     } else {
+            //     alert("❌ Failed to save data.");
+            //     }
+            // })
+            // .catch(err => {
+            //     console.error("Error:", err);
+            //     alert("❌ Error sending data to server.");
+            // });
+            // }
 
         function downloadAdvicePDF() {
             const title = document.getElementById("staticBackdropLabel").innerText;

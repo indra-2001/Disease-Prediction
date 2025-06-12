@@ -86,7 +86,8 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="q1" class="form-label">1. In the last month, how often have you been upset because something that happened unexpectedly?</label>
+                            <label for="q1" class="form-label">1. In the last month, how often have you been upset
+                                because something that happened unexpectedly?</label>
                             <select id="q1" name="q1" class="form-select" required>
                                 <option value="" disabled selected>Select</option>
                                 <option value="0">Never</option>
@@ -97,7 +98,8 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="q2" class="form-label">2. In the last month, how often have you felt that you were unable to control the important things in your life?</label>
+                            <label for="q2" class="form-label">2. In the last month, how often have you felt that you
+                                were unable to control the important things in your life?</label>
                             <select id="q2" name="q2" class="form-select" required>
                                 <option value="" disabled selected>Select</option>
                                 <option value="0">Never</option>
@@ -108,7 +110,8 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="q3" class="form-label">3. In the last month, how often have you felt nervous and 'stressed'?</label>
+                            <label for="q3" class="form-label">3. In the last month, how often have you felt nervous and
+                                'stressed'?</label>
                             <select id="q3" name="q3" class="form-select" required>
                                 <option value="" disabled selected>Select</option>
                                 <option value="0">Never</option>
@@ -131,7 +134,8 @@
                         </div>
                         <br>
                         <div class="mb-3">
-                            <label for="q5" class="form-label">5. In the last month, how often have you felt that things were going your way?</label>
+                            <label for="q5" class="form-label">5. In the last month, how often have you felt that things
+                                were going your way?</label>
                             <select id="q5" name="q5" class="form-select" required>
                                 <option value="" disabled selected>Select</option>
                                 <option value="0">Never</option>
@@ -145,7 +149,8 @@
 
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="q6" class="form-label">6. In the last month, how often have you found that you could not cope with all the things that you had to do?</label>
+                            <label for="q6" class="form-label">6. In the last month, how often have you found that you
+                                could not cope with all the things that you had to do?</label>
                             <select id="q6" name="q6" class="form-select" required>
                                 <option value="" disabled selected>Select</option>
                                 <option value="0">Never</option>
@@ -156,7 +161,8 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="q7" class="form-label">7. In the last month, how often have you been able to control irritations in your life?</label>
+                            <label for="q7" class="form-label">7. In the last month, how often have you been able to
+                                control irritations in your life?</label>
                             <select id="q7" name="q7" class="form-select" required>
                                 <option value="" disabled selected>Select</option>
                                 <option value="0">Never</option>
@@ -167,7 +173,8 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="q8" class="form-label">8. In the last month, how often have you felt that you were on top of things?</label>
+                            <label for="q8" class="form-label">8. In the last month, how often have you felt that you
+                                were on top of things?</label>
                             <select id="q8" name="q8" class="form-select" required>
                                 <option value="" disabled selected>Select</option>
                                 <option value="0">Never</option>
@@ -178,7 +185,8 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="q9" class="form-label">9. In the last month, how often have you been angered because of things that were outside of your control?</label>
+                            <label for="q9" class="form-label">9. In the last month, how often have you been angered
+                                because of things that were outside of your control?</label>
                             <select id="q9" name="q9" class="form-select" required>
                                 <option value="" disabled selected>Select</option>
                                 <option value="0">Never</option>
@@ -189,7 +197,8 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="q10" class="form-label">10. In the last month, how often have you felt difficulties were piling up so high that you could not overcome them</label>
+                            <label for="q10" class="form-label">10. In the last month, how often have you felt
+                                difficulties were piling up so high that you could not overcome them</label>
                             <select id="q10" name="q10" class="form-select" required>
                                 <option value="" disabled selected>Select</option>
                                 <option value="0">Never</option>
@@ -329,9 +338,9 @@
             <li>Even during calm periods, keep up a mindfulness or gratitude routine.</li>
         </ul>
     </div>`;
-    } else if (score <= 26) {
-        // Moderate Stress
-        advice = `<div class="p-3 rounded" style="background-color: #FFFACD; color: #856404;">
+            } else if (score <= 26) {
+                // Moderate Stress
+                advice = `<div class="p-3 rounded" style="background-color: #FFFACD; color: #856404;">
         <h6><i class="fas fa-meh"></i> 🟡 Moderate Stress (Score: ${score})</h6>
         <strong>🔍 Interpretation:</strong> You may be experiencing moderate stress. It's common but important to manage it before it builds up.<br><br>
 
@@ -354,9 +363,9 @@
             <li>If stress persists or increases, consider consulting a mental health professional.</li>
         </ul>
     </div>`;
-    } else {
-        // High Stress
-        advice = `<div class="p-3 rounded" style="background-color: #F8D7DA; color: #721c24;">
+            } else {
+                // High Stress
+                advice = `<div class="p-3 rounded" style="background-color: #F8D7DA; color: #721c24;">
         <h6><i class="fas fa-exclamation-circle"></i> 🔴 High Stress (Score: ${score})</h6>
         <strong>⚠️ Interpretation:</strong> You are currently experiencing high levels of stress. It's important to address this proactively.<br><br>
 
@@ -380,8 +389,7 @@
             <li>You deserve support. Help is available, and you are not alone.</li>
         </ul>
     </div>`;
-    }
-
+            }
 
 
             return advice;

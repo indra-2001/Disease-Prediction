@@ -1,0 +1,587 @@
+%PDF-1.3
+%ºß¬à
+3 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 4 0 R
+>>
+endobj
+4 0 obj
+<<
+/Length 4110
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F1 18 Tf
+20.6999999999999993 TL
+0 g
+39.6850393700787407 779.5277952755905062 Td
+(Diabetes Prediction Report) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+39.6850393700787407 762.5199212598424765 Td
+(Generated on: 5/17/2025, 8:11:34 PM) Tj
+ET
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0 g
+39.6850393700787407 739.8427559055118081 Td
+(User Input Data:) Tj
+ET
+0.1 0.74 0.61 rg
+0.78 G
+0. w
+0.1 0.74 0.61 rg
+40. 728.5041732283464171 363.1139805825241638 -21.4999999999999964 re
+f
+BT
+/F2 10 Tf
+11.5 TL
+1. g
+45. 715.0041732283464171 Td
+(Parameter) Tj
+ET
+0.1 0.74 0.61 rg
+0.78 G
+0. w
+0.1 0.74 0.61 rg
+403.1139805825241638 728.5041732283464171 152.1660194174757237 -21.4999999999999964 re
+f
+BT
+/F2 10 Tf
+11.5 TL
+1. g
+408.1139805825241638 715.0041732283464171 Td
+(Value) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 707.0041732283464171 363.1139805825241638 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 693.5041732283464171 Td
+(pregnancies) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+403.1139805825241638 707.0041732283464171 152.1660194174757237 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+408.1139805825241638 693.5041732283464171 Td
+(1) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 685.5041732283465308 363.1139805825241638 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 672.0041732283464171 Td
+(glucose) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+403.1139805825241638 685.5041732283465308 152.1660194174757237 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+408.1139805825241638 672.0041732283464171 Td
+(85) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 664.0041732283464171 363.1139805825241638 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 650.5041732283464171 Td
+(bloodPressure) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+403.1139805825241638 664.0041732283464171 152.1660194174757237 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+408.1139805825241638 650.5041732283464171 Td
+(66) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 642.5041732283464171 363.1139805825241638 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 629.0041732283464171 Td
+(skinThickness) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+403.1139805825241638 642.5041732283464171 152.1660194174757237 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+408.1139805825241638 629.0041732283464171 Td
+(29) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 621.0041732283465308 363.1139805825241638 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 607.5041732283464171 Td
+(insulin) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+403.1139805825241638 621.0041732283465308 152.1660194174757237 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+408.1139805825241638 607.5041732283464171 Td
+(0) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 599.5041732283464171 363.1139805825241638 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 586.0041732283464171 Td
+(bmi) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+403.1139805825241638 599.5041732283464171 152.1660194174757237 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+408.1139805825241638 586.0041732283464171 Td
+(26.3) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 578.0041732283464171 363.1139805825241638 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 564.5041732283464171 Td
+(diabetesPedigree) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+403.1139805825241638 578.0041732283464171 152.1660194174757237 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+408.1139805825241638 564.5041732283464171 Td
+(0.672) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 556.5041732283464171 363.1139805825241638 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 543.0041732283464171 Td
+(age) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+403.1139805825241638 556.5041732283464171 152.1660194174757237 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+408.1139805825241638 543.0041732283464171 Td
+(21) Tj
+ET
+0.78 G
+0. w
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0. g
+39.6850393700787407 506.6577165354329964 Td
+(Prediction Result: Diabetes Detected \(Positive\)) Tj
+ET
+endstream
+endobj
+5 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 6 0 R
+>>
+endobj
+6 0 obj
+<<
+/Length 2482
+>>
+stream
+0.5670000000000001 w
+0.78 G
+BT
+/F1 18 Tf
+20.6999999999999993 TL
+0. g
+39.6850393700787407 779.5277952755905062 Td
+(Medical Advice) Tj
+ET
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0. g
+39.6850393700787407 751.1813385826771992 Td
+() Tj
+T* (Your test indicates signs of Diabetes. Managing blood sugar) Tj
+T* (levels through diet, exercise, medication, and monitoring is) Tj
+T* (crucial to prevent complications and maintain a healthy life.) Tj
+T* () Tj
+T* (Advices to Manage Your Condition ----) Tj
+T* () Tj
+T* (Medications) Tj
+T* () Tj
+T* (  Take your diabetes medications exactly as prescribed.) Tj
+T* (  Do not skip doses and never change dosages without) Tj
+T* (consulting your doctor.) Tj
+T* (  If using insulin, store it properly and learn correct injection) Tj
+T* (techniques.) Tj
+T* (  Discuss all supplements or herbal remedies with your) Tj
+T* (healthcare provider before using them.) Tj
+T* () Tj
+T* () Tj
+T* (Diet & Nutrition) Tj
+T* () Tj
+T* (  Focus on whole grains, fresh vegetables, lean proteins, and) Tj
+T* (healthy fats.) Tj
+T* (  Limit sugary foods, sweetened drinks, and processed snacks.) Tj
+T* (  Watch carbohydrate intake and follow a consistent meal plan.) Tj
+T* (  Reduce sodium to help control blood pressure.) Tj
+T* () Tj
+T* () Tj
+T* (Lifestyle) Tj
+T* () Tj
+T* (  Engage in at least 30 minutes of physical activity most days of) Tj
+T* (the week.) Tj
+T* (  Quit smoking — it raises your risk of complications.) Tj
+T* (  Limit alcohol intake; it can affect blood sugar levels.) Tj
+T* (  Maintain a healthy weight and aim for steady, gradual weight) Tj
+T* (loss if overweight.) Tj
+T* (  Get enough restful sleep and manage stress effectively.) Tj
+T* () Tj
+T* () Tj
+T* (Monitor Your Health) Tj
+T* () Tj
+T* (  Check your blood sugar regularly and track results.) Tj
+T* (  Monitor blood pressure and cholesterol levels.) Tj
+T* (  Keep an eye on your feet for cuts, blisters, or infections.) Tj
+T* (  Get regular eye exams and kidney function tests.) Tj
+T* () Tj
+T* () Tj
+T* (Seek Medical Help If) Tj
+T* () Tj
+T* (  You experience frequent urination, extreme thirst, or fatigue.) Tj
+T* (  You notice blurred vision or slow-healing wounds.) Tj
+T* (  You feel tingling, numbness, or pain in hands and feet.) Tj
+T* (  You have sudden changes in blood sugar readings.) Tj
+T* () Tj
+T* () Tj
+T* (Note: Diabetes is manageable with the right care plan. Stay in) Tj
+T* (regular contact with your healthcare team and attend all) Tj
+T* (follow-up appointments.) Tj
+T* (        ) Tj
+ET
+endstream
+endobj
+1 0 obj
+<</Type /Pages
+/Kids [3 0 R 5 0 R ]
+/Count 2
+>>
+endobj
+7 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+8 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+9 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+10 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+11 0 obj
+<<
+/Type /Font
+/BaseFont /Courier
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+12 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+13 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+14 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+15 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Roman
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+16 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+17 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Italic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+18 0 obj
+<<
+/Type /Font
+/BaseFont /Times-BoldItalic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+19 0 obj
+<<
+/Type /Font
+/BaseFont /ZapfDingbats
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+20 0 obj
+<<
+/Type /Font
+/BaseFont /Symbol
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+2 0 obj
+<<
+/ProcSet [/PDF /Text /ImageB /ImageC /ImageI]
+/Font <<
+/F1 7 0 R
+/F2 8 0 R
+/F3 9 0 R
+/F4 10 0 R
+/F5 11 0 R
+/F6 12 0 R
+/F7 13 0 R
+/F8 14 0 R
+/F9 15 0 R
+/F10 16 0 R
+/F11 17 0 R
+/F12 18 0 R
+/F13 19 0 R
+/F14 20 0 R
+>>
+/XObject <<
+>>
+>>
+endobj
+21 0 obj
+<<
+/Producer (jsPDF 2.4.0)
+/CreationDate (D:20250517201134+05'30')
+>>
+endobj
+22 0 obj
+<<
+/Type /Catalog
+/Pages 1 0 R
+/OpenAction [3 0 R /FitH null]
+/PageLayout /OneColumn
+>>
+endobj
+xref
+0 23
+0000000000 65535 f 
+0000006985 00000 n 
+0000008810 00000 n 
+0000000015 00000 n 
+0000000152 00000 n 
+0000004314 00000 n 
+0000004451 00000 n 
+0000007048 00000 n 
+0000007173 00000 n 
+0000007303 00000 n 
+0000007436 00000 n 
+0000007574 00000 n 
+0000007698 00000 n 
+0000007827 00000 n 
+0000007959 00000 n 
+0000008095 00000 n 
+0000008223 00000 n 
+0000008350 00000 n 
+0000008479 00000 n 
+0000008612 00000 n 
+0000008714 00000 n 
+0000009060 00000 n 
+0000009146 00000 n 
+trailer
+<<
+/Size 23
+/Root 22 0 R
+/Info 21 0 R
+/ID [ <A8466D4050CA3EB09E6D019F4EFC21D1> <A8466D4050CA3EB09E6D019F4EFC21D1> ]
+>>
+startxref
+9250
+%%EOF

@@ -9,17 +9,18 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         body {
-    margin: 0;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-    background-image: url('../static/images/nutrint_Back2.jpg');
-    background-size: cover;
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    min-height: 100vh;
-    overflow-y: auto;
-}
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            /* background-image: url('../static/images/nutrint_Back2.jpg'); */
+            background-image: url('../static/images/NC4.png');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            overflow-y: auto;
+        }
 
         .container {
             max-width: 500px;
@@ -77,36 +78,38 @@
     <div class="container">
         <h2><i class="fas fa-apple-alt"></i> Nutrient Requirement Calculator</h2>
 
-       <label for="age">Age (years):</label>
-      <input type="number" id="age" class="form-control" min="1" max="120" placeholder="Enter your age" required>
+        <label for="age">Age (years):</label>
+        <input type="number" id="age" class="form-control" min="1" max="120" placeholder="Enter your age" required>
         <label for="sex">Sex:</label>
-      <select id="sex" class="form-select" required>
-        <option value="" disabled selected>Select sex</option>
-        <option value="male">Male</option>
-        <option value="female">Female</option>
-      </select>
+        <select id="sex" class="form-select" required>
+            <option value="" disabled selected>Select sex</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+        </select>
         <label for="weight">Weight (kg):</label>
-      <input type="number" id="weight" class="form-control" min="30" max="250" step="0.1" placeholder="Enter your weight" required>
-      <label for="height">Height (cm):</label>
-      <input type="number" id="height" class="form-control" min="100" max="250" placeholder="Enter your height" required>
-      <label for="activity">Activity Level:</label>
-      <select id="activity" class="form-select" required>
-        <option value="" disabled selected>Select activity level</option>
-        <option value="sedentary">Sedentary</option>
-        <option value="moderate">Moderate</option>
-        <option value="active">Active</option>
-      </select>
-      <label for="condition">Pregnancy/Location Status (optional):</label>
-      <select id="condition" class="form-select">
-  <option value="">None</option>
-  <option value="pregnant" data-sex="female">Pregnant</option>
-  <option value="lactating" data-sex="female">Lactating</option>
-  <option value="high_altitude" data-sex="both">Living at high altitude</option>
-</select>
-    
-        <button onclick="calculateNutrients()" class="btn btn-primary"><i
-                class="fas fa-calculator me-2"></i>Calculate Requirements</button>
-                <br><br>
+        <input type="number" id="weight" class="form-control" min="30" max="250" step="0.1"
+            placeholder="Enter your weight" required>
+        <label for="height">Height (cm):</label>
+        <input type="number" id="height" class="form-control" min="100" max="250" placeholder="Enter your height"
+            required>
+        <label for="activity">Activity Level:</label>
+        <select id="activity" class="form-select" required>
+            <option value="" disabled selected>Select activity level</option>
+            <option value="sedentary">Sedentary</option>
+            <option value="moderate">Moderate</option>
+            <option value="active">Active</option>
+        </select>
+        <label for="condition">Pregnancy/Location Status (optional):</label>
+        <select id="condition" class="form-select">
+            <option value="">None</option>
+            <option value="pregnant" data-sex="female">Pregnant</option>
+            <option value="lactating" data-sex="female">Lactating</option>
+            <option value="high_altitude" data-sex="both">Living at high altitude</option>
+        </select>
+
+        <button onclick="calculateNutrients()" class="btn btn-primary"><i class="fas fa-calculator me-2"></i>Calculate
+            Requirements</button>
+        <br><br>
         <a href="/dashboard" class="btn btn-secondary w-100"><i class="fas fa-arrow-left me-2"></i>Back</a>
         <br><br>
         <div id="results"></div>
@@ -139,71 +142,71 @@
 
     <script>
         async function calculateNutrients() {
-      const age = parseInt(document.getElementById("age").value);
-      const sex = document.getElementById("sex").value;
-      const weight = parseFloat(document.getElementById("weight").value);
-      const height = parseFloat(document.getElementById("height").value);
-      const activity = document.getElementById("activity").value;
-      const condition = document.getElementById("condition").value;
+            const age = parseInt(document.getElementById("age").value);
+            const sex = document.getElementById("sex").value;
+            const weight = parseFloat(document.getElementById("weight").value);
+            const height = parseFloat(document.getElementById("height").value);
+            const activity = document.getElementById("activity").value;
+            const condition = document.getElementById("condition").value;
 
 
-  if (!age || !sex || !weight || !height || !activity) {
-        alert("Please fill in all required fields.");
-        return;
-      }
+            if (!age || !sex || !weight || !height || !activity) {
+                alert("Please fill in all required fields.");
+                return;
+            }
 
-  if (sex === "male" && (condition === "pregnant" || condition === "lactating")) {
-  alert("Invalid selection: Males cannot be pregnant or lactating.");
-  return;
-}
+            if (sex === "male" && (condition === "pregnant" || condition === "lactating")) {
+                alert("Invalid selection: Males cannot be pregnant or lactating.");
+                return;
+            }
 
-   // BMR (Mifflin-St Jeor Equation)
-      let bmr = (sex === "male")
-        ? 10 * weight + 6.25 * height - 5 * age + 5
-        : 10 * weight + 6.25 * height - 5 * age - 161;
+            // BMR (Mifflin-St Jeor Equation)
+            let bmr = (sex === "male")
+                ? 10 * weight + 6.25 * height - 5 * age + 5
+                : 10 * weight + 6.25 * height - 5 * age - 161;
 
-      const activityMultiplier = {
-        sedentary: 1.2,
-        moderate: 1.55,
-        active: 1.725
-      };
+            const activityMultiplier = {
+                sedentary: 1.2,
+                moderate: 1.55,
+                active: 1.725
+            };
 
-      const calories = bmr * (activityMultiplier[activity] || 1.2);
+            const calories = bmr * (activityMultiplier[activity] || 1.2);
 
-      const protein = weight * 0.8;
-      const carbs = (calories * 0.5) / 4;
-      const fat = (calories * 0.3) / 9;
+            const protein = weight * 0.8;
+            const carbs = (calories * 0.5) / 4;
+            const fat = (calories * 0.3) / 9;
 
-      let vitamins = {
-        "Vitamin A (μg)": sex === "male" ? 900 : 700,
-        "Vitamin C (mg)": sex === "male" ? 90 : 75,
-        "Calcium (mg)": age > 50 ? 1200 : 1000,
-        "Iron (mg)": (sex === "female" && age < 50) ? 18 : 8
-      };
+            let vitamins = {
+                "Vitamin A (μg)": sex === "male" ? 900 : 700,
+                "Vitamin C (mg)": sex === "male" ? 90 : 75,
+                "Calcium (mg)": age > 50 ? 1200 : 1000,
+                "Iron (mg)": (sex === "female" && age < 50) ? 18 : 8
+            };
 
-      if (condition === "pregnant") {
-        vitamins["Iron (mg)"] += 9;
-        vitamins["Calcium (mg)"] += 200;
-        vitamins["Vitamin A (μg)"] += 100;
-      } else if (condition === "lactating") {
-        vitamins["Vitamin A (μg)"] += 300;
-        vitamins["Calcium (mg)"] += 100;
-      } else if (condition === "high_altitude") {
-        vitamins["Iron (mg)"] += 4;
-        vitamins["Vitamin C (mg)"] += 15;
-      }
+            if (condition === "pregnant") {
+                vitamins["Iron (mg)"] += 9;
+                vitamins["Calcium (mg)"] += 200;
+                vitamins["Vitamin A (μg)"] += 100;
+            } else if (condition === "lactating") {
+                vitamins["Vitamin A (μg)"] += 300;
+                vitamins["Calcium (mg)"] += 100;
+            } else if (condition === "high_altitude") {
+                vitamins["Iron (mg)"] += 4;
+                vitamins["Vitamin C (mg)"] += 15;
+            }
 
-      displayResult(calories, protein, carbs, fat, vitamins);
+            displayResult(calories, protein, carbs, fat, vitamins);
 
-  // Show advice button
-  document.getElementById("adviceBtn").style.display = "inline-block";
-  document.getElementById("results").scrollIntoView({ behavior: "smooth" });
+            // Show advice button
+            document.getElementById("adviceBtn").style.display = "inline-block";
+            document.getElementById("results").scrollIntoView({ behavior: "smooth" });
 
-  // Prepare modal content
-  document.getElementById("staticBackdropLabel").innerText = "Nutrient_Intake-Based Advice";
-  document.getElementById("adviceContent").innerHTML = getAdvice(calories, protein, vitamins, carbs, fat, condition);
+            // Prepare modal content
+            document.getElementById("staticBackdropLabel").innerText = "Nutrient_Intake-Based Advice";
+            document.getElementById("adviceContent").innerHTML = getAdvice(calories, protein, vitamins, carbs, fat, condition);
 
-    }
+        }
 
 
         function displayResult(calories, protein, carbs, fat, vitamins,) {
@@ -216,257 +219,257 @@
     <li class="list-group-item"><strong>Fat:</strong> ${fat.toFixed(1)} g</li>
 `;
 
-for (const [key, value] of Object.entries(vitamins)) {
-  resultHTML += `<li class="list-group-item"><strong>${key}:</strong> ${value}</li>`;
-}
+            for (const [key, value] of Object.entries(vitamins)) {
+                resultHTML += `<li class="list-group-item"><strong>${key}:</strong> ${value}</li>`;
+            }
 
-resultHTML += `</ul>`;
+            resultHTML += `</ul>`;
 
-  const resultsDiv = document.getElementById("results");
-  resultsDiv.innerHTML = resultHTML;
-  resultsDiv.style.display = "block";
+            const resultsDiv = document.getElementById("results");
+            resultsDiv.innerHTML = resultHTML;
+            resultsDiv.style.display = "block";
 
-  // Optional: Show advice button or trigger other UI elements
-  const adviceBtn = document.getElementById("adviceBtn");
-  if (adviceBtn) {
-    adviceBtn.style.display = "block";
-  }
-}
-        
+            // Optional: Show advice button or trigger other UI elements
+            const adviceBtn = document.getElementById("adviceBtn");
+            if (adviceBtn) {
+                adviceBtn.style.display = "block";
+            }
+        }
+
 
         function buildPdfContent(calories, protein, carbs, fat, vitamins, adviceHtml) {
             const container = document.createElement("div");
 
-    const heading = document.createElement("h2");
-    heading.innerText = "Daily Nutrient Requirements Summary 🍎";
-    heading.style.textAlign = "center";
-    heading.style.color = "#28a745";
-    heading.style.borderBottom = "4px solid #28a745";
-    heading.style.paddingBottom = "10px";
-    heading.style.marginBottom = "30px";
+            const heading = document.createElement("h2");
+            heading.innerText = "Daily Nutrient Requirements Summary 🍎";
+            heading.style.textAlign = "center";
+            heading.style.color = "#28a745";
+            heading.style.borderBottom = "4px solid #28a745";
+            heading.style.paddingBottom = "10px";
+            heading.style.marginBottom = "30px";
 
-    const nutrientList = document.createElement("ul");
-    nutrientList.style.listStyle = "none";
-    nutrientList.style.fontSize = "16px";
-    nutrientList.style.lineHeight = "1.6";
-    nutrientList.style.fontFamily = "Arial, sans-serif";
-    nutrientList.style.padding = "0";
+            const nutrientList = document.createElement("ul");
+            nutrientList.style.listStyle = "none";
+            nutrientList.style.fontSize = "16px";
+            nutrientList.style.lineHeight = "1.6";
+            nutrientList.style.fontFamily = "Arial, sans-serif";
+            nutrientList.style.padding = "0";
 
-    const addListItem = (label, value, unit = "") => {
-        const li = document.createElement("li");
-        li.innerHTML = `<strong>${label}:</strong> ${value}${unit}`;
-        nutrientList.appendChild(li);
-    };
+            const addListItem = (label, value, unit = "") => {
+                const li = document.createElement("li");
+                li.innerHTML = `<strong>${label}:</strong> ${value}${unit}`;
+                nutrientList.appendChild(li);
+            };
 
-    addListItem("Calories", calories.toFixed(0), " kcal/day");
-    addListItem("Protein", protein.toFixed(1), " g");
-    addListItem("Carbohydrates", carbs.toFixed(1), " g");
-    addListItem("Fat", fat.toFixed(1), " g");
+            addListItem("Calories", calories.toFixed(0), " kcal/day");
+            addListItem("Protein", protein.toFixed(1), " g");
+            addListItem("Carbohydrates", carbs.toFixed(1), " g");
+            addListItem("Fat", fat.toFixed(1), " g");
 
-    for (const [key, value] of Object.entries(vitamins)) {
-        addListItem(key, value);
-    }
+            for (const [key, value] of Object.entries(vitamins)) {
+                addListItem(key, value);
+            }
 
-    const adviceHeading = document.createElement("h2");
-    adviceHeading.innerText = "Personalized Nutrition Advice 💡";
-    adviceHeading.style.marginTop = "30px";
-    adviceHeading.style.paddingTop = "8px";
-    adviceHeading.style.color = "#007bff";
+            const adviceHeading = document.createElement("h2");
+            adviceHeading.innerText = "Personalized Nutrition Advice 💡";
+            adviceHeading.style.marginTop = "30px";
+            adviceHeading.style.paddingTop = "8px";
+            adviceHeading.style.color = "#007bff";
 
-    adviceHeading.style.pageBreakBefore = "always"; // Works with most PDF tools like html2pdf
-    adviceHeading.style.breakBefore = "page"; 
+            adviceHeading.style.pageBreakBefore = "always"; // Works with most PDF tools like html2pdf
+            adviceHeading.style.breakBefore = "page";
 
-    const adviceSection = document.createElement("div");
-    adviceSection.innerHTML = adviceHtml;
-    adviceSection.style.fontSize = "14px";
-    adviceSection.style.lineHeight = "1.7";
-    adviceSection.style.fontFamily = "Arial, sans-serif";
-    adviceSection.style.pageBreakInside = "avoid"; 
+            const adviceSection = document.createElement("div");
+            adviceSection.innerHTML = adviceHtml;
+            adviceSection.style.fontSize = "14px";
+            adviceSection.style.lineHeight = "1.7";
+            adviceSection.style.fontFamily = "Arial, sans-serif";
+            adviceSection.style.pageBreakInside = "avoid";
 
-    container.appendChild(heading);
-    container.appendChild(nutrientList);
-    container.appendChild(adviceHeading);
-    container.appendChild(adviceSection);
+            container.appendChild(heading);
+            container.appendChild(nutrientList);
+            container.appendChild(adviceHeading);
+            container.appendChild(adviceSection);
 
-    return container;
-}
+            return container;
+        }
 
         async function generatePdfBlob(content) {
             const opt = {
-        margin: 0.5,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: {
-            scale: 2,
-            useCORS: true,
-            scrollY: 0,
-            scrollX: 0
-        },
-        jsPDF: {
-            unit: 'in',
-            format: 'letter',
-            orientation: 'portrait'
-        },
-        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] },
-        filename: 'nutrient_intake_report_and_Tips.pdf'
-    };
+                margin: 0.5,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: {
+                    scale: 2,
+                    useCORS: true,
+                    scrollY: 0,
+                    scrollX: 0
+                },
+                jsPDF: {
+                    unit: 'in',
+                    format: 'letter',
+                    orientation: 'portrait'
+                },
+                pagebreak: { mode: ['avoid-all', 'css', 'legacy'] },
+                filename: 'nutrient_intake_report_and_Tips.pdf'
+            };
 
-    return await html2pdf().set(opt).from(content).output('blob');
-}
+            return await html2pdf().set(opt).from(content).output('blob');
+        }
 
         async function saveReport(weight, calories, protein, carbs, fat, vitamins, pdfBlob) {
             const formData = new FormData();
             let resultSummary = `Calories: ${calories.toFixed(0)} kcal, ` +
-                        `Protein: ${protein.toFixed(1)} g, ` +
-                        `Carbs: ${carbs.toFixed(1)} g, ` +
-                        `Fat: ${fat.toFixed(1)} g`;
+                `Protein: ${protein.toFixed(1)} g, ` +
+                `Carbs: ${carbs.toFixed(1)} g, ` +
+                `Fat: ${fat.toFixed(1)} g`;
 
-    // Optionally append vitamins
-    if (vitamins && typeof vitamins === "object") {
-        for (const [key, value] of Object.entries(vitamins)) {
-            resultSummary += `, ${key}: ${value}`;
-        }
-    }
+            // Optionally append vitamins
+            if (vitamins && typeof vitamins === "object") {
+                for (const [key, value] of Object.entries(vitamins)) {
+                    resultSummary += `, ${key}: ${value}`;
+                }
+            }
 
-    formData.append("weight", weight);
-    formData.append("category", "Nutrient Intake");
-    formData.append("result_value", resultSummary);
-    formData.append("pdf", pdfBlob, "nutrient_intake_report.pdf");
+            formData.append("weight", weight);
+            formData.append("category", "Nutrient Intake");
+            formData.append("result_value", resultSummary);
+            formData.append("pdf", pdfBlob, "nutrient_intake_report.pdf");
 
 
-       
-                fetch("/save_health_result", {
+
+            fetch("/save_health_result", {
                 method: "POST",
                 body: formData
             })
-            .then(response => {
-                if (response.ok) {
-                alert("✅ Nutrient intake data and report saved to database.");
-                } else {
-                alert("❌ Failed to save data.");
-                }
-            })
-            .catch(err => {
-                console.error("Error:", err);
-                alert("❌ Error sending data to server.");
-            });
-            }
+                .then(response => {
+                    if (response.ok) {
+                        alert("✅ Nutrient intake data and report saved to database.");
+                    } else {
+                        alert("❌ Failed to save data.");
+                    }
+                })
+                .catch(err => {
+                    console.error("Error:", err);
+                    alert("❌ Error sending data to server.");
+                });
+        }
 
-       async function downloadAdvicePDF() {
+        async function downloadAdvicePDF() {
             const title = document.getElementById("staticBackdropLabel").innerText;
-    const adviceHtml = document.getElementById("adviceContent").innerHTML;
+            const adviceHtml = document.getElementById("adviceContent").innerHTML;
 
-    const calories = parseFloat(document.querySelector("#results li:nth-child(1)").textContent.split(":")[1]);
-    const protein = parseFloat(document.querySelector("#results li:nth-child(2)").textContent.split(":")[1]);
-    const carbs = parseFloat(document.querySelector("#results li:nth-child(3)").textContent.split(":")[1]);
-    const fat = parseFloat(document.querySelector("#results li:nth-child(4)").textContent.split(":")[1]);
-    const weight = parseFloat(document.getElementById("weight").value);
+            const calories = parseFloat(document.querySelector("#results li:nth-child(1)").textContent.split(":")[1]);
+            const protein = parseFloat(document.querySelector("#results li:nth-child(2)").textContent.split(":")[1]);
+            const carbs = parseFloat(document.querySelector("#results li:nth-child(3)").textContent.split(":")[1]);
+            const fat = parseFloat(document.querySelector("#results li:nth-child(4)").textContent.split(":")[1]);
+            const weight = parseFloat(document.getElementById("weight").value);
 
-    const vitamins = {};
-    const vitaminItems = document.querySelectorAll("#results li:nth-child(n+5)");
-    vitaminItems.forEach(item => {
-        const [key, value] = item.innerText.split(":");
-        vitamins[key.trim()] = value.trim();
-    });
+            const vitamins = {};
+            const vitaminItems = document.querySelectorAll("#results li:nth-child(n+5)");
+            vitaminItems.forEach(item => {
+                const [key, value] = item.innerText.split(":");
+                vitamins[key.trim()] = value.trim();
+            });
 
-    // Build PDF HTML
-    const content = buildPdfContent(calories, protein, carbs, fat, vitamins, adviceHtml);
+            // Build PDF HTML
+            const content = buildPdfContent(calories, protein, carbs, fat, vitamins, adviceHtml);
 
-    // Render to hidden container to ensure full DOM rendering
-    const pdfContainer = document.getElementById("pdfContainer");
-    pdfContainer.innerHTML = "";
-    pdfContainer.appendChild(content);
-    pdfContainer.style.display = "block";
+            // Render to hidden container to ensure full DOM rendering
+            const pdfContainer = document.getElementById("pdfContainer");
+            pdfContainer.innerHTML = "";
+            pdfContainer.appendChild(content);
+            pdfContainer.style.display = "block";
 
-    // ✅ Add delay to allow content to render
-    await new Promise(resolve => setTimeout(resolve, 500)); // Adjust if needed
+            // ✅ Add delay to allow content to render
+            await new Promise(resolve => setTimeout(resolve, 500)); // Adjust if needed
 
-    // Generate Blob for DB
-    const blob = await generatePdfBlob(content);
+            // Generate Blob for DB
+            const blob = await generatePdfBlob(content);
 
-    // Save to server
-    await saveReport(weight, calories, protein, carbs, fat, vitamins, blob);
+            // Save to server
+            await saveReport(weight, calories, protein, carbs, fat, vitamins, blob);
 
-    // Download the PDF
-    const blobUrl = URL.createObjectURL(blob);
-const link = document.createElement("a");
-link.href = blobUrl;
-link.download = "nutrient_intake_report_and_Tips.pdf";
-document.body.appendChild(link);
-link.click();
-document.body.removeChild(link);
-URL.revokeObjectURL(blobUrl);
+            // Download the PDF
+            const blobUrl = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = blobUrl;
+            link.download = "nutrient_intake_report_and_Tips.pdf";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(blobUrl);
 
-    // Hide container after generation
-    pdfContainer.style.display = 'none';
-}
+            // Hide container after generation
+            pdfContainer.style.display = 'none';
+        }
 
         function getAdvice(calories, protein, vitamins, carbs, fat, condition) {
             let advice = `<strong>📊 Based on your daily nutrient requirements, here's how to meet them effectively:</strong><br><br>`;
 
-    // 🔥 Calorie Goal Advice
-    advice += `<strong>🔥 Calorie Goal: ${Math.round(calories)} kcal</strong><br>
+            // 🔥 Calorie Goal Advice
+            advice += `<strong>🔥 Calorie Goal: ${Math.round(calories)} kcal</strong><br>
 🍽️ <strong>Tip:</strong> Spread your meals across the day (3 main meals + 2 snacks) to meet this energy target.<br><br>`;
 
-    // 🧬 Protein Requirement Advice
-    advice += `<strong>🧬 Protein Goal: ${Math.round(protein)} g</strong><br>
+            // 🧬 Protein Requirement Advice
+            advice += `<strong>🧬 Protein Goal: ${Math.round(protein)} g</strong><br>
 🥩 <strong>Tip:</strong> Include a protein source in every meal.<br>
 <ul>
   <li>Animal sources: chicken, eggs, dairy, fish</li>
   <li>Plant sources: beans, lentils, tofu, nuts</li>
 </ul><br>`;
 
-    // 🍞 Carbohydrate Requirement Advice
-    advice += `<strong>🍞 Carbohydrates Goal: ${Math.round(carbs)} g</strong><br>
+            // 🍞 Carbohydrate Requirement Advice
+            advice += `<strong>🍞 Carbohydrates Goal: ${Math.round(carbs)} g</strong><br>
 🥗 <strong>Tip:</strong> Focus on complex carbs like whole grains, vegetables, and legumes.<br>
 <ul>
   <li>Examples: oats, brown rice, sweet potatoes, whole wheat bread</li>
 </ul><br>`;
 
-    // 🧈 Fat Requirement Advice
-    advice += `<strong>🧈 Fat Goal: ${Math.round(fat)} g</strong><br>
+            // 🧈 Fat Requirement Advice
+            advice += `<strong>🧈 Fat Goal: ${Math.round(fat)} g</strong><br>
 🥑 <strong>Tip:</strong> Include healthy fats but keep portions moderate.<br>
 <ul>
   <li>Sources: avocados, olive oil, nuts, seeds, fatty fish</li>
 </ul><br>`;
 
-    // 💊 Vitamins/Minerals Goal Advice
-    if (vitamins && Object.keys(vitamins).length > 0) {
-        for (const [key, value] of Object.entries(vitamins)) {
-            advice += `<strong>💊 ${key} Goal: ${value}</strong><br>`;
-            if (key.includes("Vitamin A")) {
-                advice += `🟠 <strong>Tip:</strong> Add carrots, sweet potatoes, spinach, and eggs to your meals.<br><br>`;
-            } else if (key.includes("Vitamin C")) {
-                advice += `🟢 <strong>Tip:</strong> Eat oranges, bell peppers, strawberries, or broccoli daily.<br><br>`;
-            } else if (key.includes("Iron")) {
-                advice += `🔴 <strong>Tip:</strong> Include spinach, lentils, beans, red meat, and cook in cast iron.<br><br>`;
-            } else if (key.includes("Calcium")) {
-                advice += `⚪ <strong>Tip:</strong> Consume dairy, fortified plant milk, tofu, or leafy greens.<br><br>`;
+            // 💊 Vitamins/Minerals Goal Advice
+            if (vitamins && Object.keys(vitamins).length > 0) {
+                for (const [key, value] of Object.entries(vitamins)) {
+                    advice += `<strong>💊 ${key} Goal: ${value}</strong><br>`;
+                    if (key.includes("Vitamin A")) {
+                        advice += `🟠 <strong>Tip:</strong> Add carrots, sweet potatoes, spinach, and eggs to your meals.<br><br>`;
+                    } else if (key.includes("Vitamin C")) {
+                        advice += `🟢 <strong>Tip:</strong> Eat oranges, bell peppers, strawberries, or broccoli daily.<br><br>`;
+                    } else if (key.includes("Iron")) {
+                        advice += `🔴 <strong>Tip:</strong> Include spinach, lentils, beans, red meat, and cook in cast iron.<br><br>`;
+                    } else if (key.includes("Calcium")) {
+                        advice += `⚪ <strong>Tip:</strong> Consume dairy, fortified plant milk, tofu, or leafy greens.<br><br>`;
+                    }
+                }
             }
-        }
-    }
 
-    // 👶 Condition-specific advice
-    if (condition === "pregnant") {
-        advice += `<strong>🤰 Pregnancy-Specific Advice:</strong><br>
+            // 👶 Condition-specific advice
+            if (condition === "pregnant") {
+                advice += `<strong>🤰 Pregnancy-Specific Advice:</strong><br>
 🌟 Ensure adequate intake of <strong>folate</strong> (leafy greens, fortified grains), <strong>iron</strong>, and <strong>calcium</strong> to support fetal development.<br>
 💧 Stay well-hydrated and consider small, frequent meals to manage nausea.<br><br>`;
-    } else if (condition === "lactating") {
-        advice += `<strong>🍼 Lactation-Specific Advice:</strong><br>
+            } else if (condition === "lactating") {
+                advice += `<strong>🍼 Lactation-Specific Advice:</strong><br>
 🧃 Increase <strong>fluid intake</strong> to support milk production.<br>
 🍛 Ensure a well-balanced diet rich in <strong>calcium, vitamin A, and protein</strong>.<br><br>`;
-    } else if (condition === "high_altitude") {
-        advice += `<strong🏔️ High Altitude Living Advice:</strong><br>
+            } else if (condition === "high_altitude") {
+                advice += `<strong🏔️ High Altitude Living Advice:</strong><br>
 ⛰️ Increase <strong>iron</strong> intake to support red blood cell production.<br>
 🍊 Consume more <strong>vitamin C</strong> to improve iron absorption and counter oxidative stress.<br><br>`;
-    }
+            }
 
-    return advice;
-}
-</script>
-         
+            return advice;
+        }
+    </script>
 
-   <!-- Hidden PDF container -->
-   <div id="pdfContainer" style="display: none;"></div>
+
+    <!-- Hidden PDF container -->
+    <div id="pdfContainer" style="display: none;"></div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

@@ -1,0 +1,655 @@
+%PDF-1.3
+%ºß¬à
+3 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 4 0 R
+>>
+endobj
+4 0 obj
+<<
+/Length 5410
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F1 18 Tf
+20.6999999999999993 TL
+0 g
+39.6850393700787407 779.5277952755905062 Td
+(Kidney Prediction Report) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+39.6850393700787407 762.5199212598424765 Td
+(Generated on: 5/22/2025, 7:46:59 PM) Tj
+ET
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0 g
+39.6850393700787407 751.1813385826771992 Td
+(User Input Data:) Tj
+ET
+0.1 0.74 0.61 rg
+0.78 G
+0. w
+0.1 0.74 0.61 rg
+40. 739.8427559055118081 422.8133333333332757 -21.4999999999999964 re
+f
+BT
+/F2 10 Tf
+11.5 TL
+1. g
+45. 726.3427559055118081 Td
+(Parameter) Tj
+ET
+0.1 0.74 0.61 rg
+0.78 G
+0. w
+0.1 0.74 0.61 rg
+462.8133333333333326 739.8427559055118081 92.4666666666666401 -21.4999999999999964 re
+f
+BT
+/F2 10 Tf
+11.5 TL
+1. g
+467.8133333333332757 726.3427559055118081 Td
+(Value) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 718.3427559055118081 422.8133333333332757 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 704.8427559055118081 Td
+(Age) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+462.8133333333333326 718.3427559055118081 92.4666666666666401 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+467.8133333333332757 704.8427559055118081 Td
+(15) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 696.8427559055118081 422.8133333333332757 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 683.3427559055118081 Td
+(Blood Pressure) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+462.8133333333333326 696.8427559055118081 92.4666666666666401 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+467.8133333333332757 683.3427559055118081 Td
+(180) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 675.3427559055118081 422.8133333333332757 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 661.8427559055118081 Td
+(Specific gravity \(Urine cocentration\)) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+462.8133333333333326 675.3427559055118081 92.4666666666666401 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+467.8133333333332757 661.8427559055118081 Td
+(1.02) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 653.8427559055118081 422.8133333333332757 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 640.3427559055118081 Td
+(Albumin) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+462.8133333333333326 653.8427559055118081 92.4666666666666401 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+467.8133333333332757 640.3427559055118081 Td
+(1) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 632.3427559055118081 422.8133333333332757 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 618.8427559055118081 Td
+(Red Blood cells in Urine) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+462.8133333333333326 632.3427559055118081 92.4666666666666401 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+467.8133333333332757 618.8427559055118081 Td
+(0) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 610.8427559055118081 422.8133333333332757 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 597.3427559055118081 Td
+(Blood Urea\(mg/dL\)) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+462.8133333333333326 610.8427559055118081 92.4666666666666401 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+467.8133333333332757 597.3427559055118081 Td
+(8) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 589.3427559055116944 422.8133333333332757 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 575.8427559055116944 Td
+(Serum Creatinine\(mg/dL\)) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+462.8133333333333326 589.3427559055116944 92.4666666666666401 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+467.8133333333332757 575.8427559055116944 Td
+(9) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 567.8427559055118081 422.8133333333332757 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 554.3427559055116944 Td
+(Hemoglobin\(g/dl\)) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+462.8133333333333326 567.8427559055118081 92.4666666666666401 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+467.8133333333332757 554.3427559055116944 Td
+(12) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 546.3427559055118081 422.8133333333332757 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 532.8427559055116944 Td
+(Packed Cell Volume\(%\)) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+462.8133333333333326 546.3427559055118081 92.4666666666666401 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+467.8133333333332757 532.8427559055116944 Td
+(50) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 524.8427559055116944 422.8133333333332757 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 511.3427559055117513 Td
+(Hypertension) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+462.8133333333333326 524.8427559055116944 92.4666666666666401 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+467.8133333333332757 511.3427559055117513 Td
+(1) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 503.3427559055116944 422.8133333333332757 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 489.8427559055117513 Td
+(Diabetes) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+462.8133333333333326 503.3427559055116944 92.4666666666666401 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+467.8133333333332757 489.8427559055117513 Td
+(0) Tj
+ET
+0.78 G
+0. w
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0. g
+39.6850393700787407 453.4962992125983305 Td
+(Prediction Result: The prediction indicates a positive case of chronic kidney disease.) Tj
+ET
+endstream
+endobj
+5 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 6 0 R
+>>
+endobj
+6 0 obj
+<<
+/Length 1970
+>>
+stream
+0.5670000000000001 w
+0.78 G
+BT
+/F1 16 Tf
+18.3999999999999986 TL
+0. g
+39.6850393700787407 785.1970866141732586 Td
+(Trusted Advices For You:) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0. g
+39.6850393700787407 768.1892125984252289 Td
+() Tj
+T* (Your test indicates signs of CKD. It's important to adopt lifestyle and dietary changes, and follow) Tj
+T* (medical advice to manage the condition.) Tj
+T* () Tj
+T* (Advices to manage your condition ----) Tj
+T* () Tj
+T* (Diet & Nutrition :) Tj
+T* () Tj
+T* (  • Limit salt intake to control blood pressure.) Tj
+T* (  • Reduce protein \(meat, eggs, dairy\) to ease kidney workload.) Tj
+T* (  • Limit potassium \(bananas, oranges, potatoes\).) Tj
+T* (  • Avoid phosphorus-rich foods \(nuts, cheese, colas\).) Tj
+T* (  • Drink adequate water; adjust if fluid retention occurs.) Tj
+T* (  • Avoid processed foods; choose fresh fruits and vegetables.) Tj
+T* () Tj
+T* () Tj
+T* ( Medication :) Tj
+T* () Tj
+T* (  • Take all prescribed medicines regularly.) Tj
+T* (  • Avoid NSAIDs like ibuprofen \(can damage kidneys\).) Tj
+T* (  • Discuss supplements and OTC drugs with your doctor.) Tj
+T* () Tj
+T* () Tj
+T* ( Monitor Health :) Tj
+T* () Tj
+T* (  • Check blood pressure regularly and keep it under control.) Tj
+T* (  • Get regular blood and urine tests.) Tj
+T* (  • Monitor blood sugar levels if diabetic.) Tj
+T* () Tj
+T* () Tj
+T* ( Lifestyle :) Tj
+T* () Tj
+T* (  • Quit smoking – it worsens kidney damage.) Tj
+T* (  • Limit alcohol – it can raise blood pressure.) Tj
+T* (  • Exercise moderately \(e.g., walk 30 minutes daily\).) Tj
+T* (  • Maintain a healthy weight.) Tj
+T* () Tj
+T* () Tj
+T* ( Seek Medical Help If :) Tj
+T* () Tj
+T* (  • You notice swelling in ankles, face, or hands.) Tj
+T* (  • You experience shortness of breath or fatigue.) Tj
+T* (  • Your urine output drops significantly.) Tj
+T* (  • You have persistent nausea or confusion.) Tj
+T* () Tj
+T* () Tj
+T* (Note: Always consult a nephrologist for personalized care.) Tj
+T* (      ) Tj
+ET
+endstream
+endobj
+1 0 obj
+<</Type /Pages
+/Kids [3 0 R 5 0 R ]
+/Count 2
+>>
+endobj
+7 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+8 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+9 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+10 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+11 0 obj
+<<
+/Type /Font
+/BaseFont /Courier
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+12 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+13 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+14 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+15 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Roman
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+16 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+17 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Italic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+18 0 obj
+<<
+/Type /Font
+/BaseFont /Times-BoldItalic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+19 0 obj
+<<
+/Type /Font
+/BaseFont /ZapfDingbats
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+20 0 obj
+<<
+/Type /Font
+/BaseFont /Symbol
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+2 0 obj
+<<
+/ProcSet [/PDF /Text /ImageB /ImageC /ImageI]
+/Font <<
+/F1 7 0 R
+/F2 8 0 R
+/F3 9 0 R
+/F4 10 0 R
+/F5 11 0 R
+/F6 12 0 R
+/F7 13 0 R
+/F8 14 0 R
+/F9 15 0 R
+/F10 16 0 R
+/F11 17 0 R
+/F12 18 0 R
+/F13 19 0 R
+/F14 20 0 R
+>>
+/XObject <<
+>>
+>>
+endobj
+21 0 obj
+<<
+/Producer (jsPDF 2.4.0)
+/CreationDate (D:20250522194659+05'30')
+>>
+endobj
+22 0 obj
+<<
+/Type /Catalog
+/Pages 1 0 R
+/OpenAction [3 0 R /FitH null]
+/PageLayout /OneColumn
+>>
+endobj
+xref
+0 23
+0000000000 65535 f 
+0000007773 00000 n 
+0000009598 00000 n 
+0000000015 00000 n 
+0000000152 00000 n 
+0000005614 00000 n 
+0000005751 00000 n 
+0000007836 00000 n 
+0000007961 00000 n 
+0000008091 00000 n 
+0000008224 00000 n 
+0000008362 00000 n 
+0000008486 00000 n 
+0000008615 00000 n 
+0000008747 00000 n 
+0000008883 00000 n 
+0000009011 00000 n 
+0000009138 00000 n 
+0000009267 00000 n 
+0000009400 00000 n 
+0000009502 00000 n 
+0000009848 00000 n 
+0000009934 00000 n 
+trailer
+<<
+/Size 23
+/Root 22 0 R
+/Info 21 0 R
+/ID [ <4F27C2F728FDD263DDE5AB99B52F14ED> <4F27C2F728FDD263DDE5AB99B52F14ED> ]
+>>
+startxref
+10038
+%%EOF
