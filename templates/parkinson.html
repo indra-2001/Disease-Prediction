@@ -5,16 +5,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Parkinson's Disease Prediction</title>
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <!-- Bootstrap Icons for additional icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    <script src="../static/js/doctor_map.js"></script>
+
     <style>
+        /* General body styling with a gradient background and modern font */
         body {
-            background: linear-gradient(135deg, #e0f2f7, #f0f4c3);
+            background: linear-gradient(135deg, #d0e6f7, #f5f7fa);
             font-family: 'Segoe UI', sans-serif;
         }
 
+        /* Container for the main content, styled with shadow and rounded corners */
         .container {
             background: white;
             border-radius: 15px;
@@ -24,53 +29,63 @@
             margin-top: 50px;
         }
 
+        /* Heading styling for the main title */
         h2 {
             font-weight: bold;
-            color: #0277bd;
+            color: #146C94;
             margin-bottom: 30px;
         }
 
+        /* Styling for form labels */
         .form-label {
             font-weight: 500;
             color: #333;
         }
 
+        /* Styling for form input fields and select dropdowns */
         .form-control,
         .form-select {
             border-radius: 8px;
         }
 
+        /* Custom button styling for width, padding, font size, and border-radius */
         .btn-custom {
             width: 100%;
             padding: 12px;
             font-size: 18px;
             border-radius: 10px;
-            transition: all 0.3s ease;
+            transition: all 0.3s ease; /* Smooth transition for hover effects */
         }
 
+        /* Hover effect for primary button */
         .btn-primary:hover {
-            background-color: #01579b;
+            background-color: #125e84;
         }
 
+        /* Hover effect for secondary button */
         .btn-secondary:hover {
             background-color: #6c757d;
         }
 
+        /* Styling for the prediction result table, initially hidden */
         .result-table {
             margin-top: 30px;
             display: none;
         }
 
+        /* Styling for table headers */
         .table th {
-            background-color: #0277bd;
+            background-color: #146C94;
             color: white;
         }
 
+        /* Styling for icons within form elements */
         .form-icon {
             margin-right: 8px;
-            color: #0277bd;
+            color: #146C94;
         }
 
+        /* Styling for modal content, adding a distinct border */
         .modal-content {
             border: 6px solid #1fe0b0;
             border-radius: 10px;
@@ -80,57 +95,64 @@
 
 <body>
     <div class="container">
-        <h2 class="text-center"><i class="fas fa-brain me-2"></i>Parkinson Disease Prediction</h2>
+        <!-- Main title with an icon -->
+        <h2 class="text-center"><i class="fas fa-brain me-2"></i>Parkinson's Disease Prediction</h2>
         <form id="parkinsonForm">
             <div class="row">
+                <!-- Input fields for Parkinson's disease prediction parameters -->
                 <div class="col-md-6">
                     <div class="mb-3">
-                        <label class="form-label">MDVP:Fo(Hz)[Avg freq]</label>
-                        <input type="number" step="any" min="88" max="260" class="form-control" name="MDVP:Fo(Hz)"
+                        <label class="form-label">MDVP:Fo(Hz)</label>
+                        <input type="number" step="0.01" min="80.0" max="250.0" class="form-control" name="fo"
                             required />
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">MDVP:Fhi(Hz)[Max freq]</label>
-                        <input type="number" step="any" min="102" max="600" class="form-control" name="MDVP:Fhi(Hz)"
+                        <label class="form-label">MDVP:Fhi(Hz)</label>
+                        <input type="number" step="0.01" min="100.0" max="600.0" class="form-control" name="fhi"
                             required />
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">MDVP:Flo(Hz)[Min freq]</label>
-                        <input type="number" step="any" min="65" max="240" class="form-control" name="MDVP:Flo(Hz)"
+                        <label class="form-label">MDVP:Flo(Hz)</label>
+                        <input type="number" step="0.01" min="60.0" max="250.0" class="form-control" name="flo"
                             required />
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">MDVP:PPQ[Pitch Jitter]</label>
-                        <input type="number" step="any" class="form-control" name="MDVP:PPQ" required />
+                        <label class="form-label">MDVP:Jitter(%)</label>
+                        <input type="number" step="any" class="form-control"
+                            name="jitter" required />
                     </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="mb-3">
-                        <label class="form-label">MDVP:APQ[Amp Jitter]</label>
-                        <input type="number" step="any" class="form-control" name="MDVP:APQ" required />
+                        <label class="form-label">MDVP:Shimmer</label>
+                        <input type="number" step="any" class="form-control"
+                            name="shimmer" required />
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Shimmer:APQ5</label>
-                        <input type="number" step="any" class="form-control" name="Shimmer:APQ5" required />
+                        <label class="form-label">NHR</label>
+                        <input type="number" step="any"  class="form-control"
+                            name="nhr" required />
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Shimmer:APQ3</label>
-                        <input type="number" step="any" class="form-control" name="Shimmer:APQ3" />
+                        <label class="form-label">HNR</label>
+                        <input type="number" step="any"  class="form-control"
+                            name="hnr" required />
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">MDVP:Shimmer(dB)</label>
-                        <input type="number" step="any" class="form-control" name="MDVP:Shimmer(dB)" />
+                        <label class="form-label">RPDE</label>
+                        <input type="number" step="any" class="form-control" name="rpde"
+                            required />
                     </div>
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary btn-custom"><i
-                    class="fas fa-microscope me-2"></i>Predict</button>
-            <a href="/dashboard" class="btn btn-secondary btn-custom mt-3"><i
-                    class="fas fa-arrow-left me-2"></i>Back</a>
+            <!-- Prediction and Back buttons -->
+            <button type="submit" class="btn btn-primary btn-custom"><i class="fas fa-microscope me-2"></i>Predict</button>
+            <a href="/dashboard" class="btn btn-secondary btn-custom mt-3"><i class="fas fa-arrow-left me-2"></i>Back</a>
         </form>
 
+        <!-- Prediction Result Table section, initially hidden -->
         <div class="result-table">
             <h4 class="text-center mt-4">Prediction Result</h4>
             <table class="table table-bordered">
@@ -142,8 +164,8 @@
                 </thead>
                 <tbody id="resultBody"></tbody>
             </table>
-            <button id="downloadPdf" class="btn btn-success btn-custom mt-2"><i
-                    class="fas fa-download me-2"></i>Download Report</button>
+            <!-- Buttons for downloading report, consulting doctor, and seeing advice -->
+            <button id="downloadPdf" class="btn btn-success btn-custom mt-2">Download Report</button>
             <button type="button" id="doctorBtn" class="btn btn-info btn-custom mt-2" data-bs-toggle="modal"
                 data-bs-target="#doctorModal" style="display: none;">
                 <i class="fas fa-user-md me-2"></i>Consult Doctor
@@ -158,6 +180,7 @@
         </div>
     </div>
 
+    <!-- Modal for displaying health advices -->
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable">
@@ -167,7 +190,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="adviceContent">
-
+                    <!-- Advice content will be dynamically loaded here -->
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -176,7 +199,7 @@
         </div>
     </div>
 
-    <!-- Doctor Modal -->
+    <!-- Modal for displaying available doctors -->
     <div class="modal fade" id="doctorModal" tabindex="-1" aria-labelledby="doctorModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-lg">
             <div class="modal-content">
@@ -185,7 +208,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="doctorList">
-                    <!-- Doctor list will be populated here -->
+                    <!-- Doctor list will be populated dynamically here -->
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -194,51 +217,77 @@
         </div>
     </div>
 
+    <!-- jsPDF for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+    <!-- Bootstrap JavaScript Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- html2pdf for potential future use (though jspdf is used for table/text) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
     <script>
-        //For report PDF generation
+        // Define the mapping between diseases and their respective doctor specializations
+        const diseaseDoctorMap = {
+            "Parkinson's Disease": "Neurologist",
+            // Add other diseases and their specializations here if needed
+        };
+
+        let globalFormData = null; // Variable to store form data globally for PDF generation
+
+        // Event listener for the "Download Report" button click
         document.getElementById("downloadPdf").addEventListener("click", function () {
+            // Check if form has been submitted at least once
             if (!globalFormData) {
-                alert("Please submit the form first to generate prediction.");
+                // Using a custom alert for better UX (instead of browser's alert)
+                const modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
+                document.getElementById("staticBackdropLabel").innerHTML = `<strong style="font-size: 1.3rem; color: red;">Error!</strong>`;
+                document.getElementById("adviceContent").innerHTML = `<p class="text-danger">Please submit the form first to generate a prediction report.</p>`;
+                modal.show();
                 return;
             }
+
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
 
-            // Title
+            // Add title to the PDF report
             doc.setFontSize(18);
-            doc.text("Parkinson Disease Prediction Report", 14, 22);
+            doc.text("Parkinson's Disease Prediction Report", 14, 22);
 
+            // Add timestamp to the PDF report
             const timestamp = new Date().toLocaleString();
             doc.setFontSize(10);
             doc.text("Generated on: " + timestamp, 14, 28);
 
-            // User Input Data
-            doc.setFontSize(14);
-            doc.text("User Input Data:", 14, 32);
+            // Add "User Input Data" section
+            doc.setFontSize(12);
+            doc.text("User Input Data:", 14, 36);
 
             const inputData = [];
+            // Populate input data from the displayed result table
             document.querySelectorAll("#resultBody tr").forEach(row => {
                 const cols = row.querySelectorAll("td");
                 inputData.push([cols[0].innerText, cols[1].innerText]);
             });
 
+            // Add a table of user input data to the PDF
             doc.autoTable({
-                startY: 36,
+                startY: 40,
                 head: [['Parameter', 'Value']],
                 body: inputData,
                 theme: 'grid',
-                styles: { fontSize: 9 }
+                styles: { fontSize: 12 }
             });
 
-            let y = doc.lastAutoTable.finalY + 10;
+            let y = doc.lastAutoTable.finalY + 10; // Get the final Y position after the table
             doc.setFontSize(14);
-            if (window.lastResult == 1) {
-                doc.text("Prediction Result:  Positive (Signs of Parkinson's Disease Detected)", 14, y);
+            // Add the prediction result to the PDF based on window.lastResult
+            if (window.lastResult == 0) {
+                doc.text("Prediction Result: Negative (No Parkinson's Disease Detected)", 14, y);
             } else {
-                doc.text("Prediction Result:  Negetive (No Strong Signs of Parkinson's Disease Detected)", 14, y);
+                doc.text("Prediction Result: Positive (Parkinson's Disease Detected)", 14, y);
             }
 
-            // Gather form data for sending again
+            // Fetch data again to get the advice for the PDF, as the advice content is dynamic
             fetch("/parkinson", {
                 method: "POST",
                 body: new URLSearchParams(globalFormData)
@@ -247,146 +296,160 @@
                 .then(data => {
                     const adviceHtml = getAdvice(parseInt(data.result));
 
-                    // Replace icons and remove tags
+                    // Clean up HTML tags and list markers for PDF text
                     const adviceText = adviceHtml
-                        .replace(/<li>/g, '• ')
-                        .replace(/<h6[^>]*>/g, '# ')
-                        .replace(/<[^>]+>/g, '');
+                        .replace(/<li>/g, '• ') // Replace list items with bullet points
+                        .replace(/<h6[^>]*>/g, '# ') // Replace h6 tags with hash for emphasis
+                        .replace(/<[^>]+>/g, ''); // Remove all other HTML tags
 
+                    // Split the advice text into lines that fit the PDF width
                     const wrappedAdvice = doc.splitTextToSize(adviceText, 180);
                     const lineHeight = 4.5;
                     const requiredHeight = wrappedAdvice.length * lineHeight;
-                    y = y + 10;
+                    y = y + 10; // Adjust Y position for the advice section
 
+                    // Add a new page if the advice content exceeds the current page height
                     if (y + requiredHeight > doc.internal.pageSize.height - 10) {
                         doc.addPage();
-                        y = 20;
+                        y = 20; // Reset Y position for the new page
                     }
 
+                    // Add "Trusted Advices For You" heading
                     doc.setFontSize(16);
                     doc.text("Trusted Advices For You :", 14, y);
 
+                    // Add the wrapped advice text to the PDF
                     doc.setFontSize(10);
                     doc.text(wrappedAdvice, 14, y + 6);
 
-                    // Save the PDF after advice is added
-                    doc.save("Parkinson_Disease_Prediction_Report.pdf");
-                });
+                    // Save the PDF with a specific filename
+                    doc.save("Parkinsons_Disease_Prediction_Report.pdf");
+                })
+                .catch(error => console.error('Error generating PDF with advice:', error)); // Error handling for fetch
         });
 
-        // Displaying result table
-        let globalFormData = null;
-
+        // Event listener for the Parkinson's prediction form submission
         document.getElementById("parkinsonForm").addEventListener("submit", function (event) {
-            event.preventDefault();
-            const formData = new FormData(this);
-            globalFormData = formData;
+            event.preventDefault(); // Prevent default form submission
+
+            const formData = new FormData(this); // Get form data
+            globalFormData = formData; // Store form data globally
+
+            // Send form data to the backend for prediction
             fetch("/parkinson", {
                 method: "POST",
-                body: new URLSearchParams(formData)
+                body: new URLSearchParams(formData) // Convert FormData to URL-encoded string
             })
-                .then(response => response.json())
+                .then(response => response.json()) // Parse JSON response
                 .then(data => {
                     const resultTable = document.querySelector(".result-table");
                     const resultBody = document.getElementById("resultBody");
-                    resultBody.innerHTML = "";
+                    resultBody.innerHTML = ""; // Clear previous results
+
+                    // Populate the result table with user input and prediction
                     for (let [key, value] of formData.entries()) {
-                        const element = document.querySelector(`[name = "${key}"]`);
-                        let displayValue = value;
-
-                        if (element && element.tagName === "SELECT") {
-                            displayValue = element.options[element.selectedIndex].text;
-                        }
-
-                        resultBody.innerHTML += `<tr><td>${key}</td><td>${displayValue}</td></tr>`;
+                        // Format the key for better display in the table
+                        let displayKey = key.replace(/_/g, ' ').replace(/(MDVP|Shimmer|Jitter)/g, (match) => match + ':').trim();
+                        displayKey = displayKey.split(' ').map(word => {
+                            if (word.length > 0 && word !== 'Hz' && word !== 'dB' && word !== 'Abs' && word !== 'DDP' && word !== 'RAP' && word !== 'PPQ' && word !== 'APQ3' && word !== 'APQ5' && word !== 'APQ' && word !== 'DDA' && word !== 'NHR' && word !== 'HNR' && word !== 'RPDE' && word !== 'DFA' && word !== 'Spread1' && word !== 'Spread2' && word !== 'D2' && word !== 'PPE') {
+                                return word.charAt(0).toUpperCase() + word.slice(1);
+                            }
+                            return word;
+                        }).join(' ');
+                        resultBody.innerHTML += `<tr><td>${displayKey}</td><td>${value}</td></tr>`;
                     }
                     resultBody.innerHTML += `<tr><td><strong>Prediction</strong></td><td><strong>${data.prediction}</strong></td></tr>`;
-                    resultTable.style.display = "block";
+                    resultTable.style.display = "block"; // Show the result table
 
-                    if (parseInt(data.result) === 1) {
-                        document.getElementById("staticBackdropLabel").innerHTML = `<strong style="font-size: 1.3rem;">🔴 Signs of Parkinson's Disease Detected</strong>`;
-                    } else {
-                        document.getElementById("staticBackdropLabel").innerHTML = `<strong style="font-size: 1.3rem;">🟢 No Strong Signs of Parkinson's Disease Detected</strong>`;
-                    }
+                    const predictionResult = data.result; // Get the numerical result (0 or 1)
 
-                    document.getElementById("adviceContent").innerHTML = getAdvice(parseInt(data.result));
-                    window.lastResult = data.result;
-
-                    const prediction = data.prediction
-                    if (prediction.toLowerCase().includes("positive")) {
-                        document.getElementById("doctorBtn").style.display = "inline-block";
+                    // Show/hide "Consult Doctor" button based on prediction result
+                    if (parseInt(predictionResult) === 1) { // If Parkinson's disease is detected
+                        document.getElementById("doctorBtn").style.display = "inline-block"; // Show button
 
                         const currentDisease = "Parkinson's Disease";
-                        const specialization = diseaseDoctorMap[currentDisease];
-                        // Fetch doctors for the predicted disease
+                        const specialization = diseaseDoctorMap[currentDisease]; // Get specialization from map
+
+                        // Fetch doctors based on specialization
                         fetch(`/get_doctors?specialization=${encodeURIComponent(specialization)}`)
                             .then(res => res.json())
                             .then(doctors => {
                                 const doctorList = document.getElementById("doctorList");
-                                doctorList.innerHTML = "";
+                                doctorList.innerHTML = ""; // Clear previous doctor list
 
                                 if (doctors.length === 0) {
+                                    // Log a message if no doctors are returned
+                                    console.log(`No doctors found for specialization: ${specialization}`);
                                     doctorList.innerHTML = "<p class='text-danger'>No doctors available for this disease at the moment.</p>";
                                     return;
                                 }
 
+                                // Populate doctor list
                                 doctors.forEach(doc => {
                                     doctorList.innerHTML += `
-        <div class="card mb-3 shadow-sm">
-          <div class="card-body d-flex align-items-center">
-            <img src="${doc.photo_path}" class="rounded-circle me-3" width="60" height="60" alt="Doctor Photo">
-            <div>
-              <h5 class="card-title mb-1">${doc.name}</h5>
-              <p class="mb-1"><strong>Specialization:</strong> ${doc.specialization}</p>
-              <p class="mb-1"><strong>Experience:</strong> ${doc.experience} years</p>
-              <p class="mb-0"><strong>Contact:</strong> ${doc.contact}</p>
-            </div>
-          </div>
-        </div>`;
+                                <div class="card mb-3 shadow-sm">
+                                  <div class="card-body d-flex align-items-center">
+                                    <img src="${doc.photo_path}" class="rounded-circle me-3" width="60" height="60" alt="Doctor Photo">
+                                    <div>
+                                      <h5 class="card-title mb-1">${doc.name}</h5>
+                                      <p class="mb-1"><strong>Specialization:</strong> ${doc.specialization}</p>
+                                      <p class="mb-1"><strong>Experience:</strong> ${doc.experience} years</p>
+                                      <p class="mb-0"><strong>Contact:</strong> ${doc.contact}</p>
+                                    </div>
+                                  </div>
+                                </div>`;
                                 });
-                            });
+                            })
+                            .catch(error => console.error('Error fetching doctors:', error)); // Error handling for doctor fetch
+                    } else {
+                        document.getElementById("doctorBtn").style.display = "none"; // Hide button if no disease detected
                     }
-                    // ✅ Generate PDF and send to server immediately after prediction
+
+                    // Generate PDF and send to server immediately after prediction (for saving history)
                     const { jsPDF } = window.jspdf;
                     const doc = new jsPDF();
 
                     doc.setFontSize(18);
-                    doc.text("Parkinson Prediction Report", 14, 22);
+                    doc.text("Parkinson's Disease Prediction Report", 14, 22);
 
                     const timestamp = new Date().toLocaleString();
                     doc.setFontSize(10);
                     doc.text("Generated on: " + timestamp, 14, 28);
 
                     doc.setFontSize(12);
-                    doc.text("User Input Data:", 14, 32);
+                    doc.text("User Input Data:", 14, 36);
 
-                    const inputData = [];
-                    let predictionResult = data.prediction;
-
+                    const inputDataForPdf = []; // Use a new array for PDF to display nicely
                     for (let [key, value] of formData.entries()) {
-                        inputData.push([key, value]);
+                        let displayKey = key.replace(/_/g, ' ').replace(/(MDVP|Shimmer|Jitter)/g, (match) => match + ':').trim();
+                        displayKey = displayKey.split(' ').map(word => {
+                            if (word.length > 0 && word !== 'Hz' && word !== 'dB' && word !== 'Abs' && word !== 'DDP' && word !== 'RAP' && word !== 'PPQ' && word !== 'APQ3' && word !== 'APQ5' && word !== 'APQ' && word !== 'DDA' && word !== 'NHR' && word !== 'HNR' && word !== 'RPDE' && word !== 'DFA' && word !== 'Spread1' && word !== 'Spread2' && word !== 'D2' && word !== 'PPE') {
+                                return word.charAt(0).toUpperCase() + word.slice(1);
+                            }
+                            return word;
+                        }).join(' ');
+                        inputDataForPdf.push([displayKey, value]);
                     }
 
                     doc.autoTable({
                         startY: 36,
                         head: [['Parameter', 'Value']],
-                        body: inputData,
+                        body: inputDataForPdf,
                         theme: 'grid',
                         styles: { fontSize: 10 }
                     });
 
                     let finalY = doc.lastAutoTable.finalY + 10;
                     doc.setFontSize(12);
-                    doc.text("Prediction Result: " + predictionResult, 14, finalY);
+                    doc.text("Prediction Result: " + data.prediction, 14, finalY);
 
-                    // 🔁 Include advice text like the download logic
+                    // Include advice text in the PDF
                     const adviceHtml = getAdvice(parseInt(data.result));
-                    const adviceText = adviceHtml.replace(/<li>/g, '• ').replace(/<[^>]+>/g, '');
+                    const adviceText = adviceHtml.replace(/<li>/g, '• ').replace(/<h6[^>]*>/g, '# ').replace(/<[^>]+>/g, '');
                     const wrappedAdvice = doc.splitTextToSize(adviceText, 180);
                     const lineHeight = 4.5;
                     const requiredHeight = wrappedAdvice.length * lineHeight;
 
-                    // Start new page if needed
                     if (finalY + requiredHeight > doc.internal.pageSize.height - 10) {
                         doc.addPage();
                         finalY = 20;
@@ -399,113 +462,131 @@
                     doc.setFontSize(10);
                     doc.text(wrappedAdvice, 14, finalY + 6);
 
+                    const pdfBlob = doc.output("blob"); // Get PDF content as a blob
 
-                    const pdfBlob = doc.output("blob");
-
+                    // Prepare form data to send PDF to the server (for saving)
                     const pdfFormData = new FormData();
-                    pdfFormData.append("pdf", pdfBlob, "Parkinson_Report.pdf");
-                    pdfFormData.append("prediction_result", predictionResult);
-                    pdfFormData.append("disease_name", "Parkinson");
+                    pdfFormData.append("pdf", pdfBlob, "Parkinsons_Report.pdf");
+                    pdfFormData.append("prediction_result", data.prediction);
+                    pdfFormData.append("disease_name", "Parkinson's");
 
+                    // Send PDF data to backend
                     fetch("/save_pdf", {
                         method: "POST",
                         body: pdfFormData
-                    });
+                    })
+                    .catch(error => console.error('Error saving PDF to server:', error)); // Error handling for save PDF
 
+                    // Update modal title and content based on prediction result
+                    if (parseInt(data.result) == 1) {
+                        document.getElementById("staticBackdropLabel").innerHTML = `<strong style="font-size: 1.3rem;">🔴 Parkinson's Disease Detected</strong>`;
+                    } else {
+                        document.getElementById("staticBackdropLabel").innerHTML = `<strong style="font-size: 1.3rem;">🟢 No Parkinson's Disease Detected</strong>`;
+                    }
 
+                    document.getElementById("adviceContent").innerHTML = getAdvice(parseInt(data.result));
 
-                });
+                    window.lastResult = data.result; // Store the numerical result globally
+                })
+                .catch(error => console.error('Error during prediction fetch:', error)); // Error handling for prediction fetch
         });
 
-
+        /**
+         * Returns HTML string containing advice based on the prediction category.
+         * @param {number} category - 1 for Parkinson's detected, 0 for no Parkinson's detected.
+         * @returns {string} HTML string with relevant advice.
+         */
         function getAdvice(category) {
             if (category == 1) {
                 return `
-Your test indicates signs of Parkinson's disease. Though there's no cure, but early treatment and lifestyle adjustments can help manage symptoms and improve quality of life.<br><br><br>
+Your test indicates signs of Parkinson's Disease. It's important to consult a neurologist for a proper diagnosis and management plan.<br><br><br>
 
-<h5 class="text-danger"><i class="bi bi-check-circle-fill"></i> Advices to Manage Your Condition ----</h5>
+<h5 class="text-danger"><i class="bi bi-check-circle-fill"></i> Advice for Managing Parkinson's Disease ----</h5>
 
-<h6 class="mt-3 text-success"><i class="bi bi-basket-fill"></i> Diet & Nutrition :</h6>
+<h6 class="mt-3 text-success"><i class="bi bi-person-walking"></i> Physical Activity :</h6>
 <ul class="text-start">
-  <li>Eat a fiber-rich diet to prevent constipation.</li>
-  <li>Stay hydrated – drink enough water daily.</li>
-  <li>Limit protein intake around medication time (e.g., levodopa).</li>
-  <li>Include omega-3 fatty acids (e.g., fish, flaxseeds).</li>
-  <li>Reduce processed foods and sugar.</li>
+    <li>Engage in regular exercise, including aerobic activities, strength training, and balance exercises.</li>
+    <li>Consider therapies like physical therapy, occupational therapy, and speech therapy.</li>
+    <li>Tai Chi and yoga can help with balance and flexibility.</li>
 </ul>
 
-<h6 class="mt-3 text-warning"><i class="bi bi-capsule-pill"></i> Medication & Treatment :</h6>
+<h6 class="mt-3 text-warning"><i class="bi bi-capsule-pill"></i> Medication Management :</h6>
 <ul class="text-start">
-  <li>Take prescribed medications consistently and on schedule.</li>
-  <li>Report any side effects to your doctor promptly.</li>
-  <li>Consider physiotherapy or occupational therapy.</li>
-  <li>Join support groups for shared experiences and mental health.</li>
+    <li>Take all prescribed medications (e.g., Levodopa, dopamine agonists) exactly as directed.</li>
+    <li>Do not stop or alter dosages without consulting your doctor.</li>
+    <li>Keep a medication diary to track efficacy and side effects.</li>
 </ul>
 
-<h6 class="mt-3 text-primary"><i class="bi bi-heart-pulse-fill"></i> Monitor Symptoms :</h6>
+<h6 class="mt-3 text-primary"><i class="bi bi-book"></i> Lifestyle Adjustments :</h6>
 <ul class="text-start">
-  <li>Keep track of tremors, stiffness, and mobility changes.</li>
-  <li>Note changes in sleep, speech, or balance.</li>
-  <li>Regular follow-ups with a neurologist are essential.</li>
+    <li>Maintain a healthy and balanced diet, rich in fiber and fluids to prevent constipation.</li>
+    <li>Ensure adequate rest and manage sleep disturbances.</li>
+    <li>Simplify daily tasks and modify your home environment to prevent falls.</li>
 </ul>
 
-<h6 class="mt-3 text-info"><i class="bi bi-activity"></i> Lifestyle & Exercise :</h6>
+<h6 class="mt-3 text-info"><i class="bi bi-people-fill"></i> Support & Mental Health :</h6>
 <ul class="text-start">
-  <li>Exercise regularly – walking, stretching, or tai chi helps.</li>
-  <li>Practice hand coordination and balance activities.</li>
-  <li>Get enough sleep and maintain a routine sleep schedule.</li>
+    <li>Seek support from family, friends, and support groups.</li>
+    <li>Address emotional changes like anxiety, depression, and apathy with your healthcare team.</li>
+    <li>Engage in mentally stimulating activities.</li>
 </ul>
 
-<h6 class="mt-3 text-danger"><i class="bi bi-exclamation-diamond-fill"></i> Seek Medical Help If :</h6>
+<h6 class="mt-3 text-danger"><i class="bi bi-exclamation-diamond-fill"></i> When to Seek Medical Help Immediately :</h6>
 <ul class="text-start">
-  <li>You experience falls or loss of balance.</li>
-  <li>There's difficulty swallowing or severe stiffness.</li>
-  <li>You feel anxious, depressed, or confused often.</li>
+    <li>Sudden worsening of symptoms.</li>
+    <li>New or severe side effects from medication.</li>
+    <li>Difficulty swallowing or severe choking episodes.</li>
+    <li>Significant changes in mood or cognition.</li>
 </ul>
 
-<p class="mt-3 text-muted"><em>Note: Work closely with your neurologist to personalize your care plan.</em></p>
-    `;
+<p class="mt-3 text-muted"><em>Note: Always consult a neurologist for personalized guidance and treatment plans.</em></p>
+        `;
             } else if (category == 0) {
                 return `
-Your test results show no signs of Parkinson’s disease. Keep maintaining healthy habits that support long-term brain and motor function.<br><br><br>
+Your test results show no signs of Parkinson's Disease. Maintaining a healthy lifestyle is crucial for overall brain health and to potentially reduce risk factors.<br><br><br>
 
-<h5 class="text-success"><i class="bi bi-check-circle-fill"></i> Preventive Advice for Brain & Nerve Health ----</h5>
+<h5 class="text-success"><i class="bi bi-check-circle-fill"></i> Preventive Advice for Brain Health ----</h5>
 
-<h6 class="mt-3 text-success"><i class="bi bi-basket-fill"></i> Diet & Nutrition :</h6>
+<h6 class="mt-3 text-success"><i class="bi bi-person-walking"></i> Physical Activity :</h6>
 <ul class="text-start">
-  <li>Eat a balanced diet rich in antioxidants – fruits, vegetables, and whole grains.</li>
-  <li>Include omega-3 fats (from fish, walnuts, flaxseeds).</li>
-  <li>Stay hydrated and avoid excessive caffeine or alcohol.</li>
+    <li>Regular aerobic exercise can promote brain health.</li>
+    <li>Activities like walking, jogging, or swimming are beneficial.</li>
 </ul>
 
-<h6 class="mt-3 text-primary"><i class="bi bi-shield-plus"></i> Brain Health Monitoring :</h6>
+<h6 class="mt-3 text-primary"><i class="bi bi-basket-fill"></i> Diet & Nutrition :</h6>
 <ul class="text-start">
-  <li>Stay mentally active – puzzles, reading, learning new skills.</li>
-  <li>Sleep 7–9 hours per night for brain repair.</li>
-  <li>Manage chronic conditions like diabetes and high blood pressure.</li>
+    <li>Adopt a balanced diet rich in fruits, vegetables, whole grains, and lean proteins.</li>
+    <li>Consider a Mediterranean-style diet, known for its brain-protective benefits.</li>
+    <li>Limit processed foods, excessive sugar, and unhealthy fats.</li>
 </ul>
 
-<h6 class="mt-3 text-info"><i class="bi bi-activity"></i> Active Lifestyle :</h6>
+<h6 class="mt-3 text-info"><i class="bi bi-lightbulb"></i> Mental Stimulation :</h6>
 <ul class="text-start">
-  <li>Exercise regularly to maintain balance, flexibility, and strength.</li>
-  <li>Avoid smoking and limit alcohol.</li>
-  <li>Manage stress through yoga, meditation, or hobbies.</li>
+    <li>Engage in mentally challenging activities like reading, puzzles, learning new skills, or playing instruments.</li>
+    <li>Stay socially active to keep your mind engaged.</li>
 </ul>
 
-<h6 class="mt-3 text-warning"><i class="bi bi-search"></i> Early Warning Awareness :</h6>
+<h6 class="mt-3 text-warning"><i class="bi bi-shield-plus"></i> Lifestyle & Risk Reduction :</h6>
 <ul class="text-start">
-  <li>If you notice tremors, slow movement, or stiffness, consult a doctor early.</li>
+    <li>Maintain a healthy weight and manage conditions like high blood pressure and diabetes.</li>
+    <li>Avoid head injuries; wear helmets during risky activities.</li>
+    <li>Limit exposure to pesticides and other environmental toxins.</li>
+    <li>Ensure adequate sleep and manage stress effectively.</li>
 </ul>
-    `;
+
+<h6 class="mt-3 text-dark"><i class="bi bi-hospital"></i> Regular Check-ups :</h6>
+<ul class="text-start">
+    <li>Regular medical check-ups are important for overall health monitoring.</li>
+    <li>Discuss any concerns about tremors, balance issues, or changes in gait with your doctor.</li>
+</ul>
+
+<p class="mt-3 text-muted"><em>Note: This information is for general guidance and does not replace professional medical advice.</em></p>
+        `;
             } else {
                 return `<p>No advice available for this category.</p>`;
             }
         }
-
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

@@ -1,0 +1,708 @@
+%PDF-1.3
+%ºß¬à
+3 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 4 0 R
+>>
+endobj
+4 0 obj
+<<
+/Length 6322
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F1 18 Tf
+20.6999999999999993 TL
+0 g
+39.6850393700787407 779.5277952755905062 Td
+(Heart Disease Prediction Report) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0 g
+39.6850393700787407 762.5199212598424765 Td
+(Generated on: 8/6/2025, 5:40:22 pm) Tj
+ET
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0 g
+39.6850393700787407 739.8427559055118081 Td
+(User Input Data:) Tj
+ET
+0.1 0.74 0.61 rg
+0.78 G
+0. w
+0.1 0.74 0.61 rg
+40. 739.8427559055118081 325.7926950747093997 -21.4999999999999964 re
+f
+BT
+/F2 10 Tf
+11.5 TL
+1. g
+45. 726.3427559055118081 Td
+(Parameter) Tj
+ET
+0.1 0.74 0.61 rg
+0.78 G
+0. w
+0.1 0.74 0.61 rg
+365.7926950747093997 739.8427559055118081 189.4873049252905162 -21.4999999999999964 re
+f
+BT
+/F2 10 Tf
+11.5 TL
+1. g
+370.7926950747093997 726.3427559055118081 Td
+(Value) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 718.3427559055118081 325.7926950747093997 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 704.8427559055118081 Td
+(Age) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+365.7926950747093997 718.3427559055118081 189.4873049252905162 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+370.7926950747093997 704.8427559055118081 Td
+(85) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 696.8427559055118081 325.7926950747093997 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 683.3427559055118081 Td
+(Sex) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+365.7926950747093997 696.8427559055118081 189.4873049252905162 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+370.7926950747093997 683.3427559055118081 Td
+(Female) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 675.3427559055118081 325.7926950747093997 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 661.8427559055118081 Td
+(Chest Pain Type) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+365.7926950747093997 675.3427559055118081 189.4873049252905162 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+370.7926950747093997 661.8427559055118081 Td
+(Non-anginal Pain) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 653.8427559055118081 325.7926950747093997 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 640.3427559055118081 Td
+(Resting Blood Pressure) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+365.7926950747093997 653.8427559055118081 189.4873049252905162 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+370.7926950747093997 640.3427559055118081 Td
+(82) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 632.3427559055118081 325.7926950747093997 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 618.8427559055118081 Td
+(Cholesterol) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+365.7926950747093997 632.3427559055118081 189.4873049252905162 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+370.7926950747093997 618.8427559055118081 Td
+(520) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 610.8427559055118081 325.7926950747093997 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 597.3427559055118081 Td
+(Fasting Blood Sugar > 120 mg/dl) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+365.7926950747093997 610.8427559055118081 189.4873049252905162 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+370.7926950747093997 597.3427559055118081 Td
+(False) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 589.3427559055116944 325.7926950747093997 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 575.8427559055116944 Td
+(Resting ECG Results) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+365.7926950747093997 589.3427559055116944 189.4873049252905162 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+370.7926950747093997 575.8427559055116944 Td
+(Left Ventricular Hypertrophy) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 567.8427559055118081 325.7926950747093997 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 554.3427559055116944 Td
+(Max Heart Rate Achieved) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+365.7926950747093997 567.8427559055118081 189.4873049252905162 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+370.7926950747093997 554.3427559055116944 Td
+(82) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 546.3427559055118081 325.7926950747093997 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 532.8427559055116944 Td
+(Exercise Induced Angina) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+365.7926950747093997 546.3427559055118081 189.4873049252905162 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+370.7926950747093997 532.8427559055116944 Td
+(Yes) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 524.8427559055116944 325.7926950747093997 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 511.3427559055117513 Td
+(ST Depression Induced by Exercise) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+365.7926950747093997 524.8427559055116944 189.4873049252905162 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+370.7926950747093997 511.3427559055117513 Td
+(4) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 503.3427559055116944 325.7926950747093997 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 489.8427559055117513 Td
+(Slope of Peak Exercise ST Segment) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+365.7926950747093997 503.3427559055116944 189.4873049252905162 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+370.7926950747093997 489.8427559055117513 Td
+(Downsloping) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 481.8427559055116944 325.7926950747093997 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 468.3427559055117513 Td
+(Number of Major Vessels Colored by Fluoroscopy) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+365.7926950747093997 481.8427559055116944 189.4873049252905162 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+370.7926950747093997 468.3427559055117513 Td
+(1) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+40. 460.3427559055117513 325.7926950747093997 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+45. 446.8427559055118081 Td
+(Thalassemia) Tj
+ET
+1. g
+0.78 G
+0.2834645669291339 w
+1. g
+365.7926950747093997 460.3427559055117513 189.4873049252905162 -21.4999999999999964 re
+B
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+370.7926950747093997 446.8427559055118081 Td
+(Fixed Defect) Tj
+ET
+0.78 G
+0. w
+BT
+/F1 12 Tf
+13.7999999999999989 TL
+0. g
+39.6850393700787407 410.4962992125983874 Td
+(Prediction Result: Heart Disease Detected \(Positive\)) Tj
+ET
+endstream
+endobj
+5 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 6 0 R
+>>
+endobj
+6 0 obj
+<<
+/Length 2512
+>>
+stream
+0.5670000000000001 w
+0.78 G
+BT
+/F1 16 Tf
+18.3999999999999986 TL
+0. g
+39.6850393700787407 779.5277952755905062 Td
+(Trusted Advice For You) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0. g
+39.6850393700787407 751.1813385826771992 Td
+() Tj
+T* (Your test suggests signs of heart disease. Early intervention through medication, lifestyle changes, and regular) Tj
+T* (monitoring is essential to reduce risk and improve quality of life.) Tj
+T* () Tj
+T* (Advices to Manage Your Condition ----) Tj
+T* () Tj
+T* (# Medications:) Tj
+T* () Tj
+T* (    • Do not stop medications without consulting your doctor.) Tj
+T* (    • Take prescribed medicines on time \(e.g., beta-blockers, statins, aspirin, ACE inhibitors\).) Tj
+T* (    • Avoid over-the-counter NSAIDs like ibuprofen unless approved by your cardiologist.) Tj
+T* (    • Inform your doctor about all supplements or herbal products you're using.) Tj
+T* () Tj
+T* () Tj
+T* (# Diet & Nutrition:) Tj
+T* () Tj
+T* (    • Eat more fruits, vegetables, whole grains, and lean proteins.) Tj
+T* (    • Reduce salt intake to lower blood pressure.) Tj
+T* (    • Avoid saturated fats and trans fats — limit red meat, butter, and fried foods.) Tj
+T* (    • Cut back on sugar and processed foods to manage weight and blood sugar.) Tj
+T* () Tj
+T* () Tj
+T* (# Lifestyle:) Tj
+T* () Tj
+T* (    • Quit smoking — it significantly worsens heart and blood vessel health.) Tj
+T* (    • Exercise regularly \(e.g., brisk walking 30 minutes a day, 5 days a week\).) Tj
+T* (    • Maintain a healthy weight and BMI.) Tj
+T* (    • Limit alcohol — excess drinking raises blood pressure and heart risk.) Tj
+T* (    • Sleep 7–8 hours daily and manage stress with relaxation techniques like yoga or meditation.) Tj
+T* () Tj
+T* () Tj
+T* (# Monitor Your Health:) Tj
+T* () Tj
+T* (    • Check blood pressure and cholesterol levels regularly.) Tj
+T* (    • Monitor heart rate and report irregular beats or chest discomfort.) Tj
+T* (    • Keep diabetes under control if present.) Tj
+T* (    • Attend regular follow-ups and screenings \(e.g., ECG, echocardiogram if advised\).) Tj
+T* () Tj
+T* () Tj
+T* (# Seek Medical Help If:) Tj
+T* () Tj
+T* (    • You feel chest pain, tightness, or pressure.) Tj
+T* (    • You experience sudden fatigue, breathlessness, or dizziness.) Tj
+T* (    • You notice swelling in legs, ankles, or sudden weight gain.) Tj
+T* (    • Your symptoms worsen or new ones appear.) Tj
+T* () Tj
+T* () Tj
+T* (Note: Always follow up with your cardiologist for a tailored treatment plan.) Tj
+T* (            ) Tj
+ET
+endstream
+endobj
+1 0 obj
+<</Type /Pages
+/Kids [3 0 R 5 0 R ]
+/Count 2
+>>
+endobj
+7 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+8 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+9 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+10 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+11 0 obj
+<<
+/Type /Font
+/BaseFont /Courier
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+12 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+13 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+14 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+15 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Roman
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+16 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+17 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Italic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+18 0 obj
+<<
+/Type /Font
+/BaseFont /Times-BoldItalic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+19 0 obj
+<<
+/Type /Font
+/BaseFont /ZapfDingbats
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+20 0 obj
+<<
+/Type /Font
+/BaseFont /Symbol
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+2 0 obj
+<<
+/ProcSet [/PDF /Text /ImageB /ImageC /ImageI]
+/Font <<
+/F1 7 0 R
+/F2 8 0 R
+/F3 9 0 R
+/F4 10 0 R
+/F5 11 0 R
+/F6 12 0 R
+/F7 13 0 R
+/F8 14 0 R
+/F9 15 0 R
+/F10 16 0 R
+/F11 17 0 R
+/F12 18 0 R
+/F13 19 0 R
+/F14 20 0 R
+>>
+/XObject <<
+>>
+>>
+endobj
+21 0 obj
+<<
+/Producer (jsPDF 2.4.0)
+/CreationDate (D:20250608174022+05'30')
+>>
+endobj
+22 0 obj
+<<
+/Type /Catalog
+/Pages 1 0 R
+/OpenAction [3 0 R /FitH null]
+/PageLayout /OneColumn
+>>
+endobj
+xref
+0 23
+0000000000 65535 f 
+0000009227 00000 n 
+0000011052 00000 n 
+0000000015 00000 n 
+0000000152 00000 n 
+0000006526 00000 n 
+0000006663 00000 n 
+0000009290 00000 n 
+0000009415 00000 n 
+0000009545 00000 n 
+0000009678 00000 n 
+0000009816 00000 n 
+0000009940 00000 n 
+0000010069 00000 n 
+0000010201 00000 n 
+0000010337 00000 n 
+0000010465 00000 n 
+0000010592 00000 n 
+0000010721 00000 n 
+0000010854 00000 n 
+0000010956 00000 n 
+0000011302 00000 n 
+0000011388 00000 n 
+trailer
+<<
+/Size 23
+/Root 22 0 R
+/Info 21 0 R
+/ID [ <FB45FB3509198BC287EB8CB24E783023> <FB45FB3509198BC287EB8CB24E783023> ]
+>>
+startxref
+11492
+%%EOF

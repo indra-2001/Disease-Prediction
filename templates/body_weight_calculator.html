@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ideal Body Weight Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            /* background-image: url('../static/images/Ideal_Body_weight_calculator2.jpg'); */
+            background-image: url('../static/images/BWC.png');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .water_intake-container {
+            max-width: 500px;
+            width: 100%;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            border: 5px solid #2196f3;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2196f3;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        input,
+        select,
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: #2196f3;
+            color: white;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+
+        #result {
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .modal-content {
+            border: 6px solid #1fe0b0;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="water_intake-container">
+        <h2></i><strong> ⚖️ Ideal Body Weight Calculator </strong></h2>
+
+        <label for="sex">Sex:</label>
+<select id="sex">
+  <option value="" disabled selected>Select</option>
+  <option value="male">Male</option>
+  <option value="female">Female</option>
+</select>
+        <label for="height">Height (cm):</label>
+<input type="number" id="height" min="100" max="250" step="0.1" placeholder="Enter height in cm" />
+    
+        <button onclick="calculateIBW()" class="Calculate Ideal Body Weight"><i
+                class="fas fa-calculator me-2"></i>Calculate Ideal Body Weight</button>
+                <br><br>
+        <a href="/dashboard" class="btn btn-secondary w-100"><i class="fas fa-arrow-left me-2"></i>Back</a>
+        <div id="result"></div>
+        <button type="button" id="adviceBtn" onclick="showAdvice()" class="btn btn-success mt-3" data-bs-toggle="modal"
+            data-bs-target="#staticBackdrop" style="display: none;">
+            <i class="fas fa-notes-medical me-2"></i>Get Advices
+        </button>
+    </div>
+
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel"></h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="adviceContent"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" onclick="downloadAdvicePDF()"><i
+                            class="fas fa-download me-2"></i>Download report and advises</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <script>
+        async function calculateIBW() {
+      const sex = document.getElementById("sex").value;
+      const heightCm = parseFloat(document.getElementById("height").value);
+
+
+  if (!sex || !heightCm) {
+        alert("Please select your sex and enter height.");
+        return;
+    }
+
+   const heightInches = heightCm / 2.54;
+    const baseHeight = 60; // 5 feet = 60 inches
+    const extraInches = Math.max(0, heightInches - baseHeight);
+
+
+    let ibw;
+
+  if (sex === "male") {
+        ibw = 50 + (2.3 * extraInches);
+    } else if (sex === "female") {
+        ibw = 45.5 + (2.3 * extraInches);
+    }
+
+    document.getElementById("result").innerHTML =
+        `Your Ideal Body Weight (IBW) is <span style="color:#4caf50;">${ibw.toFixed(2)} kg</span>`;
+
+  // Show advice button
+  document.getElementById("adviceBtn").style.display = "inline-block";
+
+  // Prepare modal content
+  document.getElementById("staticBackdropLabel").innerText = "Ideal Body Weight-Based Advice";
+  document.getElementById("adviceContent").innerHTML = getAdvice(ibw, heightCm, sex);
+
+    }
+
+
+        function displayResult(ibw) {
+            document.getElementById("result").innerHTML = `Your Ideal Body Weight (IBW) is <span style="color:#4caf50;">${ibw.toFixed(2)} kg</span>`;
+            document.getElementById("adviceBtn").style.display = "block"; // Show advice button after result
+}
+        
+
+        function buildPdfContent(ibw, adviceHtml) {
+            const container = document.createElement("div");
+
+    const heading = document.createElement("h1");
+    heading.innerText = `Ideal Body Weight: ${ibw.toFixed(2)} kg ⚖️`;
+    heading.style.textAlign = "center";
+    heading.style.color = "#007bff";
+    heading.style.borderBottom = "5px solid #2196f3";
+    heading.style.marginBottom = "30px";
+
+    const adviceDiv = document.createElement("div");
+    adviceDiv.innerHTML = adviceHtml;
+    adviceDiv.style.fontSize = "16px";
+    adviceDiv.style.lineHeight = "1.7";
+    adviceDiv.style.fontFamily = "Arial, sans-serif";
+
+    container.appendChild(heading);
+    container.appendChild(adviceDiv);
+    return container;
+        }
+
+        async function generatePdfBlob(content) {
+            const opt = {
+         
+         
+                margin: 0.5,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            return await html2pdf().set(opt).from(content).output('blob');
+        }
+
+        async function saveReport(height, ibw, pdfBlob) {
+            const formData = new FormData();
+            formData.append("height", height);
+            formData.append("category", "Ideal Body Weight");
+            formData.append("result_value", ibw.toFixed(2));
+            formData.append("pdf", pdfBlob, "ideal_body_weight_report.pdf");
+
+       
+                fetch("/save_health_result", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                alert("✅ Ideal Body Weight data and report saved to database.");
+                } else {
+                alert("❌ Failed to save data.");
+                }
+            })
+            .catch(err => {
+                console.error("Error:", err);
+                alert("❌ Error sending data to server.");
+            });
+            }
+
+        function downloadAdvicePDF() {
+            const title = document.getElementById("staticBackdropLabel").innerText;
+            const body = document.getElementById("adviceContent").innerHTML;
+
+            const container = document.createElement("div");
+            container.innerHTML = `
+                <h2 style="color: #2196f3; border-bottom: 2px solid #2196f3;">${title}</h2>
+                <div style="font-family: Arial; font-size: 20px;">${body}</div>
+            `;
+
+            html2pdf().from(container).set({
+                margin: 10,
+                filename: 'Ideal_Body_Weight_Report_and_Tips.pdf',
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            }).save();
+        }
+
+        function getAdvice(ibw, heightCm, sex) {
+            const heightFeet = (heightCm / 30.48).toFixed(1);
+            const genderText = sex === "male" ? "a male" : "a female";
+            if (ibw < 50) {
+        return `
+            <strong>🔵 Your Ideal Body Weight is on the Lower Side</strong><br>
+            ⚖️ <strong>Recommended IBW:</strong> ${ibw.toFixed(2)} kg (for ${genderText} of height ~${heightFeet} ft)<br><br>
+            <strong>🌿 Tips to Achieve or Maintain Healthy Weight:</strong>
+            <ul>
+                <li>Ensure balanced intake of proteins, carbs, and healthy fats.</li>
+                <li>Incorporate nutrient-dense foods like nuts, seeds, legumes, and lean meats.</li>
+                <li>Consider strength training to build lean body mass if underweight.</li>
+</ul>
+<strong>⚠️ Note:</strong> A lower IBW may be suitable for shorter frames, but consult a health professional if underweight.
+        `;
+    } else if (ibw <= 65) {
+        return `
+            <strong>🟢 Your Ideal Body Weight is in the Healthy Range</strong><br>
+            ⚖️ <strong>Recommended IBW:</strong> ${ibw.toFixed(2)} kg (for ${genderText} of height ~${heightFeet} ft)<br><br>
+            <strong>🌿 Maintenance Tips:</strong>
+            <ul>
+                <li>Stick to a consistent routine of healthy eating and moderate exercise.</li>
+                <li>Stay hydrated and get quality sleep.</li>
+                <li>Do regular health checkups to monitor progress.</li>
+            </ul>
+            <strong>✔️ This is an optimal range for overall fitness and health.</strong>
+        `;
+    } else {
+        return `
+            <strong>🟡 Your Ideal Body Weight is Relatively High</strong><br>
+            ⚖️ <strong>Recommended IBW:</strong> ${ibw.toFixed(2)} kg (for ${genderText} of height ~${heightFeet} ft)<br><br>
+            <strong>🌿 Tips for Managing Weight:</strong>
+            <ul>
+                <li>Engage in regular cardiovascular and strength training exercises.</li>
+                <li>Adopt portion control and nutrient-dense food choices.</li>
+                <li>Track your progress and seek professional guidance if needed.</li>
+            </ul>
+            <strong>⚠️ Note:</strong> Higher IBW is normal for taller individuals, but maintaining lean mass over fat is key.
+        `;
+    }
+} 
+</script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
+
