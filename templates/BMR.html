@@ -521,23 +521,23 @@
             formData.append("result_value", bmr.toFixed(2));
             formData.append("pdf", pdfBlob, "bmr_report.pdf");
 
-       
-                fetch("/save_health_result", {
+
+            fetch("/save_health_result", {
                 method: "POST",
                 body: formData
             })
-            .then(response => {
-                if (response.ok) {
-                alert("✅ BMI data and report saved to database.");
-                } else {
-                alert("❌ Failed to save data.");
-                }
-            })
-            .catch(err => {
-                console.error("Error:", err);
-                alert("❌ Error sending data to server.");
-            });
-            }
+                .then(response => {
+                    if (response.ok) {
+                        console, log("✅ BMR data and report saved to database.");
+                    } else {
+                        console.log("❌ Failed to save data.");
+                    }
+                })
+                .catch(err => {
+                    console.error("Error:", err);
+                    console.log("❌ Error sending data to server.");
+                });
+        }
 
         function downloadAdvicePDF() {
             const title = document.getElementById("staticBackdropLabel").innerText;
@@ -558,7 +558,7 @@
         }
 
         function getBmrAdvice(bmr) {
-            if (bmr < 1200) 
+            if (bmr < 1200)
                 return `<strong>🔵 You Have Very Low Metabolism</strong><br>
     👤 <strong>Profile:</strong> Often seen in smaller body frames, sedentary lifestyle, older adults, or those with low muscle mass.<br><br>
     <strong>🍽️ Nutrition Tips:</strong><ul>
@@ -579,7 +579,7 @@
         <li>Stay warm — cold environments can reduce calorie burn.</li>
         <li>Light walks after meals aid digestion and metabolism.</li>
     </ul>`;
-            else if (bmr < 1500) 
+            else if (bmr < 1500)
                 return `<strong>🟢 You Have Low but Normal Metabolism</strong><br>
     👤 <strong>Profile:</strong> Common in average-weight adults with light activity levels.<br><br>
     <strong>🍽️ Nutrition Tips:</strong><ul>
@@ -600,7 +600,7 @@
         <li>Green tea or black coffee in moderation can aid metabolism.</li>
         <li>Track your intake if managing weight, but avoid overly restrictive diets.</li>
     </ul>`;
-             else if (bmr < 1800) 
+            else if (bmr < 1800)
                 return `<strong>🟡 You Have Moderate Metabolism</strong><br>
     👤 <strong>Profile:</strong> Indicates a healthy balance — usually active individuals with a healthy weight.<br><br>
     <strong>🍽️ Nutrition Tips:</strong><ul>
@@ -621,7 +621,7 @@
         <li>Infuse your water with lemon or mint to stay refreshed and hydrated.</li>
         <li>Consider using a standing desk to reduce long sitting periods.</li>
     </ul>`;
-            else if (bmr < 2100) 
+            else if (bmr < 2100)
                 return `<strong>🟠 You Have High Metabolism</strong><br>
     👤 <strong>Profile:</strong> Often seen in active individuals with good muscle tone and younger age.<br><br>
     <strong>🍽️ Nutrition Tips:</strong><ul>
@@ -642,7 +642,7 @@
         <li>Meal prep on weekends to stay on track during busy weeks.</li>
         <li>Get body composition analysis to monitor progress, not just weight.</li>
     </ul>`;
-             else 
+            else
                 return `<strong>🔴 You Have Very High Metabolism</strong><br>
     👤 <strong>Profile:</strong> Common in athletes, very active people, or those with high muscle mass.<br><br>
     <strong>🍽️ Nutrition Tips:</strong><ul>

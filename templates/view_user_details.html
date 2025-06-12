@@ -1,25 +1,63 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
     <title>User Details</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
+        body {
+            background-color: #f5f6fa;
+        }
+
         .container {
-            max-width: 600px;
+            max-width: 700px;
         }
 
         .card {
-            margin-top: 50px;
+            margin-top: 60px;
+            border: none;
+            border-radius: 1rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #343a40, #212529);
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 1.5rem;
         }
 
         .profile-img {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
+            width: 100px;
+            height: 100px;
             object-fit: cover;
-            border: 3px solid #343a40;
+            border-radius: 50%;
+            border: 3px solid #fff;
+            margin-right: 20px;
+        }
+
+        .card-header h4 {
+            margin: 0;
+            color: #fff;
+        }
+
+        .card-header small {
+            color: #ced4da;
+        }
+
+        .card-body p {
+            font-size: 1rem;
+            margin-bottom: 12px;
+        }
+
+        .card-body i {
+            width: 24px;
+            color: #6c757d;
         }
 
         .badge-active {
@@ -29,33 +67,47 @@
         .badge-blocked {
             background-color: #dc3545;
         }
+
+        .card-footer {
+            background-color: #f8f9fa;
+        }
+
+        .btn-secondary {
+            border-radius: 8px;
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <div class="card shadow">
-            <div class="card-header bg-dark text-white d-flex align-items-center">
+        <div class="card">
+            <!-- Header -->
+            <div class="card-header">
                 <img src="{{ url_for('static', filename='profile_pics/' + user.profile_pic) }}" alt="Profile Picture"
-                    class="profile-img me-3">
-                <h4 class="mb-0">User Details</h4>
+                    class="profile-img">
+                <div>
+                    <h4 class="text-white mb-1">{{ user.username }}</h4>
+                    <small class="text-light"><i class="fas fa-envelope"></i> {{ user.email }}</small>
+                </div>
             </div>
-            <div class="card-body">
-                <p><strong>User ID:</strong> {{ user.id }}</p>
-                <p><strong>Username:</strong> {{ user.username }}</p>
-                <p><strong>Email:</strong> {{ user.email }}</p>
-                <p><strong>Phone:</strong> {{ user.phone }}</p>
-                <p><strong>Gender:</strong> {{ user.gender }}</p>
-                <p><strong>Registered On:</strong> {{ user.created_at }}</p>
+
+            <!-- Body -->
+            <div class="card-body px-4 py-3">
+                <p><i class="fas fa-id-badge"></i> <strong>User ID:</strong> {{ user.id }}</p>
+                <p><i class="fas fa-phone"></i> <strong>Phone:</strong> {{ user.phone }}</p>
+                <p><i class="fas fa-venus-mars"></i> <strong>Gender:</strong> {{ user.gender }}</p>
+                <p><i class="fas fa-calendar-alt"></i> <strong>Registered On:</strong> {{ user.created_at }}</p>
                 <p>
-                    <strong>Status:</strong>
+                    <i class="fas fa-user-check"></i> <strong>Status:</strong>
                     {% if user.status == 'active' %}
-                    <span class="badge badge-active">Active</span>
+                    <span class="badge badge-active px-3 py-2 rounded-pill">Active</span>
                     {% else %}
-                    <span class="badge badge-blocked">Blocked</span>
+                    <span class="badge badge-blocked px-3 py-2 rounded-pill">Blocked</span>
                     {% endif %}
                 </p>
             </div>
+
+            <!-- Footer -->
             <div class="card-footer text-end">
                 <a href="{{ url_for('view_users') }}" class="btn btn-secondary">
                     <i class="fas fa-arrow-left"></i> Back
