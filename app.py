@@ -88,7 +88,7 @@ tumor_model = load_model("model.h5")
 tumor_class_labels = ['glioma', 'meningioma', 'notumor', 'pituitary']
 
 with open("disease_predictor.pkl", "rb") as f:
-    model = pickle.load(f)
+    modelS = pickle.load(f)
 
 with open("symptom_list.pkl", "rb") as f:
     symptom_list = pickle.load(f)
@@ -330,9 +330,8 @@ def predict_disease():
 
     # Create a binary vector of symptoms
     input_vector = [1 if symptom in selected_symptoms else 0 for symptom in symptom_list]
-
     # Predict probabilities
-    probabilities = model.predict_proba([input_vector])[0]
+    probabilities = modelS.predict_proba([input_vector])[0]
     top_indices = sorted(range(len(probabilities)), key=lambda i: probabilities[i], reverse=True)[:3]
 
     results = []
