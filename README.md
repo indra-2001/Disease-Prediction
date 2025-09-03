@@ -1,7 +1,30 @@
-🩺 HealthCheck is a ML-based health prediction and wellness web app that helps users assess their risk for diseases like heart disease, diabetes, kidney disease, liver disease, breast cancer, and Parkinson’s, along with mental health screening for depression, anxiety, and stress.
+# HealthCheck
 
-It also features a nutrition and wellness section where users can calculate their BMI, BMR, daily water intake, and nutritional needs based on individual parameters.
+🩺 **HealthCheck** is an ML-based health prediction and wellness web app that helps users assess their risk for various diseases and track overall wellness.  
 
-HealthCheck also features scientifically validated score based mental health screening tools, including PHQ-9 (Depression), GAD-7 (Anxiety), and PSS-10 (Stress).
+## Features
 
-Users receive personalized health advice based on their condition, and if needed, the app also suggests relevant doctors by specialization.
+- 🧬 **Disease Prediction**  
+  - Heart Disease  
+  - Diabetes  
+  - Kidney Disease  
+  - Liver Disease  
+  - Breast Cancer  
+  - Parkinson’s Disease  
+
+- 🧠 **Mental Health Screening**  
+  - PHQ-9 (Depression)  
+  - GAD-7 (Anxiety)  
+  - PSS-10 (Stress)  
+
+- 🍎 **Nutrition & Wellness**  
+  - BMI Calculator  
+  - BMR Calculator  
+  - Daily Water Intake  
+  - Personalized Nutritional Needs  
+
+- 👨‍⚕️ **Doctor Recommendation**  
+  - Suggests relevant doctors by specialization based on results  
+
+## Personalized Advice
+Users receive tailored health advice based on their condition, along with guidance on lifestyle changes.
